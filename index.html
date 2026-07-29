@@ -1,573 +1,1334 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docket — Ten seconds, and it's handled</title>
+<html><head><!-- frame-runtime --><base href="/_f/1785311792-740a/"><script>window.__FRAME_PREAMBLE={"capabilities":{"downloads":"downloads.BABDwU1K.js","mcp":"mcp.hoz5jxDa.js","permissions":"permissions.ByA9Fd8x.js","self":"self.D3u1zjZe.js","user":"user.Cp1-RnjB.js"},"transforms":"_transforms.DYk1Ltlh.js","comments":"_comments.DiwQajF_.js","translate":"_translate.C5leZL2A.js"}</script><script>(function(){"use strict";const Ee="modulepreload",we=function(e){return"/"+e},Se={},ee=function(t,n,l){let i=Promise.resolve();function s(f){const c=new Event("vite:preloadError",{cancelable:!0});if(c.payload=f,window.dispatchEvent(c),!c.defaultPrevented)throw f}return i.then(f=>{for(const c of f||[])c.status==="rejected"&&s(c.reason);return t().catch(s)})},te=["light","dark","system"];function ne(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_init;return t!==null&&typeof t=="object"}function W(e){return e!==null&&typeof e=="object"&&e.__frame_size_poke===!0}function re(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_theme;if(t===null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&te.includes(n)}function se(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}const oe=Object.freeze(Object.assign(Object.create(null),{user:Object.freeze(Object.assign(Object.create(null),{id:null,isOwner:!1,canEdit:!1,name:null,avatarUrl:null,email:null}))}));function Y(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let n=null;for(let f=0;f<t.length;f++){const c=t[f];if(c&&c.matches&&c.matches("a[href],area[href]")){n=c;break}}if(!n&&e.target&&e.target.closest&&(n=e.target.closest("a[href],area[href]")),!n)return;const l=n.getAttribute("href");if(!l)return;let i,s;try{i=new URL(l,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(i.protocol==="http:"||i.protocol==="https:")&&i.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:i.href},"*"))}const K={};function D(e){if(window===top)return;const t=Date.now();t-(K[e]||0)<500||(K[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}const ie=2e3,x=["wheel","touchstart","touchmove","keydown","pointerdown"];let J=0;function ae(e){e.isTrusted&&(J=Date.now())}function ce(){addEventListener("click",Y,!0),addEventListener("auxclick",Y,!0)}function le(){for(let e=0;e<x.length;e++)addEventListener(x[e],ae,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-J<ie&&D("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&D("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&D("click")},{capture:!0,passive:!0})}const I="__frame_scroll",ue=150,fe=310,de=160,me=3e4;function pe(){let e=0,t=!1,n=!1,l=!1,i=0;const s=a=>{try{sessionStorage.setItem(I,JSON.stringify({y:a}))}catch{}},f=()=>{if(t){t=!1;return}n=!0,clearTimeout(e),e=setTimeout(()=>s(scrollY),ue)};try{addEventListener("scroll",f,{passive:!0}),addEventListener("pagehide",()=>{clearTimeout(e),s(scrollY)})}catch{}const c=()=>{let a;try{a=sessionStorage.getItem(I)}catch{return null}if(a===null)return null;let _;try{_=JSON.parse(a)}catch{_=null}const m=_?.y;if(!(typeof m=="number"&&Number.isFinite(m)&&m>=0)){try{sessionStorage.removeItem(I)}catch{}return null}return m};let g=!1;const p=a=>{try{const _=scrollY;scrollTo({top:a,left:0,behavior:"instant"}),i=a,l=!0,s(a);const m=scrollY;m!==_&&(t=!0),m!==a&&!g&&(g=!0,addEventListener("load",()=>{try{if(scrollY===m){const y=c();p(y!==null?y:i)}}catch{}},{once:!0}))}catch{}},o=()=>{try{return!!location.hash}catch{return!0}};let u=!1;const d=()=>{try{if(u||innerWidth>fe||innerHeight>de)return;u=!0;const a=Date.now(),_=()=>{try{removeEventListener("resize",_)}catch{}if(Date.now()-a>me||n||o())return;const m=c();p(m!==null?m:i)};addEventListener("resize",_)}catch{}};let h=!1,b=!1;return{restore(){if(h||(h=!0,o()))return;const a=c();a!==null&&(p(a),d())},promoted(){if(b||(b=!0,o()))return;const a=c();a!==null?(p(a),d()):l&&p(i)}}}function he(e,t,n){const l=[...t.values()].filter(i=>i.targets.some(s=>s.startsWith(e+".")));return{wrap(i,s){const f=`${e}.${i}`,c=l.filter(g=>g.targets.includes(f));return c.length===0?(...g)=>{try{return s(...g)}catch(p){return Promise.reject(p)}}:(...g)=>{let p=g;for(const u of c){const d=u.module.parameters;if(d)try{p=d(p)}catch{return Promise.reject({code:"transform_error",id:u.id,scope:e,message:"parameters transform failed"})}}let o;try{o=s(...p)}catch(u){o=Promise.reject(u)}return o.then(u=>{for(let d=c.length-1;d>=0;d--){const h=c[d],b=h.module.returns;if(b)try{u=b(u)}catch{return n({id:h.id,scope:e,leg:"returns"}),u}}return u},u=>{for(let d=c.length-1;d>=0;d--){const h=c[d],b=h.module.throws;if(b)try{u=b(u)}catch{return n({id:h.id,scope:e,leg:"throws"}),Promise.reject(u)}}return Promise.reject(u)})}}}}function ge(e,t,n,l=()=>{}){const i=new Set(e.changes??[]),s=new Map;for(const f of i){const c=t[f];c&&s.set(f,c)}return{contract:e.contract,changes:i,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:n.shellOrigin,mount:n.mount,pipe:f=>he(f,s,l)}}(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let l=0;for(let i=0;i<n.length;i++){const s=n[i];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&l++}if(l&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:l},"*")}catch{}})();const _e=1e4,ye=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function G(e){for(const t of ye)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}const R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities}),U=window.__FRAME_PREAMBLE?.transforms,z=window.__FRAME_PREAMBLE?.comments,$=window.__FRAME_PREAMBLE?.translate,T=/^[\w.-]+\.js$/,be=/^[a-z][a-z0-9_-]{0,63}$/;let V=null,j=null;function q(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}let B=!1;function X(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,B=!0):B&&(delete t.dataset.theme,t.style.colorScheme="",B=!1)}const A=Object.assign(Object.create(null),{mcp:Object.assign(Object.create(null),{watchTool:{handlerArg:3}})}),M=new Map;function Q(e,t){const n=M.get(e);if(!n)return;const l=Object.assign(Object.create(null),t);Object.assign(n.impl,l),n.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const i=n.queue;n.queue=[];for(const s of i){const f=l[s.method];if(f)if(A[e]?.[s.method])try{s.resolve(f(...s.args))}catch{k(s,A[e][s.method].handlerArg,{code:"transform_error",message:`${e}.${s.method} rejected its arguments`})}else f(...s.args).then(s.resolve,s.reject);else{const c={code:"capability_removed",message:`${e}.${s.method} is not in this runtime`},g=A[e]?.[s.method];if(g){k(s,g.handlerArg,c);continue}s.reject(c)}}}function ve(e,t){const n=M.get(e);if(!n)return;n.impl.__settled=()=>Promise.reject(t);const l=n.queue;n.queue=[];for(const i of l){const s=A[e]?.[i.method];if(s){k(i,s.handlerArg,t);continue}i.reject(t)}}function N(e,t){const n=oe[e];if(!n){ve(e,t);return}Q(e,Object.fromEntries(Object.entries(n).map(([l,i])=>[l,()=>Promise.resolve(i)])))}function k(e,t,n){if(e.syncState?.dead)return;const l=e.args[t];typeof l=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{l({type:"error",error:n})}catch(i){se(i)}})}const F=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(F&&F.writable===!1)){ce(),le();let e=null;try{e=pe()}catch{}const t=F?.value??{};q(window,"claude",t);const n=o=>{const u={impl:Object.create(null),queue:[]};M.set(o,u);const d=u.impl,h=new Proxy(d,{get:(b,a)=>{if(typeof a!="string"||a==="then"||a==="toJSON"||a==="valueOf")return;if(a==="toString")return Object.prototype.toString;const _=A[o]?.[a];return _?(...m)=>{if(typeof m[_.handlerArg]!="function")throw new TypeError(`${o}.${a} requires a handler function`);const y=d[a];if(y)return y(...m);if(d.__settled){const v={dead:!1},P={args:[...m],syncState:v};return d.__settled().catch(C=>k(P,_.handlerArg,C)),()=>{v.dead=!0}}let E=null;const S={dead:!1};return u.queue.push({method:a,args:m,resolve:v=>{E=typeof v=="function"?v:null,S.dead&&E?.()},reject:()=>{},syncState:S}),()=>{S.dead=!0,E?.()}}:(...m)=>{const y=d[a]??d.__settled;return y?y(...m):new Promise((E,S)=>{u.queue.push({method:a,args:m,resolve:E,reject:S})})}},set:()=>!1});q(t,o,h)};for(const o of Object.keys(R)){if(t[o]!==void 0){q(t,o,t[o]);continue}n(o)}let l=null,i=null,s=0;const f=o=>{o.source!==parent||!G(o.origin)||ne(o.data)&&(l=o.data.__frame_init,j=o.origin,removeEventListener("message",f),clearTimeout(s),i?.())};addEventListener("message",f),parent.postMessage({__frame_connect:!0},"*");const c=new Promise(o=>{i=o,s=setTimeout(()=>{removeEventListener("message",f),o()},_e)}),g=document.readyState==="loading"?new Promise(o=>document.addEventListener("DOMContentLoaded",()=>o(),{once:!0})):Promise.resolve();g.then(()=>{try{e?.restore()}catch{}});const p=o=>{if(!(o.source!==parent||!G(o.origin))&&W(o.data)){removeEventListener("message",p);try{e?.promoted()}catch{}}};addEventListener("message",p),c.then(async()=>{if(!l||!j){for(const r of M.keys())N(r,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}X(l.theme);const o=j;let u=!1,d=!1;addEventListener("message",r=>{if(r.source!==parent||r.origin!==o)return;re(r.data)&&X(r.data.__frame_theme.theme);const w=r.data?.__fc_mode;w&&typeof w=="object"&&!u&&z&&T.test(z)&&(u=!0,h(z).then(H=>H.install?.(o,w.on===!0)).catch(()=>{}));const O=r.data?.__ft_cmd;O&&typeof O=="object"&&!d&&$&&T.test($)&&(d=!0,h($).then(H=>H.install?.(o,O)).catch(()=>{}))});const h=r=>ee(()=>import("/_runtime/"+r),void 0),b=Object.keys(l.capabilities??{});for(const r of b)Object.hasOwn(R,r)||be.test(r)&&t[r]===void 0&&(n(r),N(r,{code:"capability_disabled",message:"capability not in this runtime generation"}));const a=b.filter(r=>Object.hasOwn(R,r)).map(r=>[r,R[r]]).filter(r=>typeof r[1]=="string"&&T.test(r[1])),[_,...m]=await Promise.allSettled([U&&T.test(U)?h(U):Promise.resolve({}),...a.map(([,r])=>h(r))]),y=j;V=ge(l,_.status==="fulfilled"&&_.value?.TRANSFORMS||{},{shellOrigin:y,mount:Q},r=>parent.postMessage({__frame_cap_telemetry:r},y));const E=r=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:r}},y),S=V;m.forEach((r,w)=>{const O=a[w][0];if(r.status!=="fulfilled"){E(O);return}try{r.value?.install?.(S)}catch{E(O)}});for(const[r,w]of M)if(!(w.queue.length===0&&Object.keys(w.impl).length>0)){if(b.includes(r)){N(r,{code:"capability_disabled",message:"capability not available in this session"});continue}N(r,{code:"not_granted",message:"capability not available in this session"})}await g,parent.postMessage({__frame_ready:!0},j);let v=-1,P=0;const C=()=>{P=0;const r=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);r!==v&&(v=r,parent.postMessage({__frame_size:!0,h:r},y))},L=()=>{P||(P=setTimeout(C,200))},Z=new ResizeObserver(L);Z.observe(document.documentElement),document.body&&Z.observe(document.body),document.addEventListener("load",L,!0),document.fonts?.ready.then(L,()=>{}),addEventListener("beforeprint",()=>{v=-1,C()}),L(),addEventListener("message",r=>{if(!(r.source!==parent||r.origin!==y)&&W(r.data)){try{e?.promoted()}catch{}v=-1,L()}})})}})();</script><!-- /frame-runtime --><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body data-new-gr-c-s-check-loaded="14.1315.0" data-gr-ext-installed="">
+<title>Docket · Assignments, captured in seconds</title>
 <style>
   :root {
-    --paper: #faf9f6;
-    --panel: #ffffff;
-    --field: #f0efea;
-    --ink: #16181d;
-    --muted: #6a7076;
-    --hair: #e7e5df;
-    --teal: #2f8ba1;
-    --teal-deep: #257287;
-    --teal-icon: #4aa8c0;
-    --amber: #d9952b;
-    --shadow: 0 24px 60px -24px rgba(22, 24, 29, 0.28);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --paper: #0f1114;
-      --panel: #191c21;
-      --field: #23272e;
-      --ink: #eceded;
-      --muted: #9aa1a8;
-      --hair: #23262b;
-      --teal: #56b4cc;
-      --teal-deep: #3d97ae;
-      --teal-icon: #4aa8c0;
-      --amber: #e8a13c;
-      --shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6);
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #0f1114;
-    --panel: #191c21;
-    --field: #23272e;
-    --ink: #eceded;
-    --muted: #9aa1a8;
-    --hair: #23262b;
-    --teal: #56b4cc;
-    --teal-deep: #3d97ae;
-    --teal-icon: #4aa8c0;
-    --amber: #e8a13c;
-    --shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6);
-  }
-  :root[data-theme="light"] {
-    --paper: #faf9f6;
-    --panel: #ffffff;
-    --field: #f0efea;
-    --ink: #16181d;
-    --muted: #6a7076;
-    --hair: #e7e5df;
-    --teal: #2f8ba1;
-    --teal-deep: #257287;
-    --teal-icon: #4aa8c0;
-    --amber: #d9952b;
-    --shadow: 0 24px 60px -24px rgba(22, 24, 29, 0.28);
+    --paper: #faf4e9;
+    --paper-2: #f4ecdd;
+    --ink: #241f1a;
+    --ink-2: #6f675c;
+    --ink-3: #a49a8c;
+    --teal: #1e93ab;
+    --teal-soft: #bfe8f0;
+    --card: #ffffff;
+    --line: #e7ddcc;
+    --dark: #1d1a16;
+    --dark-ink: #f7f1e6;
+    --spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+    --glide: cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont,
+      "SF Pro Display", "Segoe UI", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 16px;
-    line-height: 1.6;
+    overflow-x: hidden;
   }
-  .shell { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
 
-  /* ── Nav ─────────────────────────── */
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Nav ---------- */
   nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 26px 0;
   }
-  .wordmark {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -0.02em;
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #3fc2db, #1e93ab);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 7px rgba(30, 147, 171, 0.35);
+  }
+  .brand-mark svg { display: block; }
+  .brand-name { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-cta {
+    font-size: 14px;
+    font-weight: 600;
     color: var(--ink);
     text-decoration: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 16px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
-  .navlinks { display: flex; align-items: center; gap: 28px; }
-  .navlinks a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 14px;
-  }
-  .navlinks a:hover, .navlinks a:focus-visible { color: var(--ink); }
-  a:focus-visible, button:focus-visible {
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(36, 31, 26, 0.08); }
+  .nav-cta:focus-visible, .btn:focus-visible, .seg button:focus-visible,
+  .p-save:focus-visible, .again:focus-visible, .p-input:focus-visible {
     outline: 2px solid var(--teal);
-    outline-offset: 3px;
-    border-radius: 4px;
+    outline-offset: 2px;
   }
 
-  /* ── Hero ────────────────────────── */
-  .hero {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 56px;
-    align-items: center;
-    padding: 64px 0 88px;
-  }
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; gap: 48px; padding: 40px 0 64px; }
-  }
-  .eyebrow {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    color: var(--teal);
-    margin: 0 0 18px;
-  }
+  /* ---------- Hero ---------- */
+  .hero { text-align: center; padding: 72px 0 46px; }
   h1 {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-    font-size: clamp(38px, 5.4vw, 56px);
+    font-size: clamp(44px, 6.6vw, 68px);
     font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.04;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
     margin: 0 0 22px;
     text-wrap: balance;
   }
+  .hl {
+    background: var(--teal-soft);
+    padding: 0.02em 0.14em;
+    border-radius: 0.14em;
+    box-decoration-break: clone;
+  }
   .sub {
-    font-size: 17.5px;
-    line-height: 1.65;
-    color: var(--muted);
-    max-width: 46ch;
-    margin: 0 0 34px;
+    font-size: 18.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin: 0 auto 30px;
+    text-wrap: pretty;
   }
-  .sub strong { color: var(--ink); font-weight: 600; }
-
-  .cta-row { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .ctas { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
   .btn {
-    display: inline-block;
-    background: var(--teal);
-    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: inherit;
+    font-size: 15.5px;
     font-weight: 600;
-    font-size: 15px;
-    padding: 13px 26px;
-    border-radius: 10px;
     text-decoration: none;
-    letter-spacing: -0.01em;
+    border-radius: 999px;
+    padding: 13px 24px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
-  .btn:hover { background: var(--teal-deep); }
-  .cta-alt {
-    color: var(--muted);
-    font-size: 14px;
-    text-decoration: none;
-    border-bottom: 1px solid var(--hair);
-    padding-bottom: 2px;
+  .btn:hover { transform: translateY(-1px); }
+  .btn-dark {
+    background: var(--dark);
+    color: var(--dark-ink);
+    box-shadow: 0 4px 14px rgba(29, 26, 22, 0.25);
   }
-  .cta-alt:hover { color: var(--ink); border-color: var(--muted); }
-  .fine {
-    margin-top: 20px;
-    font-size: 13px;
-    color: var(--muted);
+  .btn-dark:hover { box-shadow: 0 6px 18px rgba(29, 26, 22, 0.32); }
+  .req { font-size: 13.5px; color: var(--ink-3); font-weight: 500; }
+
+  /* ---------- Demo ---------- */
+  .stage-outer { padding: 40px 0 12px; }
+
+  /* Type picker: the caption row in the popup is the control, like the app */
+  .p-type-row { display: flex; align-items: center; gap: 3px; margin-bottom: 10px; }
+  .p-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #6f675c;
+    background: #f0ece3;
+    border: 0;
+    border-radius: 999px;
+    padding: 5px 9px;
+    cursor: pointer;
+    transition: background 0.15s ease;
   }
-  .fine kbd {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11.5px;
-    background: var(--panel);
-    border: 1px solid var(--hair);
-    border-bottom-width: 2px;
-    border-radius: 5px;
-    padding: 2px 6px;
-    color: var(--ink);
+  .p-type:hover { background: #e8e1d2; }
+  .p-type[disabled] { cursor: default; }
+  .p-type .chev {
+    font-size: 8px;
+    color: #a49a8c;
+    transition: transform 0.25s var(--glide);
+  }
+  .p-type.open .chev { transform: rotate(180deg); }
+  .p-type-opts {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-width 0.32s var(--glide), opacity 0.22s ease;
+  }
+  .p-type-opts.open { max-width: 250px; opacity: 1; }
+  .p-type-opt {
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #a49a8c;
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .p-type-opt:hover { color: var(--ink); background: rgba(36, 31, 26, 0.06); }
+
+  .stage {
+    position: relative;
+    border-radius: 30px;
+    background:
+      radial-gradient(120% 90% at 15% 0%, rgba(255, 255, 255, 0.22), transparent 55%),
+      radial-gradient(110% 100% at 90% 100%, rgba(10, 70, 84, 0.55), transparent 60%),
+      linear-gradient(150deg, #41bed6 0%, #1e93ab 55%, #14707f 100%);
+    padding: 30px 32px 18px;
+    box-shadow: 0 24px 54px -20px rgba(20, 112, 127, 0.45);
   }
 
-  /* ── Panel mock ──────────────────── */
-  .stage { display: flex; flex-direction: column; align-items: center; }
-  .menubar {
-    width: 320px;
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    background: var(--panel);
-    border: 1px solid var(--hair);
-    border-radius: 9px;
-    padding: 6px 14px;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11.5px;
-    color: var(--muted);
+  .scenes { position: relative; height: 464px; }
+  .scene {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.3s ease, transform 0.42s var(--glide);
   }
-  .menubar svg { color: var(--ink); }
-  .tail {
-    width: 0; height: 0;
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-bottom: 10px solid var(--panel);
-    filter: drop-shadow(0 -1px 0 var(--hair));
-    margin-top: 4px;
+  .scene.off-left { opacity: 0; transform: translateX(-48px); pointer-events: none; }
+  .scene.off-right { opacity: 0; transform: translateX(48px); pointer-events: none; }
+
+  .fl {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(calc(-50% + var(--x, 0px)), -50%);
+    transition: transform 0.52s var(--glide), opacity 0.36s ease;
   }
+  .panel-wrap { --x: 0px; z-index: 2; }
+  .dest-wrap { --x: 250px; opacity: 0; pointer-events: none; }
+  .scene.saved .panel-wrap { --x: -174px; }
+  .scene.saved .dest-wrap { --x: 174px; opacity: 1; pointer-events: auto; }
+  @media (max-width: 760px) {
+    .scene.saved .panel-wrap { --x: -370px; opacity: 0; }
+    .scene.saved .dest-wrap { --x: 0px; }
+  }
+
+  .again {
+    display: block;
+    margin: 10px auto 0;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    padding: 8px 18px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s var(--glide), background 0.2s ease;
+  }
+  .again:hover { background: rgba(255, 255, 255, 0.28); }
+  .again.show { opacity: 1; pointer-events: auto; transform: none; }
+
+  /* --- Capture panel --- */
   .panel {
-    width: 292px;
-    max-width: 100%;
-    background: var(--panel);
-    border: 1px solid var(--hair);
-    border-radius: 15px;
-    box-shadow: var(--shadow);
+    width: 302px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 17px;
+    box-shadow: 0 18px 44px rgba(10, 50, 60, 0.35);
     padding: 17px;
-    display: flex;
-    flex-direction: column;
-    gap: 13px;
+    text-align: left;
+    transition: transform 0.18s var(--glide);
   }
-  @media (prefers-reduced-motion: no-preference) {
-    .stage > * {
-      animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    }
-    .stage .tail { animation-delay: 0.08s; }
-    .stage .panel { animation-delay: 0.14s; }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  }
+  .panel.pressed { transform: scale(0.977); }
+
   .p-label {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 9.5px;
+    font-size: 10.5px;
+    font-weight: 700;
     letter-spacing: 0.09em;
-    color: var(--muted);
-    margin-bottom: 5px;
+    color: #8b8578;
+    margin: 0 0 6px;
+    display: flex; align-items: center; gap: 5px;
   }
-  .p-label .chev { font-size: 8px; opacity: 0.7; }
-  .p-input {
-    background: var(--field);
-    border-radius: 8px;
+  .p-label .chev { font-size: 9px; color: #b6ac9c; }
+  .p-field {
+    background: #f0ece3;
+    border-radius: 9px;
     padding: 8px 11px;
+    font-size: 14px;
+    margin-bottom: 13px;
+  }
+  .p-input {
+    display: block;
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #f0ece3;
+    border: 0;
+    border-radius: 9px;
+    padding: 8px 11px;
+    margin-bottom: 13px;
+    outline: none;
+    box-shadow: inset 0 0 0 1.5px transparent;
+    transition: box-shadow 0.2s ease;
+  }
+  .p-input:focus { box-shadow: inset 0 0 0 1.5px rgba(30, 147, 171, 0.65); }
+  .p-input::placeholder { color: #a49a8c; }
+  .p-row { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .p-row .spread { margin-left: auto; color: #a49a8c; font-size: 10px; }
+
+  /* Class / calendar dropdown */
+  .p-drop { margin-bottom: 13px; }
+  .p-dropbtn {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #f0ece3;
+    border: 0;
+    border-radius: 9px;
+    padding: 8px 11px;
+    cursor: pointer;
+    text-align: left;
+  }
+  .p-dropbtn .spread {
+    margin-left: auto;
+    color: #a49a8c;
+    font-size: 10px;
+    transition: transform 0.25s var(--glide);
+  }
+  .p-drop.open .p-dropbtn .spread { transform: rotate(180deg); }
+  .p-dropbtn[disabled] { cursor: default; }
+  .p-options {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: #f5f1e8;
+    border-radius: 9px;
+    margin-top: 0;
+    transition: max-height 0.28s var(--glide), opacity 0.22s ease, margin-top 0.28s var(--glide);
+  }
+  .p-drop.open .p-options { max-height: 180px; opacity: 1; margin-top: 4px; }
+  .p-opt {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%;
+    font-family: inherit;
     font-size: 13.5px;
     color: var(--ink);
+    background: none;
+    border: 0;
+    padding: 7.5px 11px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
   }
-  .p-input.focus { box-shadow: inset 0 0 0 1.5px var(--amber); }
-  .p-input.placeholder { color: var(--muted); }
-  .p-class { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
-  .p-class .left { display: flex; align-items: center; gap: 8px; }
-  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal-icon); flex: none; }
-  .p-preview {
+  .p-opt:hover { background: rgba(36, 31, 26, 0.06); }
+  .p-opt .check { margin-left: auto; font-size: 11px; color: #8b8578; opacity: 0; }
+  .p-opt.sel .check { opacity: 1; }
+  .p-hint {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px;
+    color: #8b8578;
+    margin: -8px 0 13px 2px;
+    min-height: 15px;
+  }
+  .p-hint svg { flex: none; }
+  .p-hint.bad { color: #b0876f; }
+  .p-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+  .p-gear { color: #b6ac9c; display: flex; }
+  .p-save {
+    font-family: inherit;
+    border: 0;
+    cursor: pointer;
+    background: linear-gradient(180deg, #2f9fb6, #1e93ab);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 6.5px 17px;
+    min-width: 74px;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+  }
+  .p-save:active { transform: scale(0.95); }
+  .p-save[disabled] { opacity: 0.45; cursor: default; }
+  .p-save.done { background: linear-gradient(180deg, #3fc463, #2aa84e); }
+
+  /* --- Destination windows --- */
+  .dest {
+    width: 302px;
+    background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 13px;
+    box-shadow: 0 18px 44px rgba(10, 50, 60, 0.35);
+    text-align: left;
+    overflow: hidden;
+  }
+  .titlebar {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    padding: 11px 13px 9px;
+    background: #f6f3ec;
+    border-bottom: 1px solid #e8e2d4;
+  }
+  .tl { width: 11px; height: 11px; border-radius: 50%; }
+  .tl.r { background: #ff5f57; }
+  .tl.y { background: #febc2e; }
+  .tl.g { background: #28c840; }
+  .titlebar .appname {
+    position: absolute;
+    left: 0; right: 0;
+    text-align: center;
     font-size: 11.5px;
-    color: var(--muted);
-    margin-top: 6px;
-  }
-  .p-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
-  .gear { color: var(--muted); display: flex; }
-  .p-save {
-    background: var(--teal);
-    color: #fff;
-    font-size: 13px;
     font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 7px;
+    color: #a49a8c;
+    pointer-events: none;
   }
 
-  /* ── Claims ──────────────────────── */
-  .claims {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    padding: 64px 0;
-    border-top: 1px solid var(--hair);
+  /* Reminders */
+  .r-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 12px 16px 4px;
   }
-  @media (max-width: 860px) {
-    .claims { grid-template-columns: 1fr; gap: 40px; }
-  }
-  .claim h3 {
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    margin: 14px 0 8px;
-  }
-  .claim p {
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: var(--muted);
-    margin: 0;
-    max-width: 40ch;
-  }
-  .claim p kbd {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
-    background: var(--panel);
-    border: 1px solid var(--hair);
-    border-bottom-width: 2px;
-    border-radius: 4px;
-    padding: 1px 5px;
-    color: var(--ink);
-  }
-  .claim .glyph { color: var(--teal); display: flex; }
-
-  /* ── Timeline ────────────────────── */
-  .night {
-    border-top: 1px solid var(--hair);
-    padding: 64px 0 76px;
-  }
-  .night .kicker {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    color: var(--teal);
-    margin: 0 0 14px;
-  }
-  .night h2 {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-    font-size: clamp(24px, 3.4vw, 32px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin: 0 0 12px;
-    text-wrap: balance;
-  }
-  .night > .shell > p {
-    color: var(--muted);
-    max-width: 56ch;
-    margin: 0 0 48px;
-    font-size: 15.5px;
-  }
-  .timeline {
+  .r-head b { font-size: 18px; font-weight: 700; color: #4a9ef5; letter-spacing: -0.01em; }
+  .r-head span { font-size: 16px; font-weight: 600; color: #c8c0b0; }
+  .r-list { padding: 2px 16px 10px; }
+  .r-row {
     display: flex;
     align-items: flex-start;
-    position: relative;
+    gap: 10px;
+    height: var(--h, 48px);
+    overflow: hidden;
+    opacity: 1;
+    transition: height 0.45s var(--spring), opacity 0.35s ease, transform 0.45s var(--spring);
   }
-  .timeline::before {
+  .r-row .ring {
+    position: relative;
+    width: 17px; height: 17px;
+    padding: 0;
+    background: transparent;
+    border: 1.6px solid #c9c2b2;
+    border-radius: 50%;
+    flex: none;
+    margin-top: 5px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .r-row .ring:hover { border-color: var(--rc, #4a9ef5); }
+  .r-row.done .ring { border-color: var(--rc, #4a9ef5); }
+  .r-row.done .ring::after {
     content: "";
     position: absolute;
-    top: 5px;
-    left: 6px;
-    right: 6px;
-    height: 1.5px;
-    background: var(--hair);
-  }
-  .tl-stop { flex: 1; position: relative; padding-right: 24px; }
-  .tl-stop::before {
-    content: "";
-    display: block;
-    width: 11px; height: 11px;
+    inset: 2.5px;
     border-radius: 50%;
-    background: var(--paper);
-    border: 2.5px solid var(--muted);
-    margin-bottom: 16px;
-    position: relative;
+    background: var(--rc, #4a9ef5);
   }
-  .tl-stop.hot::before { border-color: var(--amber); background: var(--amber); }
-  .tl-stop.done::before { border-color: var(--teal); background: var(--teal); }
-  .tl-when {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    margin: 0 0 6px;
+  .r-row.done .rt {
+    color: #a49a8c;
+    text-decoration: line-through;
   }
-  .tl-what { font-size: 14.5px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
-  .tl-note { font-size: 13px; color: var(--muted); margin: 0; max-width: 26ch; }
-  @media (max-width: 700px) {
-    .timeline { flex-direction: column; gap: 28px; }
-    .timeline::before { display: none; }
-    .tl-stop { padding-right: 0; }
+  .r-row.done .rn, .r-row.done .rs { color: #c8c0b0; }
+  .r-body {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 0 7px;
+    border-bottom: 1px solid #f0ebdf;
+  }
+  .r-row:last-child .r-body { border-bottom: 0; }
+  .r-body .rt {
+    font-size: 13.5px;
+    line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .r-body .rn {
+    font-size: 11.5px;
+    color: #a49a8c;
+    margin-top: 1px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .r-body .rs { font-size: 11.5px; color: #a49a8c; margin-top: 1px; }
+  .r-row.pending { height: 0; opacity: 0; transform: translateY(-6px); }
+
+  /* Calendar */
+  .c-head { padding: 11px 16px 8px; }
+  .c-head .wd {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    color: #ff453a;
+    text-transform: uppercase;
+  }
+  .c-head .cd { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; margin-top: 1px; }
+  .cal-grid { position: relative; height: 178px; margin: 2px 16px 14px; }
+  .cal-slot {
+    position: absolute; left: 0; right: 0;
+    display: flex; align-items: flex-start; gap: 8px;
+    color: #b9b2a2;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .cal-slot > i { font-style: normal; width: 36px; text-align: right; flex: none; }
+  .cal-slot::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee9dd;
+    margin-top: 6px;
+  }
+  .cal-event {
+    position: absolute;
+    left: 48px; right: 2px;
+    top: 50px;
+    height: 40px;
+    background: #ffe3e0;
+    border-left: 3px solid #ff453a;
+    border-radius: 6px;
+    padding: 5px 10px;
+    transform-origin: top center;
+    opacity: 1;
+    overflow: hidden;
+    transition: transform 0.45s var(--spring), opacity 0.3s ease;
+  }
+  .cal-event.pending { transform: scaleY(0.55) scale(0.94); opacity: 0; }
+  .cal-event b {
+    display: block; font-size: 12.5px; color: #8c1d16;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cal-event span { font-size: 11px; color: #b0554e; }
+
+  /* Flying note */
+  .chit {
+    position: absolute;
+    display: flex; align-items: center; gap: 7px;
+    background: #ffffff;
+    border-radius: 9px;
+    box-shadow: 0 10px 26px rgba(10, 50, 60, 0.4);
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 6;
   }
 
-  /* ── Footer ──────────────────────── */
-  footer {
-    border-top: 1px solid var(--hair);
-    padding: 34px 0 48px;
+  .stage-caption {
+    text-align: center;
+    font-size: 14.5px;
+    color: var(--ink-3);
+    padding: 18px 0 0;
+  }
+  .stage-caption .sep { margin: 0 6px; color: var(--line); }
+  kbd {
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-2);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    padding: 1.5px 6.5px;
+  }
+
+  /* ---------- Features ---------- */
+  .features-head { text-align: center; padding: 88px 0 30px; }
+  .features-head h2 {
+    font-size: clamp(28px, 3.6vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .features-head p { font-size: 15.5px; color: var(--ink-2); margin: 0; }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 0 10px;
+  }
+  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 580px) { .features { grid-template-columns: 1fr; } }
+
+  .fcard {
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s var(--glide), box-shadow 0.2s ease;
+  }
+  .fcard:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(36, 31, 26, 0.07); }
+  .fart {
+    height: 88px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    font-size: 13.5px;
-    color: var(--muted);
+    justify-content: center;
+    margin-bottom: 14px;
   }
-  footer .fm { display: flex; align-items: center; gap: 9px; font-weight: 600; color: var(--ink); }
-</style>
-</head>
-<body>
+  .fcard h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 5px; }
+  .fcard p { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
 
-<div class="shell">
+  /* Card artifacts */
+  .kbd-lg {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-2);
+    background: #faf7f0;
+    border: 1px solid var(--line);
+    border-bottom-width: 2.5px;
+    border-radius: 8px;
+    padding: 7px 13px;
+  }
+  .kbd-row { display: flex; gap: 7px; }
+
+  .parse { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .chip-in {
+    font-size: 12.5px;
+    background: #f0ece3;
+    border-radius: 8px;
+    padding: 6px 11px;
+    color: var(--ink);
+  }
+  .parse svg { color: var(--ink-3); flex: none; }
+  .chip-out {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #14606f;
+    background: var(--teal-soft);
+    border-radius: 8px;
+    padding: 6px 11px;
+  }
+
+  .mini-list { display: flex; flex-direction: column; gap: 5px; width: 160px; }
+  .mini-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px;
+    background: #f7f3ea;
+    border-radius: 8px;
+    padding: 5.5px 11px;
+  }
+
+  .noti {
+    display: flex; align-items: center; gap: 10px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    box-shadow: 0 6px 18px rgba(36, 31, 26, 0.09);
+    padding: 10px 14px 10px 10px;
+    max-width: 100%;
+  }
+  .noti-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(36, 31, 26, 0.12);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3px;
+    flex: none;
+  }
+  .noti-icon .bar { width: 14px; height: 3px; border-radius: 2px; }
+  .noti b { display: block; font-size: 12px; }
+  .noti span { font-size: 11.5px; color: var(--ink-3); }
+
+  .apps-duo { display: flex; gap: 26px; }
+  .app-big {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  .app-big .tile {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 6px rgba(36, 31, 26, 0.12);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3.5px;
+    overflow: hidden;
+  }
+  .app-big .bar { width: 18px; height: 4px; border-radius: 2.5px; }
+  .app-big .tile.cal { gap: 0; }
+  .app-big .tile.cal .top { width: 100%; height: 10px; background: #ff453a; }
+  .app-big .tile.cal .num { font-size: 14px; font-weight: 700; line-height: 1.5; }
+
+  .phone {
+    width: 48px; height: 82px;
+    border: 2.5px solid #d8cfbd;
+    border-radius: 11px;
+    background: #fffdf8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .phone .ok {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #34c759;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ---------- Closing / Footer ---------- */
+  .closing { text-align: center; padding: 64px 0 34px; }
+  .closing p { font-size: 16px; color: var(--ink-2); margin: 0 0 20px; }
+
+  footer { position: relative; overflow: hidden; padding-top: 34px; }
+  .foot-meta {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-3);
+    padding-bottom: 8px;
+  }
+  .wordmark {
+    font-size: clamp(130px, 24vw, 320px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.72;
+    text-align: center;
+    color: var(--paper-2);
+    text-shadow: 0 -1px 0 rgba(36, 31, 26, 0.04);
+    transform: translateY(18%);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene, .fl, .r-row, .cal-event, .seg-thumb, .again, .btn, .nav-cta, .panel { transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<div class="wrap">
   <nav>
-    <a class="wordmark" href="#">
-      <svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
-        <rect width="120" height="120" rx="27" fill="#4aa8c0"/>
-        <g transform="rotate(-8 62 42)">
-          <rect x="44" y="26" width="38" height="26" rx="6" fill="#fff"/>
-          <line x1="52" y1="35" x2="74" y2="35" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
-          <line x1="52" y1="43" x2="66" y2="43" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
-        </g>
-        <rect x="24" y="62" width="72" height="34" rx="12" fill="#fff"/>
-        <rect x="44" y="58" width="32" height="9" rx="4.5" fill="#2f7c92"/>
-      </svg>
-      Docket
-    </a>
-    <div class="navlinks">
-      <a href="#night">Why it works</a>
-      <a class="btn" style="padding:9px 18px; font-size:14px" href="#download">Download</a>
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"></path>
+          <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"></path>
+        </svg>
+      </div>
+      <span class="brand-name">Docket</span>
     </div>
+    <a class="nav-cta" href="#download">Download for Mac</a>
   </nav>
 
-  <header class="hero">
-    <div>
-      <p class="eyebrow">A MENU BAR APP FOR STUDENTS ON MACOS</p>
-      <h1>Ten seconds, and it&rsquo;s handled.</h1>
-      <p class="sub">
-        Docket turns &ldquo;chem lab, thursday&rdquo; into a proper reminder — filed in your
-        class list, on your calendar, with an alert <strong>the evening before</strong>.
-        No app to open. No account. Nothing new to check.
-      </p>
-      <div class="cta-row">
-        <a class="btn" id="download" href="#">Download for macOS</a>
-        <a class="cta-alt" href="#night">Why the night before matters</a>
-      </div>
-      <p class="fine">$5, once &middot; 14-day free trial &middot; macOS 14+ &middot; Summon it anywhere with <kbd>&#8679;</kbd> <kbd>&#8984;</kbd> <kbd>Space</kbd></p>
-    </div>
-
-    <div class="stage" aria-label="The Docket capture panel">
-      <div class="menubar">
-        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M3 11.5 v3 a2.5 2.5 0 0 0 2.5 2.5 h9 a2.5 2.5 0 0 0 2.5 -2.5 v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          <rect x="7" y="3" width="8" height="6" rx="1.5" fill="currentColor" transform="rotate(-8 11 6)"/>
-        </svg>
-        <span>Wed 9:41 PM</span>
-      </div>
-      <div class="tail"></div>
-      <div class="panel">
-        <div>
-          <div class="p-label">ASSIGNMENT <span class="chev">&#9662;</span></div>
-          <div class="p-input">chem lab writeup</div>
-        </div>
-        <div>
-          <div class="p-label">CLASS</div>
-          <div class="p-input p-class">
-            <span class="left"><span class="dot"></span>Chemistry</span>
-            <span style="color:var(--muted); font-size:10px">&#9662;</span>
-          </div>
-        </div>
-        <div>
-          <div class="p-label">DUE</div>
-          <div class="p-input focus">thu 8am</div>
-          <div class="p-preview">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="2" y="3" width="12" height="11" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <line x1="2" y1="6.5" x2="14" y2="6.5" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-            Thu, Jul 30 at 8:00 AM
-          </div>
-        </div>
-        <div>
-          <div class="p-label">NOTES</div>
-          <div class="p-input placeholder">pg 42&ndash;50</div>
-        </div>
-        <div class="p-footer">
-          <span class="gear">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M8 1.8 v2 M8 12.2 v2 M1.8 8 h2 M12.2 8 h2 M3.6 3.6 l1.4 1.4 M11 11 l1.4 1.4 M12.4 3.6 L11 5 M5 11 l-1.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span class="p-save">Save</span>
-        </div>
-      </div>
-    </div>
-  </header>
-</div>
-
-<section>
-  <div class="shell claims">
-    <div class="claim">
-      <span class="glyph">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/>
-          <path d="M8 12 h5 M16.5 12 h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <h3>Always one keystroke away</h3>
-      <p>
-        Hit <kbd>&#8679;&#8984;Space</kbd> in any app and the panel appears mid-screen.
-        Type, hit Enter, it&rsquo;s gone — and so is the panel. The whole exchange takes
-        less time than unlocking your phone.
-      </p>
-    </div>
-    <div class="claim">
-      <span class="glyph">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 3 v10 m0 0 l-3.5 -3.5 M12 13 l3.5 -3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4 15 v3 a2.5 2.5 0 0 0 2.5 2.5 h11 a2.5 2.5 0 0 0 2.5 -2.5 v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <h3>Your apps, not ours</h3>
-      <p>
-        Everything lands in Apple Reminders and Calendar — synced by iCloud to your phone
-        before you&rsquo;ve stood up. Docket keeps nothing: no database, no account, no
-        server. Delete it tomorrow and you lose nothing.
-      </p>
-    </div>
-    <div class="claim">
-      <span class="glyph">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M19 14.5 A8 8 0 1 1 9.5 5 a6.5 6.5 0 0 0 9.5 9.5 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-        </svg>
-      </span>
-      <h3>Alerts that respect the night</h3>
-      <p>
-        A ping the morning something is due is an insult. Docket alerts you at 8&nbsp;PM
-        the evening before — and for tests, days earlier — while there&rsquo;s still time
-        to do something about it.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="night" id="night">
-  <div class="shell">
-    <p class="kicker">THE NIGHT BEFORE</p>
-    <h2>Built around the only alert that matters.</h2>
-    <p>
-      Every reminder app can store a due date. Docket is opinionated about when you should
-      hear about it — and quiet the rest of the time.
+  <section class="hero">
+    <h1>Assignments, captured<br>in <span class="hl">seconds</span>.</h1>
+    <p class="sub">
+      Docket is a small menu bar tool for students. One shortcut, type what's due.
+      Assignments file themselves into Apple Reminders, tests land on your Calendar,
+      and everything syncs to your iPhone with a nudge the evening before.
     </p>
-    <div class="timeline">
-      <div class="tl-stop done">
-        <p class="tl-when">TUE, BETWEEN CLASSES</p>
-        <p class="tl-what">You type it</p>
-        <p class="tl-note">&ldquo;chem lab writeup &middot; thu 8am.&rdquo; Ten seconds, back to your day.</p>
-      </div>
-      <div class="tl-stop hot">
-        <p class="tl-when">WED, 8:00 PM</p>
-        <p class="tl-what">Docket taps you</p>
-        <p class="tl-note">The one moment you can still act on it. Tests start alerting days out.</p>
-      </div>
-      <div class="tl-stop">
-        <p class="tl-when">THU, 8:00 AM</p>
-        <p class="tl-what">Due &mdash; and done</p>
-        <p class="tl-note">The deadline arrives as a formality, not a surprise.</p>
-      </div>
+    <div class="ctas" id="download">
+      <a class="btn btn-dark" href="#download">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"></path>
+          <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"></path>
+        </svg>
+        Download for Mac
+      </a>
+      <span class="req">Free · macOS 14+</span>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="shell">
-  <footer>
-    <span class="fm">
-      <svg width="20" height="20" viewBox="0 0 120 120" aria-hidden="true">
-        <rect width="120" height="120" rx="27" fill="#4aa8c0"/>
-        <g transform="rotate(-8 62 42)">
-          <rect x="44" y="26" width="38" height="26" rx="6" fill="#fff"/>
-          <line x1="52" y1="35" x2="74" y2="35" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
-          <line x1="52" y1="43" x2="66" y2="43" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
-        </g>
-        <rect x="24" y="62" width="72" height="34" rx="12" fill="#fff"/>
-        <rect x="44" y="58" width="32" height="9" rx="4.5" fill="#2f7c92"/>
+  <section class="stage-outer">
+    <div class="stage" id="stage">
+      <div class="scenes">
+
+        <div class="scene">
+          <div class="fl panel-wrap">
+            <div class="panel">
+              <div class="p-type-row">
+                <button type="button" class="p-type" id="typeBtn" aria-expanded="false">
+                  <span id="typeName">ASSIGNMENT</span>
+                  <span class="chev">▾</span>
+                </button>
+                <div class="p-type-opts" id="typeOpts"><button type="button" class="p-type-opt">QUIZ</button><button type="button" class="p-type-opt">TEST</button><button type="button" class="p-type-opt">MEETING</button></div>
+              </div>
+              <input class="p-input" data-title="" value="Read chapters 4–6" placeholder="What's due?" aria-label="Title">
+              <p class="p-label" data-picker-label="">CLASS</p>
+              <div class="p-drop" data-drop="">
+                <button type="button" class="p-dropbtn" data-dropbtn="" aria-expanded="false" aria-label="Destination list">
+                  <span class="dot" data-sel-dot="" style="background:#4a9ef5"></span>
+                  <span data-sel-name="">History 101</span>
+                  <span class="spread">▾</span>
+                </button>
+                <div class="p-options" data-options=""><button type="button" class="p-opt sel"><span class="dot" style="background: rgb(74, 158, 245);"></span><span>History 101</span><span class="check">✓</span></button><button type="button" class="p-opt"><span class="dot" style="background: rgb(255, 159, 10);"></span><span>Math 3B</span><span class="check">✓</span></button><button type="button" class="p-opt"><span class="dot" style="background: rgb(52, 199, 89);"></span><span>Bio 110</span><span class="check">✓</span></button><button type="button" class="p-opt"><span class="dot" style="background: rgb(94, 92, 230);"></span><span>Spanish II</span><span class="check">✓</span></button></div>
+              </div>
+              <p class="p-label" data-due-label="">DUE</p>
+              <input class="p-input" data-due="" value="thu 8pm" placeholder="thu 8pm, tomorrow 9am…" aria-label="Due date">
+              <p class="p-hint" data-hint=""><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2.5"></rect><line x1="3" y1="8.2" x2="17" y2="8.2"></line></svg> Thursday · 8:00&nbsp;PM</p>
+              <p class="p-label">NOTES</p>
+              <input class="p-input" data-notes="" placeholder="Optional details" aria-label="Notes">
+              <div class="p-foot">
+                <span class="p-gear" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                    <circle cx="10" cy="10" r="2.6"></circle>
+                    <path d="M10 3.2 v2 M10 14.8 v2 M3.2 10 h2 M14.8 10 h2 M5.2 5.2 l1.4 1.4 M13.4 13.4 l1.4 1.4 M14.8 5.2 l-1.4 1.4 M6.6 13.4 l-1.4 1.4"></path>
+                  </svg>
+                </span>
+                <button class="p-save" data-save="">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="fl dest-wrap">
+            <div class="dest" data-dest-kind="reminders">
+              <div class="titlebar">
+                <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+                <span class="appname">Reminders</span>
+              </div>
+              <div class="r-head">
+                <b data-list-name="">History 101</b>
+                <span data-count="">2</span>
+              </div>
+              <div class="r-list">
+                <div class="r-row pending" data-item="">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt" data-out-title="">Read chapters 4–6</div>
+                    <div class="rn" data-out-notes="" hidden=""></div>
+                    <div class="rs" data-out-sub="">Thursday, 8:00 PM</div>
+                  </div>
+                </div>
+                <div class="r-row">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt">Essay outline</div>
+                    <div class="rs">Tomorrow, 8:00 PM</div>
+                  </div>
+                </div>
+                <div class="r-row">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt">Reading response #4</div>
+                    <div class="rs">Monday, 8:00 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dest" data-dest-kind="calendar" hidden="">
+              <div class="titlebar">
+                <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+                <span class="appname">Calendar</span>
+              </div>
+              <div class="c-head">
+                <div class="wd" data-cal-wd="">Friday</div>
+                <div class="cd" data-cal-date="">July 31</div>
+              </div>
+              <div class="cal-grid">
+                <div class="cal-slot" style="top:0"><i data-slot="">8 AM</i></div>
+                <div class="cal-slot" style="top:50px"><i data-slot="">9 AM</i></div>
+                <div class="cal-slot" style="top:100px"><i data-slot="">10 AM</i></div>
+                <div class="cal-slot" style="top:150px"><i data-slot="">11 AM</i></div>
+                <div class="cal-event pending" data-item="">
+                  <b data-out-title="">Unit 3 derivatives test</b>
+                  <span data-out-sub="">9:00 – 10:00 AM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="again" id="again">↺ &nbsp;Capture another</button>
+    </div>
+
+    <p class="stage-caption">
+      Try it. Click the type to switch, then hit Save
+      <span class="sep">·</span>
+      In the real app it opens anywhere with <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Space</kbd>
+    </p>
+  </section>
+
+  <div class="features-head">
+    <h2>Everything in its place.</h2>
+    <p>Capture once. Docket handles the filing.</p>
+  </div>
+
+  <section class="features">
+    <div class="fcard">
+      <div class="fart">
+        <div class="kbd-row" aria-hidden="true">
+          <span class="kbd-lg">⇧</span><span class="kbd-lg">⌘</span><span class="kbd-lg">Space</span>
+        </div>
+      </div>
+      <h3>Summon it anywhere</h3>
+      <p>One shortcut, over any app.</p>
+    </div>
+
+    <div class="fcard">
+      <div class="fart">
+        <div class="parse" aria-hidden="true">
+          <span class="chip-in">thu 8pm</span>
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10 h11 M11 5.5 L15.5 10 L11 14.5"></path>
+          </svg>
+          <span class="chip-out">Thursday, 8:00 PM</span>
+        </div>
+      </div>
+      <h3>Dates, the way you say them</h3>
+      <p>No date pickers. Just type it.</p>
+    </div>
+
+    <div class="fcard">
+      <div class="fart">
+        <div class="mini-list" aria-hidden="true">
+          <div class="mini-row"><span class="dot" style="background:#4a9ef5"></span>History 101</div>
+          <div class="mini-row"><span class="dot" style="background:#ff9f0a"></span>Math 3B</div>
+          <div class="mini-row"><span class="dot" style="background:#34c759"></span>Bio 110</div>
+        </div>
+      </div>
+      <h3>A list for every class</h3>
+      <p>Classes are Reminders lists.</p>
+    </div>
+
+    <div class="fcard">
+      <div class="fart">
+        <div class="noti" aria-hidden="true">
+          <div class="noti-icon">
+            <span class="bar" style="background:#ff9f0a"></span>
+            <span class="bar" style="background:#4a9ef5"></span>
+            <span class="bar" style="background:#34c759"></span>
+          </div>
+          <div>
+            <b>Reminders</b>
+            <span>Essay outline, due tomorrow</span>
+          </div>
+        </div>
+      </div>
+      <h3>Nudged the night before</h3>
+      <p>Docket sets the alert; Reminders delivers it.</p>
+    </div>
+
+    <div class="fcard">
+      <div class="fart">
+        <div class="apps-duo" aria-hidden="true">
+          <div class="app-big">
+            <span class="tile">
+              <span class="bar" style="background:#ff9f0a"></span>
+              <span class="bar" style="background:#4a9ef5"></span>
+              <span class="bar" style="background:#34c759"></span>
+            </span>
+            Reminders
+          </div>
+          <div class="app-big">
+            <span class="tile cal">
+              <span class="top"></span>
+              <span class="num">31</span>
+            </span>
+            Calendar
+          </div>
+        </div>
+      </div>
+      <h3>The right app for the job</h3>
+      <p>Assignments → Reminders. Tests &amp; meetings → Calendar.</p>
+    </div>
+
+    <div class="fcard">
+      <div class="fart">
+        <div class="phone" aria-hidden="true">
+          <div class="ok">
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 10.5 L8.5 15 L16 5.5"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <h3>Shows up on your iPhone</h3>
+      <p>Your reminders sync over iCloud. No phone app needed.</p>
+    </div>
+  </section>
+
+  <section class="closing">
+    <p>Built on Reminders and Calendar. Nothing new to trust, nothing else to check.</p>
+    <a class="btn btn-dark" href="#download">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"></path>
+        <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"></path>
       </svg>
-      Docket
-    </span>
-    <span>$5 once, free for 14 days &middot; Your work lives in Apple&rsquo;s apps, nowhere else.</span>
-    <span>Made by Jordan Paya</span>
-  </footer>
+      Download for Mac
+    </a>
+  </section>
 </div>
-</body>
-</html>
+
+<footer>
+  <p class="foot-meta">Docket · made for students · macOS 14+</p>
+  <div class="wordmark" aria-hidden="true">Docket</div>
+</footer>
+
+<script>
+(function () {
+  const stage = document.getElementById("stage");
+  const again = document.getElementById("again");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const CLASSES = [
+    { n: "History 101", c: "#4a9ef5" },
+    { n: "Math 3B", c: "#ff9f0a" },
+    { n: "Bio 110", c: "#34c759" },
+    { n: "Spanish II", c: "#5e5ce6" },
+  ];
+  const CALENDARS = [
+    { n: "Tests", c: "#ff453a" },
+    { n: "Quizzes", c: "#ff9f0a" },
+    { n: "Meetings", c: "#4a9ef5" },
+  ];
+  const TYPES = {
+    assignment: { label: "ASSIGNMENT", picker: "CLASS", due: "DUE", ph: "What's due?", title: "Read chapters 4–6", when: "thu 8pm", dest: "reminders" },
+    quiz: { label: "QUIZ", picker: "CALENDAR", due: "WHEN", ph: "What's the quiz on?", title: "Chapter 5 vocab quiz", when: "wed 10am", dest: "calendar", cal: "Quizzes" },
+    test: { label: "TEST", picker: "CALENDAR", due: "WHEN", ph: "What's the test?", title: "Unit 3 derivatives test", when: "fri 9am", dest: "calendar", cal: "Tests" },
+    meeting: { label: "MEETING", picker: "CALENDAR", due: "WHEN", ph: "What's happening?", title: "Robotics club meeting", when: "tue 4pm", dest: "calendar", cal: "Meetings" },
+  };
+  const ORDER = ["assignment", "quiz", "test", "meeting"];
+
+  const scene = document.querySelector(".scene");
+  const q = (s) => scene.querySelector(s);
+  const panel = q(".panel");
+  const typeBtn = document.getElementById("typeBtn");
+  const typeName = document.getElementById("typeName");
+  const typeOpts = document.getElementById("typeOpts");
+  const title = q("[data-title]");
+  const due = q("[data-due]");
+  const notes = q("[data-notes]");
+  const hint = q("[data-hint]");
+  const saveBtn = q("[data-save]");
+  const pickerLabel = q("[data-picker-label]");
+  const dueLabel = q("[data-due-label]");
+  const drop = q("[data-drop]");
+  const dropBtn = q("[data-dropbtn]");
+  const selDot = q("[data-sel-dot]");
+  const selName = q("[data-sel-name]");
+  const options = q("[data-options]");
+  const destR = q('[data-dest-kind="reminders"]');
+  const destC = q('[data-dest-kind="calendar"]');
+
+  let type = "assignment";
+  let classSel = CLASSES[0];
+  let calSel = CALENDARS[0];
+  let saved = false;
+  let animating = false;
+
+  const currentSel = () => (type === "assignment" ? classSel : calSel);
+  const currentDest = () => (TYPES[type].dest === "reminders" ? destR : destC);
+  const currentItem = () => currentDest().querySelector("[data-item]");
+
+  /* --- Tiny natural-language date parser, mirroring the app's habit --- */
+  const DAYS = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+  function parseDue(text) {
+    const t = text.trim().toLowerCase();
+    if (!t) return null;
+    let day = null;
+    for (const k in DAYS) {
+      if (new RegExp("\\b" + k + "[a-z]*\\b").test(t)) { day = DAYS[k]; break; }
+    }
+    let rel = null;
+    if (/\btomorrow\b/.test(t)) rel = 1;
+    else if (/\btoday\b/.test(t) || /\btonight\b/.test(t)) rel = 0;
+    const tm = t.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/);
+    if (day === null && rel === null && !tm) return null;
+
+    const d = new Date();
+    d.setSeconds(0, 0);
+    let hour = 20, minute = 0; // day-only defaults to 8 PM, like homework
+    if (tm) {
+      hour = parseInt(tm[1], 10);
+      minute = tm[2] ? parseInt(tm[2], 10) : 0;
+      if (hour > 23 || minute > 59) return null;
+      if (tm[3] === "pm" && hour < 12) hour += 12;
+      if (tm[3] === "am" && hour === 12) hour = 0;
+      if (!tm[3] && hour >= 1 && hour <= 6) hour += 12; // bare "3" reads as 3 PM
+    }
+    if (rel !== null) {
+      d.setDate(d.getDate() + rel);
+    } else if (day !== null) {
+      let ahead = (day - d.getDay() + 7) % 7;
+      if (ahead === 0) ahead = 7;
+      d.setDate(d.getDate() + ahead);
+    }
+    d.setHours(hour, minute);
+    return d;
+  }
+
+  const fmtTime = (d) =>
+    new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(d);
+  const fmtDay = (d) =>
+    new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(d);
+  const fmtMD = (d) =>
+    new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(d);
+  const fmtHourLabel = (h) => {
+    const hh = ((h % 24) + 24) % 24;
+    const base = hh % 12 === 0 ? 12 : hh % 12;
+    return base + " " + (hh < 12 ? "AM" : "PM");
+  };
+
+  const okIcon = '<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2.5"/><line x1="3" y1="8.2" x2="17" y2="8.2"/></svg>';
+  const badIcon = '<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6.5 v4 M10 13.6 v.1"/></svg>';
+
+  function refresh() {
+    const when = parseDue(due.value);
+    if (!due.value.trim()) {
+      hint.innerHTML = "";
+      hint.classList.remove("bad");
+    } else if (when) {
+      hint.innerHTML = okIcon + " " + fmtDay(when) + " · " + fmtTime(when).replace(" ", " ");
+      hint.classList.remove("bad");
+    } else {
+      hint.innerHTML = badIcon + " Couldn't read that date";
+      hint.classList.add("bad");
+    }
+    if (!saved) saveBtn.disabled = !title.value.trim() || !when;
+    return when;
+  }
+
+  /* --- Class / calendar dropdown --- */
+  function closeDrop() {
+    drop.classList.remove("open");
+    dropBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function applySel() {
+    const s = currentSel();
+    selDot.style.background = s.c;
+    selName.textContent = s.n;
+  }
+
+  function buildOptions() {
+    options.innerHTML = "";
+    const list = type === "assignment" ? CLASSES : CALENDARS;
+    list.forEach((opt) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "p-opt" + (currentSel() === opt ? " sel" : "");
+      const dot = document.createElement("span");
+      dot.className = "dot";
+      dot.style.background = opt.c;
+      const name = document.createElement("span");
+      name.textContent = opt.n;
+      const check = document.createElement("span");
+      check.className = "check";
+      check.textContent = "✓";
+      b.append(dot, name, check);
+      b.addEventListener("click", () => {
+        if (type === "assignment") classSel = opt; else calSel = opt;
+        applySel();
+        options.querySelectorAll(".p-opt").forEach((o) => o.classList.remove("sel"));
+        b.classList.add("sel");
+        closeDrop();
+      });
+      options.appendChild(b);
+    });
+  }
+
+  dropBtn.addEventListener("click", () => {
+    if (dropBtn.disabled) return;
+    const open = drop.classList.toggle("open");
+    dropBtn.setAttribute("aria-expanded", String(open));
+  });
+
+  /* --- Type picker: the caption row, like the real app --- */
+  function setTypeOpen(open) {
+    typeBtn.classList.toggle("open", open);
+    typeBtn.setAttribute("aria-expanded", String(open));
+    typeOpts.classList.toggle("open", open);
+  }
+
+  function buildTypeOpts() {
+    typeOpts.innerHTML = "";
+    ORDER.filter((t) => t !== type).forEach((t) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "p-type-opt";
+      b.textContent = TYPES[t].label;
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setType(t);
+      });
+      typeOpts.appendChild(b);
+    });
+  }
+
+  typeBtn.addEventListener("click", () => {
+    if (typeBtn.disabled) return;
+    setTypeOpen(!typeOpts.classList.contains("open"));
+  });
+
+  function setType(t) {
+    const prev = TYPES[type];
+    // Swap the sample text only if the user hasn't edited it.
+    if (title.value.trim() === prev.title) title.value = TYPES[t].title;
+    if (due.value.trim() === prev.when) due.value = TYPES[t].when;
+    type = t;
+    const cfg = TYPES[t];
+    typeName.textContent = cfg.label;
+    title.placeholder = cfg.ph;
+    pickerLabel.textContent = cfg.picker;
+    dueLabel.textContent = cfg.due;
+    // The calendar named after the type wins, like in the app.
+    if (t !== "assignment") {
+      calSel = CALENDARS.find((c) => c.n === cfg.cal) || CALENDARS[0];
+    }
+    applySel();
+    buildOptions();
+    buildTypeOpts();
+    setTypeOpen(false);
+    closeDrop();
+    refresh();
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-drop]")) closeDrop();
+    if (!e.target.closest(".p-type-row")) setTypeOpen(false);
+  });
+
+  /* --- Save: slide over, then the note flies in --- */
+  function fillDestination(when) {
+    const s = currentSel();
+    const isReminder = TYPES[type].dest === "reminders";
+    destR.hidden = !isReminder;
+    destC.hidden = isReminder;
+    const dest = currentDest();
+    dest.querySelector("[data-out-title]").textContent = title.value.trim();
+    if (isReminder) {
+      const listName = destR.querySelector("[data-list-name]");
+      listName.textContent = s.n;
+      listName.style.color = s.c;
+      destR.style.setProperty("--rc", s.c);
+      const note = notes.value.trim();
+      const outNotes = destR.querySelector("[data-out-notes]");
+      outNotes.hidden = !note;
+      outNotes.textContent = note;
+      destR.querySelector("[data-out-sub]").textContent = fmtDay(when) + ", " + fmtTime(when);
+      currentItem().style.setProperty("--h", note ? "63px" : "48px");
+    } else {
+      const end = new Date(when.getTime() + 60 * 60 * 1000);
+      destC.querySelector("[data-out-sub]").textContent = fmtTime(when) + " – " + fmtTime(end);
+      destC.querySelector("[data-cal-wd]").textContent = fmtDay(when);
+      destC.querySelector("[data-cal-date]").textContent = fmtMD(when);
+      destC.querySelectorAll("[data-slot]").forEach((el, i) => {
+        el.textContent = fmtHourLabel(when.getHours() - 1 + i);
+      });
+      const item = currentItem();
+      item.style.borderLeftColor = s.c;
+      item.style.background = `color-mix(in srgb, ${s.c} 15%, white)`;
+      item.querySelector("[data-out-title]").style.color = `color-mix(in srgb, ${s.c} 62%, black)`;
+      item.querySelector("[data-out-sub]").style.color = `color-mix(in srgb, ${s.c} 48%, black)`;
+    }
+  }
+
+  function setInputs(enabled) {
+    [title, due, notes, dropBtn, typeBtn].forEach((i) => { i.disabled = !enabled; });
+    if (!enabled) { closeDrop(); setTypeOpen(false); }
+  }
+
+  function flyNote(done) {
+    const chit = document.createElement("div");
+    chit.className = "chit";
+    const label = document.createElement("span");
+    label.textContent = title.value.trim();
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.style.background = currentSel().c;
+    chit.append(dot, label);
+    stage.appendChild(chit);
+
+    const sRect = stage.getBoundingClientRect();
+    const from = title.getBoundingClientRect();
+    const to = currentItem().getBoundingClientRect();
+    chit.style.left = (from.left - sRect.left) + "px";
+    chit.style.top = (from.top - sRect.top) + "px";
+    const dx = to.left - from.left;
+    const dy = to.top - from.top;
+
+    const flight = chit.animate([
+      { transform: "translate(0, 0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 22}px) scale(0.99)`, opacity: 1, offset: 0.55 },
+      { transform: `translate(${dx}px, ${dy}px) scale(0.9)`, opacity: 0.2 },
+    ], { duration: 520, easing: "cubic-bezier(0.32, 0.72, 0, 1)", fill: "forwards" });
+    flight.onfinish = () => { chit.remove(); done(); };
+  }
+
+  function land() {
+    currentItem().classList.remove("pending");
+    const count = destR.querySelector("[data-count]");
+    if (TYPES[type].dest === "reminders") count.textContent = "3";
+    saveBtn.textContent = "Saved ✓";
+    saveBtn.classList.add("done");
+    again.classList.add("show");
+    animating = false;
+  }
+
+  function doSave() {
+    if (animating || saved) return;
+    const when = refresh();
+    if (!when || !title.value.trim()) return;
+    animating = true;
+    saved = true;
+    fillDestination(when);
+    currentItem().classList.add("pending");
+    setInputs(false);
+
+    panel.classList.add("pressed");
+    setTimeout(() => panel.classList.remove("pressed"), 180);
+
+    if (reduced) {
+      scene.classList.add("saved");
+      land();
+      return;
+    }
+    // 1 · popup slides left, the app slides in beside it
+    setTimeout(() => scene.classList.add("saved"), 170);
+    // 2 · the note lifts out and flies into the app
+    setTimeout(() => flyNote(land), 640);
+  }
+
+  again.addEventListener("click", () => {
+    if (animating || !saved) return;
+    saved = false;
+    again.classList.remove("show");
+    scene.classList.remove("saved");
+    currentItem().classList.add("pending");
+    destR.querySelector("[data-count]").textContent = "2";
+    saveBtn.textContent = "Save";
+    saveBtn.classList.remove("done");
+    setInputs(true);
+    refresh();
+    setTimeout(() => title.focus({ preventScroll: true }), reduced ? 0 : 380);
+  });
+
+  [title, due, notes].forEach((input) => {
+    input.addEventListener("input", refresh);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") doSave();
+    });
+  });
+  saveBtn.addEventListener("click", doSave);
+
+  destR.querySelector("[data-item]").classList.add("pending");
+  destC.querySelector("[data-item]").classList.add("pending");
+  // Reminders circles complete on click, like the real app.
+  destR.querySelectorAll(".r-row").forEach((row) => {
+    row.querySelector(".ring").addEventListener("click", () => {
+      row.classList.toggle("done");
+    });
+  });
+  buildOptions();
+  buildTypeOpts();
+  applySel();
+  refresh();
+})();
+</script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"></grammarly-desktop-integration></html>
