@@ -680,7 +680,7 @@
     padding: 6px 11px;
   }
 
-  .mini-list { display: flex; flex-direction: column; gap: 5px; width: 160px; }
+  .mini-list { display: flex; flex-direction: column; gap: 5px; width: 170px; }
   .mini-row {
     display: flex; align-items: center; gap: 8px;
     font-size: 12.5px;
@@ -688,6 +688,22 @@
     border-radius: 8px;
     padding: 5.5px 11px;
   }
+  .mini-ring {
+    position: relative;
+    width: 13px; height: 13px;
+    border: 1.5px solid #c8bfae;
+    border-radius: 50%;
+    flex: none;
+  }
+  .mini-row.done .mini-ring { border-color: #4a9ef5; }
+  .mini-row.done .mini-ring::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: #4a9ef5;
+  }
+  .mini-row.done .txt { text-decoration: line-through; color: #a49a8c; }
 
   .noti {
     display: flex; align-items: center; gap: 10px;
@@ -969,13 +985,13 @@
     <div class="fcard">
       <div class="fart">
         <div class="mini-list" aria-hidden="true">
-          <div class="mini-row"><span class="dot" style="background:#4a9ef5"></span>History 101</div>
-          <div class="mini-row"><span class="dot" style="background:#ff9f0a"></span>Math 3B</div>
-          <div class="mini-row"><span class="dot" style="background:#34c759"></span>Bio 110</div>
+          <div class="mini-row done"><span class="mini-ring"></span><span class="txt">Essay outline</span></div>
+          <div class="mini-row"><span class="mini-ring"></span>Read chapters 4–6</div>
+          <div class="mini-row"><span class="mini-ring"></span>Problem set 12</div>
         </div>
       </div>
-      <h3>A list for every class</h3>
-      <p>Classes are Reminders lists.</p>
+      <h3>Swipe to see what's due</h3>
+      <p>Everything due, grouped by class. Check it off right there.</p>
     </div>
 
     <div class="fcard">
