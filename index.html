@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docket — Ten seconds, and it's handled</title>
+<style>
+  :root {
+    --paper: #faf9f6;
+    --panel: #ffffff;
+    --field: #f0efea;
+    --ink: #16181d;
+    --muted: #6a7076;
+    --hair: #e7e5df;
+    --teal: #2f8ba1;
+    --teal-deep: #257287;
+    --teal-icon: #4aa8c0;
+    --amber: #d9952b;
+    --shadow: 0 24px 60px -24px rgba(22, 24, 29, 0.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0f1114;
+      --panel: #191c21;
+      --field: #23272e;
+      --ink: #eceded;
+      --muted: #9aa1a8;
+      --hair: #23262b;
+      --teal: #56b4cc;
+      --teal-deep: #3d97ae;
+      --teal-icon: #4aa8c0;
+      --amber: #e8a13c;
+      --shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1114;
+    --panel: #191c21;
+    --field: #23272e;
+    --ink: #eceded;
+    --muted: #9aa1a8;
+    --hair: #23262b;
+    --teal: #56b4cc;
+    --teal-deep: #3d97ae;
+    --teal-icon: #4aa8c0;
+    --amber: #e8a13c;
+    --shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6);
+  }
+  :root[data-theme="light"] {
+    --paper: #faf9f6;
+    --panel: #ffffff;
+    --field: #f0efea;
+    --ink: #16181d;
+    --muted: #6a7076;
+    --hair: #e7e5df;
+    --teal: #2f8ba1;
+    --teal-deep: #257287;
+    --teal-icon: #4aa8c0;
+    --amber: #d9952b;
+    --shadow: 0 24px 60px -24px rgba(22, 24, 29, 0.28);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .shell { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── Nav ─────────────────────────── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 26px 0;
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .navlinks { display: flex; align-items: center; gap: 28px; }
+  .navlinks a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible { color: var(--ink); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ── Hero ────────────────────────── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+    padding: 64px 0 88px;
+  }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; padding: 40px 0 64px; }
+  }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--teal);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    font-size: clamp(38px, 5.4vw, 56px);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+  .sub {
+    font-size: 17.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 46ch;
+    margin: 0 0 34px;
+  }
+  .sub strong { color: var(--ink); font-weight: 600; }
+
+  .cta-row { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    background: var(--teal);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 26px;
+    border-radius: 10px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .btn:hover { background: var(--teal-deep); }
+  .cta-alt {
+    color: var(--muted);
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 2px;
+  }
+  .cta-alt:hover { color: var(--ink); border-color: var(--muted); }
+  .fine {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .fine kbd {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 2px 6px;
+    color: var(--ink);
+  }
+
+  /* ── Panel mock ──────────────────── */
+  .stage { display: flex; flex-direction: column; align-items: center; }
+  .menubar {
+    width: 320px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-radius: 9px;
+    padding: 6px 14px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .menubar svg { color: var(--ink); }
+  .tail {
+    width: 0; height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 10px solid var(--panel);
+    filter: drop-shadow(0 -1px 0 var(--hair));
+    margin-top: 4px;
+  }
+  .panel {
+    width: 292px;
+    max-width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    padding: 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .stage > * {
+      animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .stage .tail { animation-delay: 0.08s; }
+    .stage .panel { animation-delay: 0.14s; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+  .p-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .p-label .chev { font-size: 8px; opacity: 0.7; }
+  .p-input {
+    background: var(--field);
+    border-radius: 8px;
+    padding: 8px 11px;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .p-input.focus { box-shadow: inset 0 0 0 1.5px var(--amber); }
+  .p-input.placeholder { color: var(--muted); }
+  .p-class { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+  .p-class .left { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal-icon); flex: none; }
+  .p-preview {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .p-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+  .gear { color: var(--muted); display: flex; }
+  .p-save {
+    background: var(--teal);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 7px;
+  }
+
+  /* ── Claims ──────────────────────── */
+  .claims {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    padding: 64px 0;
+    border-top: 1px solid var(--hair);
+  }
+  @media (max-width: 860px) {
+    .claims { grid-template-columns: 1fr; gap: 40px; }
+  }
+  .claim h3 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 14px 0 8px;
+  }
+  .claim p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0;
+    max-width: 40ch;
+  }
+  .claim p kbd {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--ink);
+  }
+  .claim .glyph { color: var(--teal); display: flex; }
+
+  /* ── Timeline ────────────────────── */
+  .night {
+    border-top: 1px solid var(--hair);
+    padding: 64px 0 76px;
+  }
+  .night .kicker {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--teal);
+    margin: 0 0 14px;
+  }
+  .night h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    font-size: clamp(24px, 3.4vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  .night > .shell > p {
+    color: var(--muted);
+    max-width: 56ch;
+    margin: 0 0 48px;
+    font-size: 15.5px;
+  }
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    right: 6px;
+    height: 1.5px;
+    background: var(--hair);
+  }
+  .tl-stop { flex: 1; position: relative; padding-right: 24px; }
+  .tl-stop::before {
+    content: "";
+    display: block;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2.5px solid var(--muted);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .tl-stop.hot::before { border-color: var(--amber); background: var(--amber); }
+  .tl-stop.done::before { border-color: var(--teal); background: var(--teal); }
+  .tl-when {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .tl-what { font-size: 14.5px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .tl-note { font-size: 13px; color: var(--muted); margin: 0; max-width: 26ch; }
+  @media (max-width: 700px) {
+    .timeline { flex-direction: column; gap: 28px; }
+    .timeline::before { display: none; }
+    .tl-stop { padding-right: 0; }
+  }
+
+  /* ── Footer ──────────────────────── */
+  footer {
+    border-top: 1px solid var(--hair);
+    padding: 34px 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  footer .fm { display: flex; align-items: center; gap: 9px; font-weight: 600; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav>
+    <a class="wordmark" href="#">
+      <svg width="26" height="26" viewBox="0 0 120 120" aria-hidden="true">
+        <rect width="120" height="120" rx="27" fill="#4aa8c0"/>
+        <g transform="rotate(-8 62 42)">
+          <rect x="44" y="26" width="38" height="26" rx="6" fill="#fff"/>
+          <line x1="52" y1="35" x2="74" y2="35" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
+          <line x1="52" y1="43" x2="66" y2="43" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <rect x="24" y="62" width="72" height="34" rx="12" fill="#fff"/>
+        <rect x="44" y="58" width="32" height="9" rx="4.5" fill="#2f7c92"/>
+      </svg>
+      Docket
+    </a>
+    <div class="navlinks">
+      <a href="#night">Why it works</a>
+      <a class="btn" style="padding:9px 18px; font-size:14px" href="#download">Download</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <p class="eyebrow">A MENU BAR APP FOR STUDENTS ON MACOS</p>
+      <h1>Ten seconds, and it&rsquo;s handled.</h1>
+      <p class="sub">
+        Docket turns &ldquo;chem lab, thursday&rdquo; into a proper reminder — filed in your
+        class list, on your calendar, with an alert <strong>the evening before</strong>.
+        No app to open. No account. Nothing new to check.
+      </p>
+      <div class="cta-row">
+        <a class="btn" id="download" href="#">Download for macOS</a>
+        <a class="cta-alt" href="#night">Why the night before matters</a>
+      </div>
+      <p class="fine">$5, once &middot; 14-day free trial &middot; macOS 14+ &middot; Summon it anywhere with <kbd>&#8679;</kbd> <kbd>&#8984;</kbd> <kbd>Space</kbd></p>
+    </div>
+
+    <div class="stage" aria-label="The Docket capture panel">
+      <div class="menubar">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 11.5 v3 a2.5 2.5 0 0 0 2.5 2.5 h9 a2.5 2.5 0 0 0 2.5 -2.5 v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <rect x="7" y="3" width="8" height="6" rx="1.5" fill="currentColor" transform="rotate(-8 11 6)"/>
+        </svg>
+        <span>Wed 9:41 PM</span>
+      </div>
+      <div class="tail"></div>
+      <div class="panel">
+        <div>
+          <div class="p-label">ASSIGNMENT <span class="chev">&#9662;</span></div>
+          <div class="p-input">chem lab writeup</div>
+        </div>
+        <div>
+          <div class="p-label">CLASS</div>
+          <div class="p-input p-class">
+            <span class="left"><span class="dot"></span>Chemistry</span>
+            <span style="color:var(--muted); font-size:10px">&#9662;</span>
+          </div>
+        </div>
+        <div>
+          <div class="p-label">DUE</div>
+          <div class="p-input focus">thu 8am</div>
+          <div class="p-preview">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2" y="3" width="12" height="11" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="2" y1="6.5" x2="14" y2="6.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            Thu, Jul 30 at 8:00 AM
+          </div>
+        </div>
+        <div>
+          <div class="p-label">NOTES</div>
+          <div class="p-input placeholder">pg 42&ndash;50</div>
+        </div>
+        <div class="p-footer">
+          <span class="gear">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 1.8 v2 M8 12.2 v2 M1.8 8 h2 M12.2 8 h2 M3.6 3.6 l1.4 1.4 M11 11 l1.4 1.4 M12.4 3.6 L11 5 M5 11 l-1.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="p-save">Save</span>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<section>
+  <div class="shell claims">
+    <div class="claim">
+      <span class="glyph">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M8 12 h5 M16.5 12 h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <h3>Always one keystroke away</h3>
+      <p>
+        Hit <kbd>&#8679;&#8984;Space</kbd> in any app and the panel appears mid-screen.
+        Type, hit Enter, it&rsquo;s gone — and so is the panel. The whole exchange takes
+        less time than unlocking your phone.
+      </p>
+    </div>
+    <div class="claim">
+      <span class="glyph">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3 v10 m0 0 l-3.5 -3.5 M12 13 l3.5 -3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 15 v3 a2.5 2.5 0 0 0 2.5 2.5 h11 a2.5 2.5 0 0 0 2.5 -2.5 v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <h3>Your apps, not ours</h3>
+      <p>
+        Everything lands in Apple Reminders and Calendar — synced by iCloud to your phone
+        before you&rsquo;ve stood up. Docket keeps nothing: no database, no account, no
+        server. Delete it tomorrow and you lose nothing.
+      </p>
+    </div>
+    <div class="claim">
+      <span class="glyph">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M19 14.5 A8 8 0 1 1 9.5 5 a6.5 6.5 0 0 0 9.5 9.5 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <h3>Alerts that respect the night</h3>
+      <p>
+        A ping the morning something is due is an insult. Docket alerts you at 8&nbsp;PM
+        the evening before — and for tests, days earlier — while there&rsquo;s still time
+        to do something about it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="night" id="night">
+  <div class="shell">
+    <p class="kicker">THE NIGHT BEFORE</p>
+    <h2>Built around the only alert that matters.</h2>
+    <p>
+      Every reminder app can store a due date. Docket is opinionated about when you should
+      hear about it — and quiet the rest of the time.
+    </p>
+    <div class="timeline">
+      <div class="tl-stop done">
+        <p class="tl-when">TUE, BETWEEN CLASSES</p>
+        <p class="tl-what">You type it</p>
+        <p class="tl-note">&ldquo;chem lab writeup &middot; thu 8am.&rdquo; Ten seconds, back to your day.</p>
+      </div>
+      <div class="tl-stop hot">
+        <p class="tl-when">WED, 8:00 PM</p>
+        <p class="tl-what">Docket taps you</p>
+        <p class="tl-note">The one moment you can still act on it. Tests start alerting days out.</p>
+      </div>
+      <div class="tl-stop">
+        <p class="tl-when">THU, 8:00 AM</p>
+        <p class="tl-what">Due &mdash; and done</p>
+        <p class="tl-note">The deadline arrives as a formality, not a surprise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell">
+  <footer>
+    <span class="fm">
+      <svg width="20" height="20" viewBox="0 0 120 120" aria-hidden="true">
+        <rect width="120" height="120" rx="27" fill="#4aa8c0"/>
+        <g transform="rotate(-8 62 42)">
+          <rect x="44" y="26" width="38" height="26" rx="6" fill="#fff"/>
+          <line x1="52" y1="35" x2="74" y2="35" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
+          <line x1="52" y1="43" x2="66" y2="43" stroke="#9fc9d6" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <rect x="24" y="62" width="72" height="34" rx="12" fill="#fff"/>
+        <rect x="44" y="58" width="32" height="9" rx="4.5" fill="#2f7c92"/>
+      </svg>
+      Docket
+    </span>
+    <span>$5 once, free for 14 days &middot; Your work lives in Apple&rsquo;s apps, nowhere else.</span>
+    <span>Made by Jordan Paya</span>
+  </footer>
+</div>
+</body>
+</html>
