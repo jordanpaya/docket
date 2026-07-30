@@ -64,9 +64,14 @@
     border: 1px solid var(--line);
     border-radius: 999px;
     padding: 8px 16px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.25s var(--pop), box-shadow 0.2s ease, border-color 0.2s ease;
   }
-  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(36, 31, 26, 0.08); }
+  .nav-cta:hover {
+    transform: translateY(-2px) scale(1.04);
+    border-color: rgba(30, 147, 171, 0.45);
+    box-shadow: 0 5px 14px rgba(36, 31, 26, 0.1);
+  }
+  .nav-cta:active { transform: translateY(0) scale(0.96); }
   .nav-cta:focus-visible, .btn:focus-visible, .seg button:focus-visible,
   .p-save:focus-visible, .again:focus-visible, .p-input:focus-visible {
     outline: 2px solid var(--teal);
@@ -97,7 +102,7 @@
   .springy.late { animation-delay: 0.5s; }
   h1 .l { display: inline-block; }
   @media (prefers-reduced-motion: reduce) {
-    .rise, .soft, .springy, .hl { animation: none; }
+    .rise, .soft, .springy, .hl, .btn:hover .arr { animation: none; }
   }
 
   /* ---------- Hero ---------- */
@@ -138,15 +143,22 @@
     text-decoration: none;
     border-radius: 999px;
     padding: 13px 24px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.25s var(--pop), box-shadow 0.25s ease;
   }
-  .btn:hover { transform: translateY(-1px); }
+  .btn:hover { transform: translateY(-2px) scale(1.035); }
+  .btn:active { transform: translateY(0) scale(0.96); }
   .btn-dark {
     background: var(--dark);
     color: var(--dark-ink);
     box-shadow: 0 4px 14px rgba(29, 26, 22, 0.25);
   }
-  .btn-dark:hover { box-shadow: 0 6px 18px rgba(29, 26, 22, 0.32); }
+  .btn-dark:hover { box-shadow: 0 9px 24px rgba(29, 26, 22, 0.35); }
+  @keyframes arrow-dip {
+    0% { transform: translateY(0); }
+    45% { transform: translateY(2.5px); }
+    100% { transform: translateY(0); }
+  }
+  .btn:hover .arr { animation: arrow-dip 0.5s var(--glide); }
   .req { font-size: 13.5px; color: var(--ink-3); font-weight: 500; }
 
   /* ---------- Demo ---------- */
@@ -860,7 +872,7 @@
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-          <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+          <path class="arr" d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
         </svg>
         Download for Mac
       </a>
@@ -1087,7 +1099,7 @@
       <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-        <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+        <path class="arr" d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
       </svg>
       Download for Mac
     </a>
