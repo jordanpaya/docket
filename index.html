@@ -73,6 +73,25 @@
     outline-offset: 2px;
   }
 
+  /* ---------- Entrance: words and buttons bounce in on load ---------- */
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(26px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .pop-in {
+    animation: pop-in 0.65s cubic-bezier(0.34, 1.7, 0.5, 1) backwards;
+  }
+  .d0 { animation-delay: 0s; }
+  .d1 { animation-delay: 0.06s; }
+  .d2 { animation-delay: 0.14s; }
+  .d3 { animation-delay: 0.22s; }
+  .d4 { animation-delay: 0.3s; }
+  .d5 { animation-delay: 0.48s; }
+  .d6 { animation-delay: 0.62s; }
+  .d7 { animation-delay: 0.74s; }
+  h1 .w { display: inline-block; }
+  @media (prefers-reduced-motion: reduce) { .pop-in { animation: none; } }
+
   /* ---------- Hero ---------- */
   .hero { text-align: center; padding: 72px 0 46px; }
   h1 {
@@ -805,7 +824,7 @@
 
 <div class="wrap">
   <nav>
-    <div class="brand">
+    <div class="brand pop-in d0">
       <div class="brand-mark" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#ffffff"
              stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -815,18 +834,18 @@
       </div>
       <span class="brand-name">Docket</span>
     </div>
-    <a class="nav-cta" href="https://docket.jordanpaya.com/Docket.zip">Download for Mac</a>
+    <a class="nav-cta pop-in d7" href="https://docket.jordanpaya.com/Docket.zip">Download for Mac</a>
   </nav>
 
   <section class="hero">
-    <h1>Assignments, captured<br>in <span class="hl">seconds</span>.</h1>
-    <p class="sub">
+    <h1><span class="w pop-in d1">Assignments,</span> <span class="w pop-in d2">captured</span><br><span class="w pop-in d3">in</span> <span class="w pop-in d4"><span class="hl">seconds</span>.</span></h1>
+    <p class="sub pop-in d5">
       Docket is a small menu bar tool for students. Hit one shortcut, type
       what's due, and it lands in Apple Reminders or Calendar, synced to your
       iPhone with a nudge the evening before.
     </p>
     <div class="ctas" id="download">
-      <a class="btn btn-dark" href="https://docket.jordanpaya.com/Docket.zip">
+      <a class="btn btn-dark pop-in d6" href="https://docket.jordanpaya.com/Docket.zip">
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
