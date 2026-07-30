@@ -153,6 +153,15 @@
     box-shadow: 0 4px 14px rgba(29, 26, 22, 0.25);
   }
   .btn-dark:hover { box-shadow: 0 9px 24px rgba(29, 26, 22, 0.35); }
+  .btn-ghost {
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover {
+    border-color: rgba(30, 147, 171, 0.45);
+    box-shadow: 0 6px 16px rgba(36, 31, 26, 0.1);
+  }
   /* Hover story: the arrow drops into the tray, then a check draws in */
   @keyframes arrow-drop {
     0% { transform: translateY(0); opacity: 1; }
@@ -888,6 +897,7 @@
         </svg>
         Download for Mac
       </a>
+      <a class="btn btn-ghost springy late" href="https://docket.jordanpaya.com/buy">Buy · $9.99</a>
     </div>
   </section>
 
