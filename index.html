@@ -649,13 +649,19 @@
     z-index: 6;
   }
 
-  /* Demo pages: capture / upcoming / schedule cycle like the app */
-  .panel .pg { display: none; }
-  .panel .pg.on { display: block; animation: pg-in 0.28s var(--glide); }
-  @keyframes pg-in {
-    from { opacity: 0; transform: translateX(10px); filter: blur(3px); }
-    to { opacity: 1; transform: none; filter: none; }
+  /* Demo pages: one fixed-size card, pages crossfade in place with the
+     app's exact scale/blur treatment */
+  .pg-stack { position: relative; }
+  .panel .pg {
+    position: absolute; top: 0; left: 0; right: 0;
+    opacity: 0; filter: blur(6px); transform: scale(1.03);
+    pointer-events: none;
+    transition: opacity 0.32s cubic-bezier(0.3, 1.12, 0.5, 1),
+                transform 0.32s cubic-bezier(0.3, 1.12, 0.5, 1),
+                filter 0.32s cubic-bezier(0.3, 1.12, 0.5, 1);
   }
+  .panel .pg[data-page="capture"]:not(.on) { transform: scale(0.97); }
+  .panel .pg.on { opacity: 1; filter: none; transform: none; pointer-events: auto; }
   .p-dots { display: flex; justify-content: center; gap: 6px; padding-top: 13px; }
   .p-dots button {
     width: 6px; height: 6px; border-radius: 999px; border: 0; padding: 0;
@@ -946,6 +952,7 @@
         <div class="scene">
           <div class="fl panel-wrap">
             <div class="panel">
+              <div class="pg-stack" id="pgStack">
               <div class="pg on" data-page="capture">
               <div class="p-type-row">
                 <button type="button" class="p-type" id="typeBtn" aria-expanded="false">
@@ -1024,6 +1031,8 @@
                 <div class="s-row cur"><i class="s-bar"></i>Spanish<span>12:15 – 1:30</span></div>
                 <div class="s-row"><i class="s-bar"></i>Break<span>1:30 – 1:45</span></div>
                 <div class="s-row"><i class="s-bar"></i>Chemistry<span>1:45 – 3:00</span></div>
+              </div>
+
               </div>
 
               <div class="p-dots" id="pDots" aria-label="Pages">
@@ -1574,31 +1583,55 @@
     });
   });
   saveBtn.addEventListener("click", doSave);
-  // Pages cycle like the app: capture, upcoming, schedule, looping.
+  // Pages cycle like the app: same tug physics, same fixed card.
   const panelEl = document.querySelector(".panel");
+  const pgStack = document.getElementById("pgStack");
   const pDots = document.getElementById("pDots");
   const pageOrder = ["capture", "upcoming", "schedule"];
+  const pgEls = pageOrder.map((n) => panelEl.querySelector('.pg[data-page="' + n + '"]'));
   let pageIdx = 0;
+
+  // The capture page sets the card's one true height; the others live in it.
+  function sizeStack() { pgStack.style.height = pgEls[0].offsetHeight + "px"; }
+  sizeStack();
+  window.addEventListener("load", sizeStack);
+  window.addEventListener("resize", sizeStack);
+
   function setPage(i) {
     pageIdx = (i + pageOrder.length) % pageOrder.length;
-    panelEl.querySelectorAll(".pg").forEach((p) => {
-      p.classList.toggle("on", p.dataset.page === pageOrder[pageIdx]);
-    });
+    pgEls.forEach((p, k) => p.classList.toggle("on", k === pageIdx));
     [...pDots.children].forEach((d, k) => d.classList.toggle("on", k === pageIdx));
   }
   [...pDots.children].forEach((d, k) => d.addEventListener("click", () => setPage(k)));
-  let swipeAcc = 0, swipeArmed = true, swipeTimer = null;
+
+  // Follow the fingers, hold at full stretch past the threshold, then
+  // commit or rubber-band on release. Same numbers as the app.
+  const SWIPE_THRESHOLD = 60;
+  let swipeAcc = 0, releaseTimer = null;
+  function applyTug() {
+    const t = Math.max(-1, Math.min(1, swipeAcc / SWIPE_THRESHOLD));
+    const el = pgEls[pageIdx];
+    el.style.transition = "none";
+    el.style.transform = "translateX(" + (t * 16) + "px) scale(" + (1 - 0.015 * Math.abs(t)) + ")";
+  }
+  function releaseSwipe() {
+    const el = pgEls[pageIdx];
+    el.style.transition = "";
+    el.style.transform = "";
+    if (Math.abs(swipeAcc) >= SWIPE_THRESHOLD) {
+      setPage(pageIdx + (swipeAcc > 0 ? 1 : -1));
+    }
+    swipeAcc = 0;
+  }
   panelEl.addEventListener("wheel", (e) => {
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
     e.preventDefault();
     swipeAcc += e.deltaX;
-    if (swipeArmed && Math.abs(swipeAcc) > 60) {
-      swipeArmed = false;
-      setPage(pageIdx + (swipeAcc > 0 ? 1 : -1));
-    }
-    clearTimeout(swipeTimer);
-    swipeTimer = setTimeout(() => { swipeAcc = 0; swipeArmed = true; }, 180);
+    applyTug();
+    clearTimeout(releaseTimer);
+    releaseTimer = setTimeout(releaseSwipe, 130);
   }, { passive: false });
+
   panelEl.querySelectorAll(".pg .ring").forEach((ring) => {
     ring.addEventListener("click", () => ring.closest(".r-row").classList.toggle("done"));
   });
