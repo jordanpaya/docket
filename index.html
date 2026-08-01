@@ -106,6 +106,17 @@
   }
 
   /* ---------- Hero ---------- */
+  .hw-banner {
+    width: fit-content;
+    margin: 0 auto 26px;
+    padding: 7px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .hw-banner b { color: var(--ink); font-weight: 600; }
   .hero { text-align: center; padding: 72px 0 46px; }
   h1 {
     font-size: clamp(44px, 6.6vw, 68px);
@@ -881,6 +892,7 @@
   </nav>
 
   <section class="hero">
+    <div class="hw-banner rise">Built for <b>Harvard-Westlake</b> students</div>
     <h1><span class="l rise">Assignments, captured</span><br><span class="l rise l2">in <span class="hl">seconds</span>.</span></h1>
     <p class="sub soft">
       Docket is a small menu bar tool for students. Hit one shortcut, type
@@ -1060,20 +1072,14 @@
 
     <div class="fcard">
       <div class="fart">
-        <div class="noti" aria-hidden="true">
-          <div class="noti-icon">
-            <span class="bar" style="background:#ff9f0a"></span>
-            <span class="bar" style="background:#4a9ef5"></span>
-            <span class="bar" style="background:#34c759"></span>
-          </div>
-          <div>
-            <b>Reminders</b>
-            <span>Essay outline, due tomorrow</span>
-          </div>
+        <div class="mini-list" aria-hidden="true">
+          <div class="mini-row" style="color:var(--ink)"><span class="mini-ring" style="border-color:var(--teal);background:var(--teal)"></span>Chemistry<span style="margin-left:auto;font-size:10px;color:var(--ink-3)">12:15 – 1:30</span></div>
+          <div class="mini-row"><span class="mini-ring"></span>Break<span style="margin-left:auto;font-size:10px;color:var(--ink-3)">1:30 – 1:45</span></div>
+          <div class="mini-row"><span class="mini-ring"></span>Spanish<span style="margin-left:auto;font-size:10px;color:var(--ink-3)">1:45 – 3:00</span></div>
         </div>
       </div>
-      <h3>Nudged the night before</h3>
-      <p>Docket sets the alert; Reminders delivers it.</p>
+      <h3>Knows what period it is</h3>
+      <p>The HW rotation, bell times, and late starts, built in.</p>
     </div>
 
     <div class="fcard">
