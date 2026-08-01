@@ -649,6 +649,43 @@
     z-index: 6;
   }
 
+  /* Demo pages: capture / upcoming / schedule cycle like the app */
+  .panel .pg { display: none; }
+  .panel .pg.on { display: block; animation: pg-in 0.28s var(--glide); }
+  @keyframes pg-in {
+    from { opacity: 0; transform: translateX(10px); filter: blur(3px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  .p-dots { display: flex; justify-content: center; gap: 6px; padding-top: 13px; }
+  .p-dots button {
+    width: 6px; height: 6px; border-radius: 999px; border: 0; padding: 0;
+    background: #d8d2c4; cursor: pointer; transition: all 0.22s var(--glide);
+  }
+  .p-dots button.on { width: 16px; background: #8b8578; }
+  .pp-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; color: #8b8578;
+    margin: 2px 0 8px;
+  }
+  .pp-chip {
+    background: #f0ece3; border-radius: 999px; padding: 3px 9px;
+    font-size: 10.5px; letter-spacing: 0; font-weight: 600; color: #6f675c;
+  }
+  .pp-group {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 600; color: #6f675c; margin: 9px 0 2px;
+  }
+  .pp-group .gdot { width: 7px; height: 7px; border-radius: 50%; }
+  .pg .r-row { border: 0; padding: 5px 0; }
+  .s-row {
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    color: var(--ink); padding: 6px 8px; border-radius: 8px;
+  }
+  .s-row span { margin-left: auto; font-size: 11px; color: #a49a8c; font-variant-numeric: tabular-nums; }
+  .s-row .s-bar { width: 3px; height: 13px; border-radius: 2px; background: var(--teal); opacity: 0; flex: none; }
+  .s-row.cur { background: #f0ece3; font-weight: 600; }
+  .s-row.cur .s-bar { opacity: 1; }
+  .s-row.dim, .s-row.dim span { color: #b6ac9c; }
   .stage-caption {
     text-align: center;
     font-size: 14.5px;
@@ -909,6 +946,7 @@
         <div class="scene">
           <div class="fl panel-wrap">
             <div class="panel">
+              <div class="pg on" data-page="capture">
               <div class="p-type-row">
                 <button type="button" class="p-type" id="typeBtn" aria-expanded="false">
                   <span id="typeName">ASSIGNMENT</span>
@@ -940,6 +978,58 @@
                   </svg>
                 </span>
                 <button class="p-save" data-save>Save</button>
+              </div>
+              </div>
+
+              <div class="pg" data-page="upcoming">
+                <div class="pp-head"><span>UPCOMING</span><span>4</span></div>
+                <div class="pp-group"><span class="gdot" style="background:#34c759"></span>Chemistry</div>
+                <div class="r-row" style="--rc:#34c759">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt">Lab writeup</div>
+                    <div class="rs">Today, 8:00 PM</div>
+                  </div>
+                </div>
+                <div class="r-row" style="--rc:#34c759">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt">Problem set 12</div>
+                    <div class="rs">Friday, 8:00 AM</div>
+                  </div>
+                </div>
+                <div class="pp-group"><span class="gdot" style="background:#4a9ef5"></span>History 101</div>
+                <div class="r-row">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt">Read chapters 4–6</div>
+                    <div class="rs">Thursday, 8:00 PM</div>
+                  </div>
+                </div>
+                <div class="r-row">
+                  <button type="button" class="ring" aria-label="Mark complete"></button>
+                  <div class="r-body">
+                    <div class="rt">Essay outline</div>
+                    <div class="rs">Monday, 8:00 AM</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pg" data-page="schedule">
+                <div class="pp-head"><span>DAY 4</span><span class="pp-chip">Thu, Aug 27</span></div>
+                <div class="s-row dim"><i class="s-bar"></i>Photography<span>8:00 – 9:15</span></div>
+                <div class="s-row dim"><i class="s-bar"></i>Office Hours<span>9:20 – 10:00</span></div>
+                <div class="s-row dim"><i class="s-bar"></i>Modern World<span>10:00 – 11:15</span></div>
+                <div class="s-row dim"><i class="s-bar"></i>Lunch<span>11:15 – 12:15</span></div>
+                <div class="s-row cur"><i class="s-bar"></i>Spanish<span>12:15 – 1:30</span></div>
+                <div class="s-row"><i class="s-bar"></i>Break<span>1:30 – 1:45</span></div>
+                <div class="s-row"><i class="s-bar"></i>Chemistry<span>1:45 – 3:00</span></div>
+              </div>
+
+              <div class="p-dots" id="pDots" aria-label="Pages">
+                <button class="on" aria-label="Capture"></button>
+                <button aria-label="Upcoming"></button>
+                <button aria-label="Schedule"></button>
               </div>
             </div>
           </div>
@@ -1009,7 +1099,7 @@
     </div>
 
     <p class="stage-caption">
-      Try it. Click the type to switch, then hit Save
+      Try it. Click the type to switch, swipe or tap the dots for pages, then hit Save
       <span class="sep">·</span>
       In the real app it opens anywhere with <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Space</kbd>
     </p>
@@ -1463,6 +1553,7 @@
   }
 
   again.addEventListener("click", () => {
+    setPage(0);
     if (animating || !saved) return;
     saved = false;
     again.classList.remove("show");
@@ -1483,6 +1574,35 @@
     });
   });
   saveBtn.addEventListener("click", doSave);
+  // Pages cycle like the app: capture, upcoming, schedule, looping.
+  const panelEl = document.querySelector(".panel");
+  const pDots = document.getElementById("pDots");
+  const pageOrder = ["capture", "upcoming", "schedule"];
+  let pageIdx = 0;
+  function setPage(i) {
+    pageIdx = (i + pageOrder.length) % pageOrder.length;
+    panelEl.querySelectorAll(".pg").forEach((p) => {
+      p.classList.toggle("on", p.dataset.page === pageOrder[pageIdx]);
+    });
+    [...pDots.children].forEach((d, k) => d.classList.toggle("on", k === pageIdx));
+  }
+  [...pDots.children].forEach((d, k) => d.addEventListener("click", () => setPage(k)));
+  let swipeAcc = 0, swipeArmed = true, swipeTimer = null;
+  panelEl.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault();
+    swipeAcc += e.deltaX;
+    if (swipeArmed && Math.abs(swipeAcc) > 60) {
+      swipeArmed = false;
+      setPage(pageIdx + (swipeAcc > 0 ? 1 : -1));
+    }
+    clearTimeout(swipeTimer);
+    swipeTimer = setTimeout(() => { swipeAcc = 0; swipeArmed = true; }, 180);
+  }, { passive: false });
+  panelEl.querySelectorAll(".pg .ring").forEach((ring) => {
+    ring.addEventListener("click", () => ring.closest(".r-row").classList.toggle("done"));
+  });
+
 
   destR.querySelector("[data-item]").classList.add("pending");
   destC.querySelector("[data-item]").classList.add("pending");
