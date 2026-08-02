@@ -1108,7 +1108,7 @@
     </div>
 
     <p class="stage-caption">
-      Try it. Click the type to switch, swipe or tap the dots for pages, then hit Save
+      Try it. Click the type to switch, tap the dots for pages, then hit Save
       <span class="sep">·</span>
       In the real app it opens anywhere with <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Space</kbd>
     </p>
@@ -1604,43 +1604,6 @@
   }
   [...pDots.children].forEach((d, k) => d.addEventListener("click", () => setPage(k)));
 
-  // Follow the fingers, hold at full stretch past the threshold, then
-  // commit or rubber-band on release. Same numbers as the app.
-  const SWIPE_THRESHOLD = 60;
-  let swipeAcc = 0, swipeArmed = true, releaseTimer = null;
-  function applyTug() {
-    const t = Math.max(-1, Math.min(1, swipeAcc / SWIPE_THRESHOLD));
-    const el = pgEls[pageIdx];
-    el.style.transition = "none";
-    el.style.transform = "translateX(" + (t * 16) + "px) scale(" + (1 - 0.015 * Math.abs(t)) + ")";
-  }
-  function releaseSwipe() {
-    const el = pgEls[pageIdx];
-    el.style.transition = "";
-    el.style.transform = "";
-    swipeAcc = 0;
-    swipeArmed = true;
-  }
-  panelEl.addEventListener("wheel", (e) => {
-    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
-    e.preventDefault();
-    if (swipeArmed) {
-      swipeAcc += e.deltaX;
-      if (Math.abs(swipeAcc) >= SWIPE_THRESHOLD) {
-        // Commit the moment the threshold is crossed; momentum after a
-        // finger lift would otherwise stall the flip.
-        swipeArmed = false;
-        const el = pgEls[pageIdx];
-        el.style.transition = "";
-        el.style.transform = "";
-        setPage(pageIdx + (swipeAcc > 0 ? 1 : -1));
-      } else {
-        applyTug();
-      }
-    }
-    clearTimeout(releaseTimer);
-    releaseTimer = setTimeout(releaseSwipe, 80);
-  }, { passive: false });
 
   panelEl.querySelectorAll(".pg .ring").forEach((ring) => {
     ring.addEventListener("click", () => ring.closest(".r-row").classList.toggle("done"));
