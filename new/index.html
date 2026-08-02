@@ -63,6 +63,66 @@
 
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 34px; }
 
+  /* Classic hero */
+  @keyframes rise-spring {
+    from { opacity: 0; transform: translateY(34px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes btn-spring {
+    from { opacity: 0; transform: translateY(18px) scale(0.85); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes hl-sweep {
+    from { background-size: 0% 100%; }
+    to { background-size: 100% 100%; }
+  }
+  .rise { animation: rise-spring 0.7s cubic-bezier(0.34, 1.6, 0.5, 1) backwards; }
+  .rise.l2 { animation-delay: 0.09s; }
+  .soft { animation: fade-up 0.55s ease-out 0.28s backwards; }
+  .springy { animation: btn-spring 0.6s cubic-bezier(0.34, 1.8, 0.5, 1) 0.38s backwards; }
+  .springy.late { animation-delay: 0.5s; }
+  .hero { text-align: center; padding: 150px 0 26px; }
+  .hero h1 {
+    font-size: clamp(44px, 6.6vw, 68px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+  .hero h1 .l { display: inline-block; }
+  .hero .hl2 {
+    background-image: linear-gradient(#bfe8f0, #bfe8f0);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0.02em 0.14em;
+    border-radius: 0.14em;
+    box-decoration-break: clone;
+    animation: hl-sweep 0.4s ease-out 0.52s backwards;
+  }
+  .hero .sub {
+    font-size: 18.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin: 0 auto 30px;
+    text-wrap: pretty;
+  }
+  .hero .ctas { justify-content: center; }
+  .btn-ghost {
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line);
+    text-decoration: none; padding: 12px 22px; border-radius: 999px;
+    display: inline-flex; align-items: center;
+    transition: transform 0.2s var(--pop), border-color 0.25s ease;
+  }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: rgba(30, 147, 171, 0.45); }
+  .hero .req { font-size: 13.5px; color: var(--ink-3); font-weight: 500; margin-top: 18px; }
+
   .row {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: clamp(30px, 5vw, 70px);
@@ -190,28 +250,38 @@
 
 <div class="wrap">
 
-  <section class="row hero">
+  <section class="hero">
+    <h1><span class="l rise">Assignments, captured</span><br><span class="l rise l2">in <span class="hl2">seconds</span>.</span></h1>
+    <p class="sub soft">
+      Docket is a small menu bar tool made for Harvard-Westlake students. Hit one shortcut, type
+      what's due, and it lands in Apple Reminders or Calendar, synced to your
+      iPhone with a nudge the evening before.
+    </p>
+    <div class="ctas">
+      <a class="btn-dark springy" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+          <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+        </svg>
+        Download for Mac
+      </a>
+      <a class="btn-ghost springy late" href="https://docket.jordanpaya.com/buy">Buy license</a>
+    </div>
+    <p class="req soft">Free 14 day trial. No account needed.</p>
+  </section>
+
+  <section class="row reveal">
     <div class="text">
-      <p class="kicker">For Harvard-Westlake students</p>
-      <h1>Homework, <span class="hl">captured</span> in seconds.</h1>
-      <p class="body">One shortcut from any app. Type "chem lab due tomorrow" and
-         Docket reads the class and the date, then files it straight into Apple
-         Reminders. No tabs, no forms, no friction.</p>
-      <div class="ctas">
-        <a class="btn-dark" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
-          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-            <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
-          </svg>
-          Download for Mac
-        </a>
-        <span class="trial-note">Free 14 day trial. No account needed.</span>
-      </div>
+      <p class="kicker">One shortcut from anywhere</p>
+      <h2>Type it. It <span class="hl">files itself</span>.</h2>
+      <p class="body">"Chem lab due tomorrow" is all it takes. Docket reads the
+         class and the date out of the sentence, switches to Chemistry, sets the
+         due date, and saves it to Apple Reminders before the thought escapes.</p>
     </div>
     <div class="media">
       <div class="shot">
-        <video autoplay muted loop playsinline preload="auto"
+        <video muted loop playsinline preload="auto" data-lazy
                src="https://docket.jordanpaya.com/media/assignment1-final.mp4"></video>
       </div>
     </div>
@@ -345,19 +415,29 @@
   }, { threshold: 0.15 });
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-  // Below-fold videos load and play only when they come into view
-  const vio = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      const v = e.target;
-      if (e.isIntersecting) {
+  // One video plays at a time: the most visible one; the rest hold still.
+  const videos = [...document.querySelectorAll("video[data-lazy]")];
+  const ratios = new Map();
+  function conduct() {
+    let best = null, bestRatio = 0.35;
+    for (const v of videos) {
+      const r = ratios.get(v) || 0;
+      if (r > bestRatio) { best = v; bestRatio = r; }
+    }
+    for (const v of videos) {
+      if (v === best) {
         if (v.preload === "none") v.preload = "auto";
         v.play().catch(() => {});
       } else {
         v.pause();
       }
     }
-  }, { threshold: 0.25 });
-  document.querySelectorAll("video[data-lazy]").forEach((v) => vio.observe(v));
+  }
+  const vio = new IntersectionObserver((entries) => {
+    for (const e of entries) ratios.set(e.target, e.isIntersecting ? e.intersectionRatio : 0);
+    conduct();
+  }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+  videos.forEach((v) => vio.observe(v));
 
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.querySelectorAll("video").forEach((v) => { v.pause(); v.autoplay = false; });
