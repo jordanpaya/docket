@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docket · Homework, captured in seconds</title>
+<meta name="description" content="Docket is a Mac menu bar app for Harvard-Westlake students. One shortcut files assignments into Apple Reminders, knows your bell schedule, and syncs with Canvas.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231e93ab'/><path d='M25 52 v14 a8 8 0 0 0 8 8 h34 a8 8 0 0 0 8-8 V52 M50 24 v26 M38 40 L50 52 L62 40' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  :root {
+    --paper: #faf4e9;
+    --paper-2: #f4ecdd;
+    --ink: #241f1a;
+    --ink-2: #6f675c;
+    --ink-3: #a49a8c;
+    --teal: #1e93ab;
+    --teal-deep: #157286;
+    --card: #ffffff;
+    --line: #e7ddcc;
+    --dark: #1d1a16;
+    --dark-ink: #f7f1e6;
+    --pop: cubic-bezier(0.34, 1.45, 0.64, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 34px;
+    background: linear-gradient(var(--paper) 55%, transparent);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 29px; height: 29px; border-radius: 8px;
+    background: linear-gradient(180deg, #3fc2db, #1e93ab);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 7px rgba(30, 147, 171, 0.35);
+  }
+  .brand-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-ghost {
+    font-size: 13px; font-weight: 600; color: var(--ink-2);
+    text-decoration: none; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card);
+    transition: transform 0.2s var(--pop);
+  }
+  .nav-ghost:hover { transform: translateY(-1px); }
+  .nav-cta {
+    font-size: 13px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 8px 16px; border-radius: 999px;
+    transition: transform 0.2s var(--pop);
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 34px; }
+
+  .row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+    padding: clamp(46px, 8vh, 84px) 0;
+  }
+  .row.hero { padding-top: 140px; }
+  .row .text .kicker {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--teal-deep); text-transform: uppercase; margin-bottom: 14px;
+  }
+  .row .text h1, .row .text h2 {
+    font-weight: 800;
+    font-size: clamp(32px, 3.9vw, 50px);
+    line-height: 1.05; letter-spacing: -0.025em;
+    text-wrap: balance; margin-bottom: 16px;
+  }
+  .row .text .hl { color: var(--teal-deep); }
+  .row .text p.body {
+    font-size: 16px; line-height: 1.65; color: var(--ink-2);
+    max-width: 46ch; margin-bottom: 20px;
+  }
+  .ctas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn-dark {
+    font-size: 14px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 12px 22px; border-radius: 999px; display: inline-flex;
+    align-items: center; gap: 8px;
+    transition: transform 0.2s var(--pop);
+  }
+  .btn-dark:hover { transform: translateY(-2px); }
+  .trial-note { font-size: 12.5px; color: var(--ink-3); }
+
+  .shot {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 60px rgba(36, 31, 26, 0.18);
+    background: #1d1a16;
+    line-height: 0;
+  }
+  .shot video { width: 100%; height: auto; display: block; }
+  .row.flip .media { order: -1; }
+
+  /* iPhone */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone {
+    width: min(290px, 72vw);
+    border-radius: 44px;
+    overflow: hidden;
+    border: 10px solid #17141f;
+    box-shadow: 0 30px 70px rgba(36, 31, 26, 0.28);
+    line-height: 0;
+    background: #000;
+  }
+  .phone img { width: 100%; height: auto; display: block; }
+
+  /* Features */
+  .features-wrap { padding: clamp(40px, 8vh, 80px) 0 30px; }
+  .features-head { text-align: center; margin-bottom: 44px; }
+  .features-head h2 {
+    font-weight: 800;
+    font-size: clamp(28px, 3.2vw, 42px); letter-spacing: -0.025em;
+    margin-bottom: 10px; text-wrap: balance;
+  }
+  .features-head p { color: var(--ink-2); font-size: 15.5px; }
+  .fgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .fcard {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 15px; padding: 22px;
+  }
+  .fcard h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .fcard p { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+  .fcard .fico {
+    width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px; color: #fff;
+  }
+
+  .closing { text-align: center; padding: clamp(60px, 10vh, 100px) 0 60px; }
+  .closing p.lead {
+    font-weight: 800; font-size: clamp(22px, 2.6vw, 30px);
+    letter-spacing: -0.02em; margin-bottom: 8px; text-wrap: balance;
+  }
+  .closing p.sub { color: var(--ink-2); font-size: 15px; margin-bottom: 26px; }
+  footer {
+    padding: 30px 34px 34px; text-align: center;
+    color: var(--ink-3); font-size: 12.5px;
+  }
+
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s var(--pop); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 840px) {
+    .row { grid-template-columns: 1fr; gap: 28px; padding: 40px 0; text-align: center; }
+    .row.hero { padding-top: 120px; }
+    .row .text p.body { margin-left: auto; margin-right: auto; }
+    .ctas { justify-content: center; }
+    .row.flip .media { order: 0; }
+    .fgrid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="#fff"
+           stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+        <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
+      </svg>
+    </div>
+    <span class="brand-name">Docket</span>
+  </div>
+  <div class="nav-right">
+    <a class="nav-ghost" href="https://docket.jordanpaya.com/buy">Buy license</a>
+    <a class="nav-cta" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">Download for Mac</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section class="row hero">
+    <div class="text">
+      <p class="kicker">For Harvard-Westlake students</p>
+      <h1>Homework, <span class="hl">captured</span> in seconds.</h1>
+      <p class="body">One shortcut from any app. Type "chem lab due tomorrow" and
+         Docket reads the class and the date, then files it straight into Apple
+         Reminders. No tabs, no forms, no friction.</p>
+      <div class="ctas">
+        <a class="btn-dark" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+            <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+          </svg>
+          Download for Mac
+        </a>
+        <span class="trial-note">Free 14 day trial. No account needed.</span>
+      </div>
+    </div>
+    <div class="media">
+      <div class="shot">
+        <video autoplay muted loop playsinline preload="auto"
+               src="https://docket.jordanpaya.com/media/assignment1-final.mp4"></video>
+      </div>
+    </div>
+  </section>
+
+  <section class="row flip reveal">
+    <div class="text">
+      <p class="kicker">One glance, not five apps</p>
+      <h2>Everything due, already <span class="hl">sorted</span>.</h2>
+      <p class="body">Swipe to Upcoming and every assignment sits under its class,
+         soonest first. Check things off right there, undo a mis-tap, snooze what
+         can wait, and filter to what actually needs doing tonight.</p>
+    </div>
+    <div class="media">
+      <div class="shot">
+        <video muted loop playsinline preload="none" data-lazy
+               src="https://docket.jordanpaya.com/media/upcoming1-final.mp4"></video>
+      </div>
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="text">
+      <p class="kicker">It knows the bell schedule</p>
+      <h2>What period is it? Docket already <span class="hl">knows</span>.</h2>
+      <p class="body">The six day rotation, real bell times, late starts. Import
+         your schedule once and Docket shows the block you are sitting in, what
+         is next, and your whole day, pulled fresh from hw.com every morning.</p>
+    </div>
+    <div class="media">
+      <div class="shot">
+        <video muted loop playsinline preload="none" data-lazy
+               src="https://docket.jordanpaya.com/media/schedule1-final.mp4"></video>
+      </div>
+    </div>
+  </section>
+
+  <section class="row flip reveal">
+    <div class="text">
+      <p class="kicker">Zero new apps</p>
+      <h2>Already on your <span class="hl">iPhone</span>.</h2>
+      <p class="body">Docket saves into Apple's own Reminders and Calendar, so
+         everything syncs over iCloud to the phone in your pocket. Alerts arrive
+         the night before it's due. Your work is yours, in your apps, forever.</p>
+    </div>
+    <div class="media">
+      <div class="phone-wrap">
+        <div class="phone">
+          <img src="https://docket.jordanpaya.com/media/School.png"
+               alt="Apple Reminders on iPhone showing classes synced from Docket" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-wrap reveal">
+    <div class="features-head">
+      <h2>The rest of the toolbox.</h2>
+      <p>Small app, long reach.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcard">
+        <div class="fico" style="background:#c43c2b">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="4" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="6.3" cy="6.3" r="1.5"/><circle cx="17.7" cy="6.3" r="1.5"/><circle cx="6.3" cy="17.7" r="1.5"/><circle cx="17.7" cy="17.7" r="1.5"/></svg>
+        </div>
+        <h3>Connected to Canvas</h3>
+        <p>Assignments show up on their own, due dates included. Submit on Canvas and Docket checks them off.</p>
+      </div>
+      <div class="fcard">
+        <div class="fico" style="background:#1e93ab">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10 h11 M11 5.5 L15.5 10 L11 14.5"/></svg>
+        </div>
+        <h3>Say it in one line</h3>
+        <p>"spanish essay due mon 1030" becomes the class, the date, and the title. Pickers exist if you want them.</p>
+      </div>
+      <div class="fcard">
+        <div class="fico" style="background:#8e6fc0">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6 v4 l3 2"/></svg>
+        </div>
+        <h3>Snooze, not silence</h3>
+        <p>Push an alert to tonight, tomorrow, or the weekend. The due date stays honest.</p>
+      </div>
+      <div class="fcard">
+        <div class="fico" style="background:#34a853">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 10.5 L8 15.5 L17 4.5"/></svg>
+        </div>
+        <h3>Nudged the night before</h3>
+        <p>Docket sets the alert schedule, with a head start before quizzes and tests. Reminders delivers it.</p>
+      </div>
+      <div class="fcard">
+        <div class="fico" style="background:#e08a2e">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M7 8 l3 3 3-3"/></svg>
+        </div>
+        <h3>Updates itself</h3>
+        <p>New versions arrive with release notes up front and install in one click.</p>
+      </div>
+      <div class="fcard">
+        <div class="fico" style="background:#5b8def">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="8.5" width="12" height="8" rx="2"/><path d="M7 8.5 V6.5 a3 3 0 0 1 6 0 v2"/></svg>
+        </div>
+        <h3>Private by design</h3>
+        <p>No account, no server, nothing collected. Everything lives in Apple's apps on your devices.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing reveal">
+    <p class="lead">Underneath it's just Apple's Reminders and Calendar.</p>
+    <p class="sub">Docket makes them fast.</p>
+    <a class="btn-dark" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+        <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+      </svg>
+      Download for Mac
+    </a>
+  </section>
+
+</div>
+
+<footer>Made for students by Jordan Paya · macOS 14+</footer>
+
+<script>
+(function () {
+  // Reveal sections as they arrive
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    }
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  // Below-fold videos load and play only when they come into view
+  const vio = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      const v = e.target;
+      if (e.isIntersecting) {
+        if (v.preload === "none") v.preload = "auto";
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    }
+  }, { threshold: 0.25 });
+  document.querySelectorAll("video[data-lazy]").forEach((v) => vio.observe(v));
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("video").forEach((v) => { v.pause(); v.autoplay = false; });
+  }
+})();
+</script>
+</body>
+</html>
