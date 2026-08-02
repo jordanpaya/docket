@@ -210,11 +210,15 @@
     position: relative;
     width: min(920px, 100%);
     margin: 0 auto;
-    aspect-ratio: 1660 / 1080;
+    aspect-ratio: 1660 / 990;
+    overflow: hidden;
+    border-radius: 18px;
   }
   .vstage video {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 100%;
     opacity: 0;
     transition: opacity 0.35s ease;
     transform: none;
