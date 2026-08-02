@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docket · Homework, captured in seconds</title>
+<meta name="description" content="Docket is a Mac menu bar app for Harvard-Westlake students. One shortcut files assignments into Apple Reminders, knows your bell schedule, and syncs with Canvas.">
+<meta property="og:title" content="Docket · Homework, captured in seconds">
+<meta property="og:description" content="A Mac menu bar app for Harvard-Westlake students. One shortcut files assignments into Apple Reminders, knows your bell schedule, and syncs with Canvas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://docket.jordanpaya.com/">
+<meta property="og:image" content="https://docket.jordanpaya.com/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://docket.jordanpaya.com/media/og.jpg">
+<link rel="canonical" href="https://docket.jordanpaya.com/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231e93ab'/><path d='M25 52 v14 a8 8 0 0 0 8 8 h34 a8 8 0 0 0 8-8 V52 M50 24 v26 M38 40 L50 52 L62 40' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  :root {
+    --paper: #faf4e9;
+    --paper-2: #f4ecdd;
+    --ink: #241f1a;
+    --ink-2: #6f675c;
+    --ink-3: #a49a8c;
+    --teal: #1e93ab;
+    --teal-deep: #157286;
+    --card: #ffffff;
+    --line: #e7ddcc;
+    --dark: #1d1a16;
+    --dark-ink: #f7f1e6;
+    --pop: cubic-bezier(0.34, 1.45, 0.64, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: #bfe8f0; }
+  a:focus-visible, button:focus-visible {
+    outline: 2.5px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  body {
+    zoom: 1.1;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 34px;
+    background: linear-gradient(var(--paper) 55%, transparent);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 29px; height: 29px; border-radius: 8px;
+    background: linear-gradient(180deg, #3fc2db, #1e93ab);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 7px rgba(30, 147, 171, 0.35);
+  }
+  .brand-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-ghost {
+    font-size: 13px; font-weight: 600; color: var(--ink-2);
+    text-decoration: none; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card);
+    transition: transform 0.2s var(--pop);
+  }
+  .nav-ghost:hover { transform: translateY(-1px); }
+  .nav-cta {
+    font-size: 13px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 8px 16px; border-radius: 999px;
+    transition: transform 0.2s var(--pop);
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  .wrap { max-width: 1260px; margin: 0 auto; padding: 0 34px; }
+
+  /* Classic hero */
+  @keyframes rise-spring {
+    from { opacity: 0; transform: translateY(34px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes btn-spring {
+    from { opacity: 0; transform: translateY(18px) scale(0.85); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes hl-sweep {
+    from { background-size: 0% 100%; }
+    to { background-size: 100% 100%; }
+  }
+  .rise { animation: rise-spring 0.7s cubic-bezier(0.34, 1.6, 0.5, 1) backwards; }
+  .rise.l2 { animation-delay: 0.09s; }
+  .soft { animation: fade-up 0.55s ease-out 0.28s backwards; }
+  .springy { animation: btn-spring 0.6s cubic-bezier(0.34, 1.8, 0.5, 1) 0.38s backwards; }
+  .springy.late { animation-delay: 0.5s; }
+  .hero {
+    text-align: center;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 128px 0 40px;
+  }
+  .hero .hero-kicker {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--teal-deep); text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 5.4vw, 58px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+  .hero h1 .l { display: inline-block; }
+  .hero .hl2 {
+    background-image: linear-gradient(#bfe8f0, #bfe8f0);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0.02em 0.14em;
+    border-radius: 0.14em;
+    box-decoration-break: clone;
+    animation: hl-sweep 0.4s ease-out 0.52s backwards;
+  }
+  .hero .sub {
+    font-size: 18.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin: 0 auto 30px;
+    text-wrap: pretty;
+  }
+  .hero .ctas { justify-content: center; }
+  .btn-ghost {
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line);
+    text-decoration: none; padding: 12px 22px; border-radius: 999px;
+    display: inline-flex; align-items: center;
+    transition: transform 0.2s var(--pop), border-color 0.25s ease;
+  }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: rgba(30, 147, 171, 0.45); }
+  .hero .req { font-size: 13.5px; color: var(--ink-3); font-weight: 500; margin-top: 18px; }
+
+  .row {
+    display: grid; grid-template-columns: 1fr 1.15fr;
+    gap: clamp(34px, 5vw, 80px);
+    align-items: center;
+    padding: 70px 0;
+  }
+  /* The iPhone section opts out of the page zoom */
+  .row.phone-row {
+    zoom: 0.9091;
+    gap: clamp(48px, 6vw, 100px);
+    padding: 90px 0;
+  }
+  .row.phone-row .phone-wrap { justify-content: flex-end; }
+  .row.hero { padding-top: 140px; }
+  .row .text .kicker {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--teal-deep); text-transform: uppercase; margin-bottom: 14px;
+  }
+  .row .text h1, .row .text h2 {
+    font-weight: 800;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05; letter-spacing: -0.025em;
+    text-wrap: balance; margin-bottom: 18px;
+  }
+  .row .text .hl { color: var(--teal-deep); }
+  .row .text p.body {
+    font-size: 17.5px; line-height: 1.65; color: var(--ink-2);
+    max-width: 48ch; margin-bottom: 20px;
+  }
+  .ctas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn-dark {
+    font-size: 14px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 12px 22px; border-radius: 999px; display: inline-flex;
+    align-items: center; gap: 8px;
+    transition: transform 0.2s var(--pop);
+  }
+  .btn-dark:hover { transform: translateY(-2px); }
+  .trial-note { font-size: 12.5px; color: var(--ink-3); }
+
+  .stagewrap { margin-top: 42px; }
+  .vtabs {
+    display: flex; gap: 5px;
+    width: fit-content; margin: 0 auto 20px;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px;
+  }
+  .vtabs button {
+    font-family: inherit; font-size: 13.5px; font-weight: 600;
+    color: var(--ink-2); background: transparent;
+    border: 0; border-radius: 999px;
+    padding: 8px 20px; cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .vtabs button.on {
+    background: #fff; color: var(--ink);
+    box-shadow: 0 2px 8px rgba(36, 31, 26, 0.12);
+  }
+  .vstage {
+    position: relative;
+    width: min(920px, 100%);
+    margin: 0 auto;
+    aspect-ratio: 1660 / 1080;
+  }
+  .vstage video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .vstage video.on { opacity: 1; }
+  .stage-note {
+    text-align: center;
+    font-size: 12px; color: var(--ink-3);
+    margin-top: 14px;
+  }
+  .shot {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 60px rgba(36, 31, 26, 0.18);
+    background: #1d1a16;
+    line-height: 0;
+  }
+  .shot video {
+    width: 100%; height: auto; display: block;
+    transform: scale(1.06);
+    transform-origin: 50% 42%;
+  }
+  .shot video.nozoom { transform: none; }
+  .row.flip { grid-template-columns: 1.15fr 1fr; }
+  .row.flip .media { order: -1; }
+
+  /* iPhone */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone {
+    position: relative;
+    width: min(295px, 64vw);
+    padding: 5px;
+    background: linear-gradient(145deg, #5a5a60, #2c2c30 38%, #232326 62%, #55555b);
+    border-radius: 50px;
+    box-shadow: 0 26px 44px rgba(36, 31, 26, 0.3);
+    line-height: 0;
+  }
+  .phone img { width: 100%; height: auto; display: block; border-radius: 45px; }
+  /* Side buttons: volume pair on the left, power on the right */
+  .phone::before {
+    content: ""; position: absolute; left: -2.5px; top: 21%;
+    width: 3px; height: 34px; border-radius: 2px;
+    background: #3b3b40;
+    box-shadow: 0 46px 0 #3b3b40;
+  }
+  .phone::after {
+    content: ""; position: absolute; right: -2.5px; top: 26%;
+    width: 3px; height: 62px; border-radius: 2px;
+    background: #3b3b40;
+  }
+
+  /* Features */
+  .features-wrap { padding: 70px 0 40px; }
+  .features-head { text-align: center; margin-bottom: 44px; }
+  .features-head h2 {
+    font-weight: 800;
+    font-size: clamp(32px, 3.8vw, 50px); letter-spacing: -0.025em;
+    margin-bottom: 10px; text-wrap: balance;
+  }
+  .features-head p { color: var(--ink-2); font-size: 17px; }
+  .fgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .fcard {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 22px; padding: 38px 32px;
+    transition: transform 0.3s var(--pop), box-shadow 0.3s ease;
+  }
+  .fcard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(36, 31, 26, 0.12);
+  }
+  .fcard h3 { font-size: 20px; font-weight: 750; margin-bottom: 9px; letter-spacing: -0.01em; }
+  .fcard p { font-size: 15.5px; line-height: 1.62; color: var(--ink-2); }
+  .fart {
+    height: 108px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .lockup { display: flex; align-items: center; gap: 16px; }
+  .lockup .x { font-size: 17px; font-weight: 500; color: var(--ink-3); }
+  .lockup .lk-tile {
+    width: 52px; height: 52px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lockup .lk-docket {
+    background: linear-gradient(180deg, #3fc2db, #1e93ab);
+    box-shadow: 0 4px 12px rgba(30, 147, 171, 0.35);
+  }
+  .lockup .lk-canvas {
+    background: #fff; border: 1px solid var(--line);
+    box-shadow: 0 4px 12px rgba(36, 31, 26, 0.1);
+    color: #c43c2b;
+  }
+  .noti {
+    display: flex; align-items: center; gap: 11px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(36, 31, 26, 0.09);
+    padding: 12px 18px 12px 12px;
+    text-align: left;
+  }
+  .noti-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(36, 31, 26, 0.12);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3.5px;
+    flex: none;
+  }
+  .noti-icon .bar { width: 16px; height: 3.5px; border-radius: 2px; }
+  .noti b { display: block; font-size: 13px; }
+  .noti span { font-size: 12.5px; color: var(--ink-3); }
+  .cal-mini {
+    width: 190px;
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 13px; overflow: hidden;
+    box-shadow: 0 6px 18px rgba(36, 31, 26, 0.09);
+    text-align: left;
+  }
+  .cal-mini .cm-top {
+    background: #ff453a; color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    padding: 5px 12px;
+  }
+  .cal-mini .cm-body { padding: 10px 12px 12px; }
+  .cal-mini .cm-event {
+    border-left: 3px solid var(--teal);
+    background: rgba(30, 147, 171, 0.1);
+    border-radius: 6px;
+    padding: 6px 9px;
+  }
+  .cal-mini .cm-event b { display: block; font-size: 12px; }
+  .cal-mini .cm-event span { font-size: 11px; color: var(--ink-2); }
+
+  .closing {
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 90px 0 70px;
+  }
+  .closing p.lead {
+    font-weight: 800; font-size: clamp(26px, 3.2vw, 40px);
+    letter-spacing: -0.02em; margin-bottom: 8px; text-wrap: balance;
+  }
+  .closing p.sub { color: var(--ink-2); font-size: 15px; margin-bottom: 26px; }
+  footer {
+    padding: 30px 34px 38px; text-align: center;
+    color: var(--ink-3); font-size: 12.5px;
+  }
+  footer .foot-links { margin-top: 8px; }
+  footer .foot-links span { margin: 0 7px; color: var(--line); }
+  footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line); }
+  footer a:hover { color: var(--ink); border-color: var(--ink-3); }
+
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s var(--pop); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 840px) {
+    .row.phone-row .phone-wrap { justify-content: center; }
+    .row, .row.flip { grid-template-columns: 1fr; gap: 28px; min-height: 0; padding: 60px 0; text-align: center; }
+    .row .text p.body { margin-left: auto; margin-right: auto; }
+    .ctas { justify-content: center; }
+    .row.flip .media { order: 0; }
+    .fgrid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="#fff"
+           stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+        <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
+      </svg>
+    </div>
+    <span class="brand-name">Docket</span>
+  </div>
+  <div class="nav-right">
+    <a class="nav-cta" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">Download for Mac</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section class="hero">
+    <p class="hero-kicker rise">Made for Harvard-Westlake students</p>
+    <h1><span class="l rise">Assignments, captured</span><br><span class="l rise l2">in <span class="hl2">seconds</span>.</span></h1>
+    <p class="sub soft">
+      Docket is a small menu bar tool for students. Hit one shortcut, type
+      what's due, and it lands in Apple Reminders or Calendar, synced to your
+      iPhone with a nudge the evening before.
+    </p>
+    <div class="ctas">
+      <a class="btn-dark springy" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+          <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+        </svg>
+        Download for Mac
+      </a>
+      <a class="btn-ghost springy late" href="https://docket.jordanpaya.com/buy">Buy license</a>
+    </div>
+    <p class="req soft">Free 14 day trial. No account needed.</p>
+
+    <div class="stagewrap soft">
+      <div class="vtabs" id="vtabs" role="tablist" aria-label="Docket pages">
+        <button role="tab" aria-selected="false">Upcoming</button>
+        <button class="on" role="tab" aria-selected="true">Capture</button>
+        <button role="tab" aria-selected="false">Schedule</button>
+      </div>
+      <div class="vstage shot" id="vstage">
+        <video muted playsinline preload="metadata" poster="../media/poster-upcoming.jpg"
+               aria-label="Screen recording of the Upcoming page" src="../media/upcoming-tab.mp4"></video>
+        <video class="on" muted playsinline preload="auto" poster="../media/poster-capture.jpg"
+               aria-label="Screen recording of capturing an assignment" src="../media/capture-tab.mp4"></video>
+        <video muted playsinline preload="metadata" poster="../media/poster-schedule.jpg"
+               aria-label="Screen recording of the Schedule page" src="../media/schedule-tab.mp4"></video>
+      </div>
+      <p class="stage-note">Real screen recordings, latest version</p>
+    </div>
+  </section>
+
+  <section class="row flip phone-row reveal">
+    <div class="text">
+      <p class="kicker">Zero new apps</p>
+      <h2>In your <span class="hl">pocket</span>, automatically.</h2>
+      <p class="body">Docket saves into Apple's own Reminders and Calendar, so
+         everything syncs over iCloud to the phone in your pocket. Alerts arrive
+         the night before it's due. Your work is yours, in your apps, forever.</p>
+    </div>
+    <div class="media">
+      <div class="phone-wrap">
+        <div class="phone">
+          <img src="../media/iphone2.png"
+               alt="Apple Reminders on iPhone showing classes synced from Docket" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-wrap reveal">
+    <div class="features-head">
+      <h2>The rest of the toolbox.</h2>
+      <p>Small app, long reach.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcard">
+        <div class="fart" aria-hidden="true">
+          <div class="lockup">
+            <div class="lk-tile lk-docket">
+              <svg width="26" height="26" viewBox="0 0 20 20" fill="none" stroke="#fff"
+                   stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+                <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
+              </svg>
+            </div>
+            <span class="x">×</span>
+            <div class="lk-tile lk-canvas">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="4" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="6.3" cy="6.3" r="1.5"/><circle cx="17.7" cy="6.3" r="1.5"/><circle cx="6.3" cy="17.7" r="1.5"/><circle cx="17.7" cy="17.7" r="1.5"/></svg>
+            </div>
+          </div>
+        </div>
+        <h3>Connected to Canvas</h3>
+        <p>Assignments pull themselves in, due dates included. Submit on Canvas and Docket checks them off for you.</p>
+      </div>
+      <div class="fcard">
+        <div class="fart" aria-hidden="true">
+          <div class="noti">
+            <div class="noti-icon">
+              <span class="bar" style="background:#ff9f0a"></span>
+              <span class="bar" style="background:#4a9ef5"></span>
+              <span class="bar" style="background:#34c759"></span>
+            </div>
+            <div>
+              <b>Reminders</b>
+              <span>Essay outline, due tomorrow</span>
+            </div>
+          </div>
+        </div>
+        <h3>Reminded the night before</h3>
+        <p>Every assignment nudges you the evening before it's due, straight from Apple Reminders on all your devices.</p>
+      </div>
+      <div class="fcard">
+        <div class="fart" aria-hidden="true">
+          <div class="cal-mini">
+            <div class="cm-top">FRIDAY</div>
+            <div class="cm-body">
+              <div class="cm-event">
+                <b>Unit 3 chem test</b>
+                <span>9:00 – 10:00 AM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3>Tests go on the calendar</h3>
+        <p>Quizzes, tests, and meetings save as Calendar events with real start and end times, so your week shows its shape.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing reveal">
+    <p class="lead">Underneath it's just Apple's Reminders and Calendar.</p>
+    <p class="sub">Docket makes them fast.</p>
+    <a class="btn-dark" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+        <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
+      </svg>
+      Download for Mac
+    </a>
+  </section>
+
+</div>
+
+<footer>
+  <p>Made for students by Jordan Paya · macOS 14+</p>
+  <p class="foot-links">
+    <a href="https://docket.jordanpaya.com/buy">Buy a license</a>
+    <span>·</span>
+    <a href="mailto:jordanhpaya22@gmail.com?subject=Docket%20feedback">Feedback</a>
+  </p>
+</footer>
+
+<script>
+(function () {
+  // Reveal sections as they arrive
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    }
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  // Tabbed stage: click to switch; each clip ends by handing off to the next.
+  const stageVids = [...document.querySelectorAll("#vstage video")];
+  const tabs = [...document.querySelectorAll("#vtabs button")];
+  let cur = 1;
+  let stageVisible = true;
+  function show(i) {
+    cur = (i + stageVids.length) % stageVids.length;
+    stageVids.forEach((v, k) => {
+      v.classList.toggle("on", k === cur);
+      if (k === cur) {
+        v.currentTime = 0;
+        if (stageVisible) v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+    tabs.forEach((t, k) => {
+      t.classList.toggle("on", k === cur);
+      t.setAttribute("aria-selected", k === cur ? "true" : "false");
+    });
+  }
+  tabs.forEach((t, k) => t.addEventListener("click", () => show(k)));
+  stageVids.forEach((v) => v.addEventListener("ended", () => show(cur + 1)));
+  const sio = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      stageVisible = e.isIntersecting;
+      const v = stageVids[cur];
+      if (stageVisible) v.play().catch(() => {});
+      else v.pause();
+    }
+  }, { threshold: 0.2 });
+  sio.observe(document.getElementById("vstage"));
+  stageVids[cur].play().catch(() => {});
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("video").forEach((v) => { v.pause(); v.autoplay = false; });
+  }
+})();
+</script>
+</body>
+</html>
