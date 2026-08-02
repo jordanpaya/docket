@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.2",
   "url": "https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip",
-  "notes": "Updates now install themselves in one click, with release notes up front."
+  "notes": "Docket now knows the HW schedule. A new Schedule page tracks the 6 day rotation, imports your schedule PDF, and catches late starts from hw.com. Plus swipeable pages with a default page setting, a mini calendar due picker, and smarter time parsing."
 }
