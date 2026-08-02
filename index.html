@@ -3,9 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Docket is a small menu bar tool made for Harvard-Westlake students. One shortcut files assignments into Apple Reminders and puts tests on your Calendar, synced to your iPhone with a nudge the evening before.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' rx='5' fill='%231e93ab'/%3E%3Cpath d='M5 11v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3M10 4v5.5M7.8 7.5 10 9.8l2.2-2.3' fill='none' stroke='%23fff' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<title>Docket · Assignments, captured in seconds</title>
+<title>Docket · Homework, captured in seconds</title>
+<meta name="description" content="Docket is a Mac menu bar app for Harvard-Westlake students. One shortcut files assignments into Apple Reminders, knows your bell schedule, and syncs with Canvas.">
+<meta property="og:title" content="Docket · Homework, captured in seconds">
+<meta property="og:description" content="A Mac menu bar app for Harvard-Westlake students. One shortcut files assignments into Apple Reminders, knows your bell schedule, and syncs with Canvas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://docket.jordanpaya.com/">
+<meta property="og:image" content="https://docket.jordanpaya.com/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://docket.jordanpaya.com/media/og.jpg">
+<link rel="canonical" href="https://docket.jordanpaya.com/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231e93ab'/><path d='M25 52 v14 a8 8 0 0 0 8 8 h34 a8 8 0 0 0 8-8 V52 M50 24 v26 M38 40 L50 52 L62 40' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
   :root {
     --paper: #faf4e9;
@@ -14,71 +22,63 @@
     --ink-2: #6f675c;
     --ink-3: #a49a8c;
     --teal: #1e93ab;
-    --teal-soft: #bfe8f0;
+    --teal-deep: #157286;
     --card: #ffffff;
     --line: #e7ddcc;
     --dark: #1d1a16;
     --dark-ink: #f7f1e6;
-    --spring: cubic-bezier(0.34, 1.45, 0.64, 1);
-    --glide: cubic-bezier(0.32, 0.72, 0, 1);
-    --pop: cubic-bezier(0.34, 1.8, 0.5, 1);
+    --pop: cubic-bezier(0.34, 1.45, 0.64, 1);
   }
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: #bfe8f0; }
+  a:focus-visible, button:focus-visible {
+    outline: 2.5px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
   body {
-    margin: 0;
+    zoom: 1.1;
     background: var(--paper);
     color: var(--ink);
     font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont,
-      "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+      "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 28px; }
-
-  /* ---------- Nav ---------- */
   nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 26px 0;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 34px;
+    background: linear-gradient(var(--paper) 55%, transparent);
   }
   .brand { display: flex; align-items: center; gap: 10px; }
   .brand-mark {
-    width: 30px; height: 30px;
-    border-radius: 8px;
+    width: 29px; height: 29px; border-radius: 8px;
     background: linear-gradient(180deg, #3fc2db, #1e93ab);
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 2px 7px rgba(30, 147, 171, 0.35);
   }
-  .brand-mark svg { display: block; }
-  .brand-name { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-ghost {
+    font-size: 13px; font-weight: 600; color: var(--ink-2);
+    text-decoration: none; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card);
+    transition: transform 0.2s var(--pop);
+  }
+  .nav-ghost:hover { transform: translateY(-1px); }
   .nav-cta {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 8px 16px;
-    transition: transform 0.25s var(--pop), box-shadow 0.2s ease, border-color 0.2s ease;
+    font-size: 13px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 8px 16px; border-radius: 999px;
+    transition: transform 0.2s var(--pop);
   }
-  .nav-cta:hover {
-    transform: translateY(-2px) scale(1.04);
-    border-color: rgba(30, 147, 171, 0.45);
-    box-shadow: 0 5px 14px rgba(36, 31, 26, 0.1);
-  }
-  .nav-cta:active { transform: translateY(0) scale(0.96); }
-  .nav-cta:focus-visible, .btn:focus-visible, .seg button:focus-visible,
-  .p-save:focus-visible, .again:focus-visible, .p-input:focus-visible {
-    outline: 2px solid var(--teal);
-    outline-offset: 2px;
-  }
+  .nav-cta:hover { transform: translateY(-1px); }
 
-  /* ---------- Entrance: one springy breath, not a sequence ---------- */
+  .wrap { max-width: 1260px; margin: 0 auto; padding: 0 34px; }
+
+  /* Classic hero */
   @keyframes rise-spring {
     from { opacity: 0; transform: translateY(34px); }
     to { opacity: 1; transform: translateY(0); }
@@ -100,23 +100,27 @@
   .soft { animation: fade-up 0.55s ease-out 0.28s backwards; }
   .springy { animation: btn-spring 0.6s cubic-bezier(0.34, 1.8, 0.5, 1) 0.38s backwards; }
   .springy.late { animation-delay: 0.5s; }
-  h1 .l { display: inline-block; }
-  @media (prefers-reduced-motion: reduce) {
-    .rise, .soft, .springy, .hl, .btn:hover .arr, .btn:hover .chk { animation: none; }
+  .hero {
+    text-align: center;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 128px 0 40px;
   }
-
-  /* ---------- Hero ---------- */
-  .hero { text-align: center; padding: 72px 0 46px; }
-  h1 {
-    font-size: clamp(44px, 6.6vw, 68px);
+  .hero .hero-kicker {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--teal-deep); text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 5.4vw, 58px);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.06;
     margin: 0 0 22px;
     text-wrap: balance;
   }
-  .hl {
-    background-image: linear-gradient(var(--teal-soft), var(--teal-soft));
+  .hero h1 .l { display: inline-block; }
+  .hero .hl2 {
+    background-image: linear-gradient(#bfe8f0, #bfe8f0);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     padding: 0.02em 0.14em;
@@ -124,7 +128,7 @@
     box-decoration-break: clone;
     animation: hl-sweep 0.4s ease-out 0.52s backwards;
   }
-  .sub {
+  .hero .sub {
     font-size: 18.5px;
     line-height: 1.6;
     color: var(--ink-2);
@@ -132,1498 +136,473 @@
     margin: 0 auto 30px;
     text-wrap: pretty;
   }
-  .ctas { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-family: inherit;
-    font-size: 15.5px;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 999px;
-    padding: 13px 24px;
-    transition: transform 0.25s var(--pop), box-shadow 0.25s ease;
-  }
-  .btn:hover { transform: translateY(-2px) scale(1.035); }
-  .btn:active { transform: translateY(0) scale(0.96); }
-  .btn-dark {
-    background: var(--dark);
-    color: var(--dark-ink);
-    box-shadow: 0 4px 14px rgba(29, 26, 22, 0.25);
-  }
-  .btn-dark:hover { box-shadow: 0 9px 24px rgba(29, 26, 22, 0.35); }
+  .hero .ctas { justify-content: center; }
   .btn-ghost {
-    background: var(--card);
-    color: var(--ink);
-    border: 1px solid var(--line);
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line);
+    text-decoration: none; padding: 12px 22px; border-radius: 999px;
+    display: inline-flex; align-items: center;
+    transition: transform 0.2s var(--pop), border-color 0.25s ease;
   }
-  .btn-ghost:hover {
-    border-color: rgba(30, 147, 171, 0.45);
-    box-shadow: 0 6px 16px rgba(36, 31, 26, 0.1);
-  }
-  /* Hover story: the arrow drops into the tray, then a check draws in */
-  @keyframes arrow-drop {
-    0% { transform: translateY(0); opacity: 1; }
-    60% { transform: translateY(5px); opacity: 1; }
-    100% { transform: translateY(6.5px); opacity: 0; }
-  }
-  @keyframes check-draw {
-    from { stroke-dashoffset: 12; opacity: 1; }
-    to { stroke-dashoffset: 0; opacity: 1; }
-  }
-  .btn .chk {
-    opacity: 0;
-    stroke-dasharray: 12;
-    stroke-dashoffset: 12;
-  }
-  .btn:hover .arr { animation: arrow-drop 0.35s ease-in forwards; }
-  .btn:hover .chk { animation: check-draw 0.3s ease-out 0.32s forwards; }
-  .req { font-size: 13.5px; color: var(--ink-3); font-weight: 500; }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: rgba(30, 147, 171, 0.45); }
+  .hero .req { font-size: 13.5px; color: var(--ink-3); font-weight: 500; margin-top: 18px; }
 
-  /* ---------- Demo ---------- */
-  .stage-outer { padding: 40px 0 12px; }
-
-  /* Type picker: the caption row in the popup is the control, like the app */
-  .p-type-row { display: flex; align-items: center; gap: 3px; margin-bottom: 10px; }
-  .p-type {
-    display: inline-flex;
+  .row {
+    display: grid; grid-template-columns: 1fr 1.15fr;
+    gap: clamp(34px, 5vw, 80px);
     align-items: center;
-    gap: 5px;
-    font-family: inherit;
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: #6f675c;
-    background: #f0ece3;
-    border: 0;
-    border-radius: 999px;
-    padding: 5px 9px;
-    cursor: pointer;
-    transition: background 0.15s ease;
+    padding: 70px 0;
   }
-  .p-type:hover { background: #e8e1d2; }
-  .p-type[disabled] { cursor: default; }
-  .p-type .chev {
-    font-size: 8px;
-    color: #a49a8c;
-    transition: transform 0.25s var(--glide);
+  /* The iPhone section opts out of the page zoom */
+  .row.phone-row {
+    zoom: 0.9091;
+    gap: clamp(48px, 6vw, 100px);
+    padding: 90px 0;
   }
-  .p-type.open .chev { transform: rotate(180deg); }
-  .p-type-opts {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    white-space: nowrap;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-width 0.32s var(--glide), opacity 0.22s ease;
+  .row.phone-row .phone-wrap { justify-content: flex-end; }
+  .row.hero { padding-top: 140px; }
+  .row .text .kicker {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--teal-deep); text-transform: uppercase; margin-bottom: 14px;
   }
-  .p-type-opts.open { max-width: 250px; opacity: 1; }
-  .p-type-opt {
-    font-family: inherit;
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #a49a8c;
-    background: none;
-    border: 0;
-    border-radius: 999px;
-    padding: 5px 5px;
-    cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease;
-  }
-  .p-type-opt:hover { color: var(--ink); background: rgba(36, 31, 26, 0.06); }
-
-  /* Press physics: everything squishes and springs back */
-  .p-type { transition: background 0.15s ease, transform 0.22s var(--pop); }
-  .p-type:active { transform: scale(0.92); }
-  .p-type-opt {
-    opacity: 0;
-    transform: translateX(-8px) scale(0.7);
-    transition: color 0.15s ease, background 0.15s ease,
-      opacity 0.22s ease, transform 0.3s var(--pop);
-  }
-  .p-type-opts.open .p-type-opt { opacity: 1; transform: none; }
-  .p-type-opts.open .p-type-opt:nth-child(1) { transition-delay: 0.04s; }
-  .p-type-opts.open .p-type-opt:nth-child(2) { transition-delay: 0.09s; }
-  .p-type-opts.open .p-type-opt:nth-child(3) { transition-delay: 0.14s; }
-  .p-type-opt:active { transform: scale(0.88); }
-  .p-dropbtn { transition: transform 0.22s var(--pop); }
-  .p-dropbtn:active { transform: scale(0.98); }
-  .p-options .p-opt {
-    opacity: 0;
-    transform: translateY(-5px);
-    transition: background 0.15s ease, opacity 0.2s ease, transform 0.3s var(--pop);
-  }
-  .p-drop.open .p-opt { opacity: 1; transform: none; }
-  .p-drop.open .p-opt:nth-child(1) { transition-delay: 0.03s; }
-  .p-drop.open .p-opt:nth-child(2) { transition-delay: 0.07s; }
-  .p-drop.open .p-opt:nth-child(3) { transition-delay: 0.11s; }
-  .p-drop.open .p-opt:nth-child(4) { transition-delay: 0.15s; }
-  .p-opt:active { transform: scale(0.96); }
-  .again:active { transform: scale(0.93) !important; }
-
-  .stage {
-    position: relative;
-    border-radius: 30px;
-    background:
-      radial-gradient(120% 90% at 15% 0%, rgba(255, 255, 255, 0.22), transparent 55%),
-      radial-gradient(110% 100% at 90% 100%, rgba(10, 70, 84, 0.55), transparent 60%),
-      linear-gradient(150deg, #41bed6 0%, #1e93ab 55%, #14707f 100%);
-    padding: 30px 32px 18px;
-    box-shadow: 0 24px 54px -20px rgba(20, 112, 127, 0.45);
-  }
-
-  .scenes { position: relative; height: 464px; }
-  .scene {
-    position: absolute;
-    inset: 0;
-    transition: opacity 0.3s ease, transform 0.42s var(--glide);
-  }
-  .scene.off-left { opacity: 0; transform: translateX(-48px); pointer-events: none; }
-  .scene.off-right { opacity: 0; transform: translateX(48px); pointer-events: none; }
-
-  .fl {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(calc(-50% + var(--x, 0px)), -50%);
-    transition: transform 0.52s var(--glide), opacity 0.36s ease;
-  }
-  .panel-wrap { --x: 0px; z-index: 2; }
-  .dest-wrap { --x: 250px; opacity: 0; pointer-events: none; }
-  .scene.saved .panel-wrap { --x: -174px; }
-  .scene.saved .dest-wrap { --x: 174px; opacity: 1; pointer-events: auto; }
-  @media (max-width: 760px) {
-    .scene.saved .panel-wrap { --x: -370px; opacity: 0; }
-    .scene.saved .dest-wrap { --x: 0px; }
-  }
-
-  .again {
-    display: block;
-    margin: 10px auto 0;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 999px;
-    padding: 8px 18px;
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(4px);
-    transition: opacity 0.3s ease, transform 0.3s var(--glide), background 0.2s ease;
-  }
-  .again:hover { background: rgba(255, 255, 255, 0.28); }
-  .again.show { opacity: 1; pointer-events: auto; transform: none; }
-
-  /* --- Capture panel --- */
-  .panel {
-    width: 302px;
-    background: rgba(255, 255, 255, 0.86);
-    -webkit-backdrop-filter: blur(18px) saturate(1.5);
-    backdrop-filter: blur(18px) saturate(1.5);
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    border-radius: 17px;
-    box-shadow: 0 18px 44px rgba(10, 50, 60, 0.35);
-    padding: 17px;
-    text-align: left;
-    transition: transform 0.18s var(--glide);
-  }
-  .panel.pressed { transform: scale(0.977); }
-
-  .p-label {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    color: #8b8578;
-    margin: 0 0 6px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .p-label .chev { font-size: 9px; color: #b6ac9c; }
-  .p-field {
-    background: #f0ece3;
-    border-radius: 9px;
-    padding: 8px 11px;
-    font-size: 14px;
-    margin-bottom: 13px;
-  }
-  .p-input {
-    display: block;
-    width: 100%;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--ink);
-    background: #f0ece3;
-    border: 0;
-    border-radius: 9px;
-    padding: 8px 11px;
-    margin-bottom: 13px;
-    outline: none;
-    box-shadow: inset 0 0 0 1.5px transparent;
-    transition: box-shadow 0.2s ease;
-  }
-  .p-input:focus { box-shadow: inset 0 0 0 1.5px rgba(30, 147, 171, 0.65); }
-  .p-input::placeholder { color: #a49a8c; }
-  .p-row { display: flex; align-items: center; gap: 8px; }
-  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .p-row .spread { margin-left: auto; color: #a49a8c; font-size: 10px; }
-
-  /* Class / calendar dropdown */
-  .p-drop { margin-bottom: 13px; }
-  .p-dropbtn {
-    display: flex; align-items: center; gap: 8px;
-    width: 100%;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--ink);
-    background: #f0ece3;
-    border: 0;
-    border-radius: 9px;
-    padding: 8px 11px;
-    cursor: pointer;
-    text-align: left;
-  }
-  .p-dropbtn .spread {
-    margin-left: auto;
-    color: #a49a8c;
-    font-size: 10px;
-    transition: transform 0.25s var(--glide);
-  }
-  .p-drop.open .p-dropbtn .spread { transform: rotate(180deg); }
-  .p-dropbtn[disabled] { cursor: default; }
-  .p-options {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    background: #f5f1e8;
-    border-radius: 9px;
-    margin-top: 0;
-    transition: max-height 0.28s var(--glide), opacity 0.22s ease, margin-top 0.28s var(--glide);
-  }
-  .p-drop.open .p-options { max-height: 180px; opacity: 1; margin-top: 4px; }
-  .p-opt {
-    display: flex; align-items: center; gap: 8px;
-    width: 100%;
-    font-family: inherit;
-    font-size: 13.5px;
-    color: var(--ink);
-    background: none;
-    border: 0;
-    padding: 7.5px 11px;
-    cursor: pointer;
-    text-align: left;
-    transition: background 0.15s ease;
-  }
-  .p-opt:hover { background: rgba(36, 31, 26, 0.06); }
-  .p-opt .check { margin-left: auto; font-size: 11px; color: #8b8578; opacity: 0; }
-  .p-opt.sel .check { opacity: 1; }
-  .p-hint {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 12px;
-    color: #8b8578;
-    margin: -8px 0 13px 2px;
-    min-height: 15px;
-  }
-  .p-hint svg { flex: none; }
-  .p-hint.bad { color: #b0876f; }
-  .p-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
-  .p-gear { color: #b6ac9c; display: flex; }
-  .p-save {
-    font-family: inherit;
-    border: 0;
-    cursor: pointer;
-    background: linear-gradient(180deg, #2f9fb6, #1e93ab);
-    color: #fff;
-    font-size: 13.5px;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 6.5px 17px;
-    min-width: 74px;
-    transition: transform 0.15s ease, opacity 0.2s ease;
-  }
-  .p-save:active { transform: scale(0.9); }
-  .p-save[disabled] { opacity: 0.45; cursor: default; }
-  .p-save.done {
-    background: linear-gradient(180deg, #3fc463, #2aa84e);
-    animation: btn-pop 0.4s var(--pop);
-  }
-  @keyframes btn-pop {
-    0% { transform: scale(0.8); }
-    55% { transform: scale(1.07); }
-    100% { transform: scale(1); }
-  }
-
-  /* --- Destination windows --- */
-  .dest {
-    width: 302px;
-    background: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.65);
-    border-radius: 13px;
-    box-shadow: 0 18px 44px rgba(10, 50, 60, 0.35);
-    text-align: left;
-    overflow: hidden;
-  }
-  .titlebar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 11px 13px 9px;
-    background: #f6f3ec;
-    border-bottom: 1px solid #e8e2d4;
-  }
-  .tl { width: 11px; height: 11px; border-radius: 50%; }
-  .tl.r { background: #ff5f57; }
-  .tl.y { background: #febc2e; }
-  .tl.g { background: #28c840; }
-  .titlebar .appname {
-    position: absolute;
-    left: 0; right: 0;
-    text-align: center;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #a49a8c;
-    pointer-events: none;
-  }
-
-  /* Reminders */
-  .r-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 12px 16px 4px;
-  }
-  .r-head b { font-size: 18px; font-weight: 700; color: #4a9ef5; letter-spacing: -0.01em; }
-  .r-head span { font-size: 16px; font-weight: 600; color: #c8c0b0; }
-  .r-list { padding: 2px 16px 10px; }
-  .r-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    height: var(--h, 48px);
-    overflow: hidden;
-    opacity: 1;
-    transition: height 0.45s var(--spring), opacity 0.35s ease, transform 0.45s var(--spring);
-  }
-  .r-row .ring {
-    position: relative;
-    width: 17px; height: 17px;
-    padding: 0;
-    background: transparent;
-    border: 1.6px solid #c9c2b2;
-    border-radius: 50%;
-    flex: none;
-    margin-top: 5px;
-    cursor: pointer;
-    transition: border-color 0.15s ease, transform 0.22s var(--pop);
-  }
-  .r-row .ring:hover { border-color: var(--rc, #4a9ef5); }
-  .r-row .ring:active { transform: scale(0.8); }
-  .r-row.done .ring { border-color: var(--rc, #4a9ef5); }
-  .r-row.done .ring::after {
-    content: "";
-    position: absolute;
-    inset: 2.5px;
-    border-radius: 50%;
-    background: var(--rc, #4a9ef5);
-    animation: dot-pop 0.3s var(--pop);
-  }
-  .r-row .ring::before {
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    border: 2px solid var(--rc, #4a9ef5);
-    opacity: 0;
-    transform: scale(0.4);
-    pointer-events: none;
-  }
-  .r-row.done .ring::before { animation: ring-burst 0.5s ease-out; }
-  @keyframes dot-pop {
-    from { transform: scale(0); }
-  }
-  @keyframes ring-burst {
-    0% { opacity: 0.55; transform: scale(0.4); }
-    100% { opacity: 0; transform: scale(1.4); }
-  }
-  .r-body .rt {
-    display: inline-block;
-    max-width: 100%;
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 1.5px;
-    background-position: 0 58%;
-    transition: background-size 0.35s var(--glide), color 0.25s ease;
-  }
-  .r-row.done .rt {
-    color: #a49a8c;
-    background-size: 100% 1.5px;
-  }
-  .r-row.done .rn, .r-row.done .rs { color: #c8c0b0; }
-  .r-body {
-    flex: 1;
-    min-width: 0;
-    padding: 4px 0 7px;
-    border-bottom: 1px solid #f0ebdf;
-  }
-  .r-row:last-child .r-body { border-bottom: 0; }
-  .r-body .rt {
-    font-size: 13.5px;
-    line-height: 1.3;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .r-body .rn {
-    font-size: 11.5px;
-    color: #a49a8c;
-    margin-top: 1px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .r-body .rs { font-size: 11.5px; color: #a49a8c; margin-top: 1px; }
-  .r-row.pending { height: 0; opacity: 0; transform: translateY(-6px); }
-
-  /* Calendar */
-  .c-head { padding: 11px 16px 8px; }
-  .c-head .wd {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    color: #ff453a;
-    text-transform: uppercase;
-  }
-  .c-head .cd { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; margin-top: 1px; }
-  .cal-grid { position: relative; height: 178px; margin: 2px 16px 14px; }
-  .cal-slot {
-    position: absolute; left: 0; right: 0;
-    display: flex; align-items: flex-start; gap: 8px;
-    color: #b9b2a2;
-    font-size: 10.5px;
-    font-weight: 600;
-  }
-  .cal-slot > i { font-style: normal; width: 36px; text-align: right; flex: none; }
-  .cal-slot::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: #eee9dd;
-    margin-top: 6px;
-  }
-  .cal-event {
-    position: absolute;
-    left: 48px; right: 2px;
-    top: 50px;
-    height: 40px;
-    background: #ffe3e0;
-    border-left: 3px solid #ff453a;
-    border-radius: 6px;
-    padding: 5px 10px;
-    transform-origin: top center;
-    opacity: 1;
-    overflow: hidden;
-    transition: transform 0.45s var(--spring), opacity 0.3s ease;
-  }
-  .cal-event.pending { transform: scaleY(0.55) scale(0.94); opacity: 0; }
-  .cal-event b {
-    display: block; font-size: 12.5px; color: #8c1d16;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .cal-event span { font-size: 11px; color: #b0554e; }
-
-  /* Flying note */
-  .chit {
-    position: absolute;
-    display: flex; align-items: center; gap: 7px;
-    background: #ffffff;
-    border-radius: 9px;
-    box-shadow: 0 10px 26px rgba(10, 50, 60, 0.4);
-    padding: 7px 13px;
-    font-size: 13px;
-    font-weight: 600;
-    max-width: 240px;
-    white-space: nowrap;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 6;
-  }
-
-  /* Demo pages: one fixed-size card, pages crossfade in place with the
-     app's exact scale/blur treatment */
-  .pg-stack { position: relative; }
-  .panel .pg {
-    position: absolute; top: 0; left: 0; right: 0;
-    opacity: 0; filter: blur(6px); transform: scale(1.03);
-    pointer-events: none;
-    transition: opacity 0.32s cubic-bezier(0.3, 1.12, 0.5, 1),
-                transform 0.32s cubic-bezier(0.3, 1.12, 0.5, 1),
-                filter 0.32s cubic-bezier(0.3, 1.12, 0.5, 1);
-  }
-  .panel .pg[data-page="capture"]:not(.on) { transform: scale(0.97); }
-  .panel .pg.on { opacity: 1; filter: none; transform: none; pointer-events: auto; }
-  .p-dots { display: flex; justify-content: center; gap: 6px; padding-top: 13px; }
-  .p-dots button {
-    width: 6px; height: 6px; border-radius: 999px; border: 0; padding: 0;
-    background: #d8d2c4; cursor: pointer; transition: all 0.22s var(--glide);
-  }
-  .p-dots button.on { width: 16px; background: #8b8578; }
-  .pp-head {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; color: #8b8578;
-    margin: 2px 0 8px;
-  }
-  .pp-chip {
-    background: #f0ece3; border-radius: 999px; padding: 3px 9px;
-    font-size: 10.5px; letter-spacing: 0; font-weight: 600; color: #6f675c;
-  }
-  .pp-group {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 11.5px; font-weight: 600; color: #6f675c; margin: 9px 0 2px;
-  }
-  .pp-group .gdot { width: 7px; height: 7px; border-radius: 50%; }
-  .pg .r-row { border: 0; padding: 5px 0; }
-  .s-row {
-    display: flex; align-items: center; gap: 8px; font-size: 13px;
-    color: var(--ink); padding: 6px 8px; border-radius: 8px;
-  }
-  .s-row span { margin-left: auto; font-size: 11px; color: #a49a8c; font-variant-numeric: tabular-nums; }
-  .s-row .s-bar { width: 3px; height: 13px; border-radius: 2px; background: var(--teal); opacity: 0; flex: none; }
-  .s-row.cur { background: #f0ece3; font-weight: 600; }
-  .s-row.cur .s-bar { opacity: 1; }
-  .s-row.dim, .s-row.dim span { color: #b6ac9c; }
-  .stage-caption {
-    text-align: center;
-    font-size: 14.5px;
-    color: var(--ink-3);
-    padding: 18px 0 0;
-  }
-  .stage-caption .sep { margin: 0 6px; color: var(--line); }
-  kbd {
-    font-family: inherit;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--ink-2);
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-bottom-width: 2px;
-    border-radius: 6px;
-    padding: 1.5px 6.5px;
-  }
-
-  /* ---------- Features ---------- */
-  .features-head { text-align: center; padding: 88px 0 30px; }
-  .features-head h2 {
-    font-size: clamp(28px, 3.6vw, 36px);
+  .row .text h1, .row .text h2 {
     font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05; letter-spacing: -0.025em;
+    text-wrap: balance; margin-bottom: 18px;
   }
-  .features-head p { font-size: 15.5px; color: var(--ink-2); margin: 0; }
-
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 0 10px;
+  .row .text .hl { color: var(--teal-deep); }
+  .row .text p.body {
+    font-size: 17.5px; line-height: 1.65; color: var(--ink-2);
+    max-width: 48ch; margin-bottom: 20px;
   }
-  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 580px) { .features { grid-template-columns: 1fr; } }
+  .ctas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn-dark {
+    font-size: 14px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 12px 22px; border-radius: 999px; display: inline-flex;
+    align-items: center; gap: 8px;
+    transition: transform 0.2s var(--pop);
+  }
+  .btn-dark:hover { transform: translateY(-2px); }
+  .trial-note { font-size: 12.5px; color: var(--ink-3); }
 
-  .fcard {
-    background: #fffdf8;
+  .stagewrap { margin-top: 42px; }
+  .vtabs {
+    display: flex; gap: 5px;
+    width: fit-content; margin: 0 auto 20px;
+    background: var(--paper-2);
     border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 22px 22px 24px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s var(--glide), box-shadow 0.2s ease;
+    border-radius: 999px; padding: 4px;
   }
-  .fcard:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(36, 31, 26, 0.07); }
+  .vtabs button {
+    font-family: inherit; font-size: 13.5px; font-weight: 600;
+    color: var(--ink-2); background: transparent;
+    border: 0; border-radius: 999px;
+    padding: 8px 20px; cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .vtabs button.on {
+    background: #fff; color: var(--ink);
+    box-shadow: 0 2px 8px rgba(36, 31, 26, 0.12);
+  }
+  .vstage {
+    position: relative;
+    width: min(920px, 100%);
+    margin: 0 auto;
+    aspect-ratio: 1660 / 990;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+  .vstage video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 100%;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    transform: scale(1.06) !important;
+    transform-origin: 50% 100% !important;
+  }
+  .vstage video.on { opacity: 1; }
+  .stage-note {
+    text-align: center;
+    font-size: 12px; color: var(--ink-3);
+    margin-top: 14px;
+  }
+  .shot {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 60px rgba(36, 31, 26, 0.18);
+    background: #1d1a16;
+    line-height: 0;
+  }
+  .shot video {
+    width: 100%; height: auto; display: block;
+    transform: scale(1.06);
+    transform-origin: 50% 42%;
+  }
+  .shot video.nozoom { transform: none; }
+  .row.flip { grid-template-columns: 1.15fr 1fr; }
+  .row.flip .media { order: -1; }
+
+  /* iPhone */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone {
+    position: relative;
+    width: min(295px, 64vw);
+    padding: 5px;
+    background: linear-gradient(145deg, #5a5a60, #2c2c30 38%, #232326 62%, #55555b);
+    border-radius: 50px;
+    box-shadow: 0 26px 44px rgba(36, 31, 26, 0.3);
+    line-height: 0;
+  }
+  .phone img { width: 100%; height: auto; display: block; border-radius: 45px; }
+  /* Side buttons: volume pair on the left, power on the right */
+  .phone::before {
+    content: ""; position: absolute; left: -2.5px; top: 21%;
+    width: 3px; height: 34px; border-radius: 2px;
+    background: #3b3b40;
+    box-shadow: 0 46px 0 #3b3b40;
+  }
+  .phone::after {
+    content: ""; position: absolute; right: -2.5px; top: 26%;
+    width: 3px; height: 62px; border-radius: 2px;
+    background: #3b3b40;
+  }
+
+  /* Features */
+  .features-wrap { padding: 70px 0 40px; }
+  .features-head { text-align: center; margin-bottom: 44px; }
+  .features-head h2 {
+    font-weight: 800;
+    font-size: clamp(32px, 3.8vw, 50px); letter-spacing: -0.025em;
+    margin-bottom: 10px; text-wrap: balance;
+  }
+  .features-head p { color: var(--ink-2); font-size: 17px; }
+  .fgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .fcard {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 22px; padding: 38px 32px;
+    transition: transform 0.3s var(--pop), box-shadow 0.3s ease;
+  }
+  .fcard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(36, 31, 26, 0.12);
+  }
+  .fcard h3 { font-size: 20px; font-weight: 750; margin-bottom: 9px; letter-spacing: -0.01em; }
+  .fcard p { font-size: 15.5px; line-height: 1.62; color: var(--ink-2); }
   .fart {
-    height: 88px;
+    height: 108px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 14px;
+    margin-bottom: 22px;
   }
-  .fcard h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 5px; }
-  .fcard p { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
-
-  /* Card artifacts */
-  .kbd-lg {
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink-2);
-    background: #faf7f0;
-    border: 1px solid var(--line);
-    border-bottom-width: 2.5px;
-    border-radius: 8px;
-    padding: 7px 13px;
+  .lockup { display: flex; align-items: center; gap: 16px; }
+  .lockup .x { font-size: 17px; font-weight: 500; color: var(--ink-3); }
+  .lockup .lk-tile {
+    width: 52px; height: 52px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
   }
-  .kbd-row { display: flex; gap: 7px; }
-
-  .parse { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .chip-in {
-    font-size: 12.5px;
-    background: #f0ece3;
-    border-radius: 8px;
-    padding: 6px 11px;
-    color: var(--ink);
+  .lockup .lk-docket {
+    background: linear-gradient(180deg, #3fc2db, #1e93ab);
+    box-shadow: 0 4px 12px rgba(30, 147, 171, 0.35);
   }
-  .parse svg { color: var(--ink-3); flex: none; }
-  .chip-out {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #14606f;
-    background: var(--teal-soft);
-    border-radius: 8px;
-    padding: 6px 11px;
+  .lockup .lk-canvas {
+    background: #fff; border: 1px solid var(--line);
+    box-shadow: 0 4px 12px rgba(36, 31, 26, 0.1);
+    color: #c43c2b;
   }
-
-  .mini-list { display: flex; flex-direction: column; gap: 5px; width: 170px; }
-  .mini-row {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 12.5px;
-    background: #f7f3ea;
-    border-radius: 8px;
-    padding: 5.5px 11px;
-  }
-  .mini-ring {
-    position: relative;
-    width: 13px; height: 13px;
-    border: 1.5px solid #c8bfae;
-    border-radius: 50%;
-    flex: none;
-  }
-  .mini-row.done .mini-ring { border-color: #4a9ef5; }
-  .mini-row.done .mini-ring::after {
-    content: "";
-    position: absolute;
-    inset: 2px;
-    border-radius: 50%;
-    background: #4a9ef5;
-  }
-  .mini-row.done .txt { text-decoration: line-through; color: #a49a8c; }
-
   .noti {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 11px;
     background: #ffffff;
     border: 1px solid var(--line);
-    border-radius: 13px;
+    border-radius: 14px;
     box-shadow: 0 6px 18px rgba(36, 31, 26, 0.09);
-    padding: 10px 14px 10px 10px;
-    max-width: 100%;
+    padding: 12px 18px 12px 12px;
+    text-align: left;
   }
   .noti-icon {
-    width: 28px; height: 28px;
-    border-radius: 7px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
     background: #ffffff;
     border: 1px solid var(--line);
     box-shadow: 0 1px 3px rgba(36, 31, 26, 0.12);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 3px;
+    gap: 3.5px;
     flex: none;
   }
-  .noti-icon .bar { width: 14px; height: 3px; border-radius: 2px; }
-  .noti b { display: block; font-size: 12px; }
-  .noti span { font-size: 11.5px; color: var(--ink-3); }
-
-  .apps-duo { display: flex; gap: 26px; }
-  .app-big {
-    display: flex; flex-direction: column; align-items: center; gap: 7px;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: var(--ink-2);
+  .noti-icon .bar { width: 16px; height: 3.5px; border-radius: 2px; }
+  .noti b { display: block; font-size: 13px; }
+  .noti span { font-size: 12.5px; color: var(--ink-3); }
+  .cal-mini {
+    width: 190px;
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 13px; overflow: hidden;
+    box-shadow: 0 6px 18px rgba(36, 31, 26, 0.09);
+    text-align: left;
   }
-  .app-big .tile {
-    width: 36px; height: 36px;
-    border-radius: 9px;
-    background: #fff;
-    border: 1px solid var(--line);
-    box-shadow: 0 2px 6px rgba(36, 31, 26, 0.12);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 3.5px;
-    overflow: hidden;
+  .cal-mini .cm-top {
+    background: #ff453a; color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    padding: 5px 12px;
   }
-  .app-big .bar { width: 18px; height: 4px; border-radius: 2.5px; }
-  .app-big .tile.cal { gap: 0; }
-  .app-big .tile.cal .top { width: 100%; height: 10px; background: #ff453a; }
-  .app-big .tile.cal .num { font-size: 14px; font-weight: 700; line-height: 1.5; }
-
-  .phone {
-    width: 48px; height: 82px;
-    border: 2.5px solid #d8cfbd;
-    border-radius: 11px;
-    background: #fffdf8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .cal-mini .cm-body { padding: 10px 12px 12px; }
+  .cal-mini .cm-event {
+    border-left: 3px solid var(--teal);
+    background: rgba(30, 147, 171, 0.1);
+    border-radius: 6px;
+    padding: 6px 9px;
   }
-  .phone .ok {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: #34c759;
-    color: #fff;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .cal-mini .cm-event b { display: block; font-size: 12px; }
+  .cal-mini .cm-event span { font-size: 11px; color: var(--ink-2); }
 
-  /* ---------- Closing / Footer ---------- */
-  .closing { text-align: center; padding: 64px 0 34px; }
-  .closing p { font-size: 16px; color: var(--ink-2); margin: 0 0 20px; }
-
-  footer { position: relative; overflow: hidden; padding-top: 34px; }
-  .foot-meta {
+  .closing {
     text-align: center;
-    font-size: 13px;
-    color: var(--ink-3);
-    padding-bottom: 8px;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 90px 0 70px;
   }
-  .wordmark {
-    font-size: clamp(130px, 24vw, 320px);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 0.72;
-    text-align: center;
-    color: var(--paper-2);
-    text-shadow: 0 -1px 0 rgba(36, 31, 26, 0.04);
-    transform: translateY(18%);
-    user-select: none;
-    pointer-events: none;
+  .closing p.lead {
+    font-weight: 800; font-size: clamp(26px, 3.2vw, 40px);
+    letter-spacing: -0.02em; margin-bottom: 8px; text-wrap: balance;
   }
+  .closing p.sub { color: var(--ink-2); font-size: 15px; margin-bottom: 26px; }
+  footer {
+    padding: 30px 34px 38px; text-align: center;
+    color: var(--ink-3); font-size: 12.5px;
+  }
+  footer .foot-links { margin-top: 8px; }
+  footer .foot-links span { margin: 0 7px; color: var(--line); }
+  footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line); }
+  footer a:hover { color: var(--ink); border-color: var(--ink-3); }
 
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s var(--pop); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 840px) {
+    .row.phone-row .phone-wrap { justify-content: center; }
+    .row, .row.flip { grid-template-columns: 1fr; gap: 28px; min-height: 0; padding: 60px 0; text-align: center; }
+    .row .text p.body { margin-left: auto; margin-right: auto; }
+    .ctas { justify-content: center; }
+    .row.flip .media { order: 0; }
+    .fgrid { grid-template-columns: 1fr; }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .scene, .fl, .r-row, .cal-event, .again, .btn, .nav-cta, .panel,
-    .p-type, .p-type-opt, .p-opt, .p-save, .r-row .ring, .r-body .rt { transition: none; }
-    .p-save.done, .r-row.done .ring::after, .r-row.done .ring::before { animation: none; }
-    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <nav>
-    <div class="brand rise">
-      <div class="brand-mark" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#ffffff"
-             stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-          <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
-        </svg>
-      </div>
-      <span class="brand-name">Docket</span>
+<nav>
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="#fff"
+           stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+        <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
+      </svg>
     </div>
-    <a class="nav-cta springy late" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">Download for Mac</a>
-  </nav>
+    <span class="brand-name">Docket</span>
+  </div>
+  <div class="nav-right">
+    <a class="nav-cta" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">Download for Mac</a>
+  </div>
+</nav>
+
+<div class="wrap">
 
   <section class="hero">
-    <h1><span class="l rise">Assignments, captured</span><br><span class="l rise l2">in <span class="hl">seconds</span>.</span></h1>
+    <p class="hero-kicker rise">Made for Harvard-Westlake students</p>
+    <h1><span class="l rise">Assignments, captured</span><br><span class="l rise l2">in <span class="hl2">seconds</span>.</span></h1>
     <p class="sub soft">
-      Docket is a small menu bar tool made for Harvard-Westlake students. Hit one shortcut, type
+      Docket is a small menu bar tool for students. Hit one shortcut, type
       what's due, and it lands in Apple Reminders or Calendar, synced to your
       iPhone with a nudge the evening before.
     </p>
-    <div class="ctas" id="download">
-      <a class="btn btn-dark springy" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+    <div class="ctas">
+      <a class="btn-dark springy" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
         <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-          <path class="arr" d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
-        <path class="chk" d="M6.8 12.3 L9.2 14.5 L13.4 9.2"/>
+          <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
         </svg>
         Download for Mac
       </a>
-      <a class="btn btn-ghost springy late" href="https://docket.jordanpaya.com/buy">Buy license</a>
+      <a class="btn-ghost springy late" href="https://docket.jordanpaya.com/buy">Buy license</a>
     </div>
-    <p class="soft" style="font-size:13px;color:var(--ink-3);margin-top:14px">Free 14 day trial. No account needed.</p>
+    <p class="req soft">Free 14 day trial. No account needed.</p>
+
+    <div class="stagewrap soft">
+      <div class="vtabs" id="vtabs" role="tablist" aria-label="Docket pages">
+        <button role="tab" aria-selected="false">Schedule</button>
+        <button class="on" role="tab" aria-selected="true">Capture</button>
+        <button role="tab" aria-selected="false">Upcoming</button>
+      </div>
+      <div class="vstage shot" id="vstage">
+        <video muted playsinline preload="metadata" poster="media/poster-schedule.jpg?v=9"
+               aria-label="Screen recording of the Schedule page" src="media/schedule-tab.mp4?v=9"></video>
+        <video class="on" muted playsinline preload="auto" poster="media/poster-capture.jpg?v=9"
+               aria-label="Screen recording of capturing an assignment" src="media/capture-tab.mp4?v=9"></video>
+        <video muted playsinline preload="metadata" poster="media/poster-upcoming.jpg?v=9"
+               aria-label="Screen recording of the Upcoming page" src="media/upcoming-tab.mp4?v=9"></video>
+      </div>
+    </div>
   </section>
 
-  <section class="stage-outer">
-    <div class="stage" id="stage">
-      <div class="scenes">
+  <section class="row flip phone-row reveal">
+    <div class="text">
+      <p class="kicker">Zero new apps</p>
+      <h2>In your <span class="hl">pocket</span>, automatically.</h2>
+      <p class="body">Docket saves into Apple's own Reminders and Calendar, so
+         everything syncs over iCloud to the phone in your pocket. Alerts arrive
+         the night before it's due. Your work is yours, in your apps, forever.</p>
+    </div>
+    <div class="media">
+      <div class="phone-wrap">
+        <div class="phone">
+          <img src="media/iphone2.png"
+               alt="Apple Reminders on iPhone showing classes synced from Docket" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="scene">
-          <div class="fl panel-wrap">
-            <div class="panel">
-              <div class="pg-stack" id="pgStack">
-              <div class="pg on" data-page="capture">
-              <div class="p-type-row">
-                <button type="button" class="p-type" id="typeBtn" aria-expanded="false">
-                  <span id="typeName">ASSIGNMENT</span>
-                  <span class="chev">▾</span>
-                </button>
-                <div class="p-type-opts" id="typeOpts"></div>
-              </div>
-              <input class="p-input" data-title value="Read chapters 4–6" placeholder="What's due?" aria-label="Title">
-              <p class="p-label" data-picker-label>CLASS</p>
-              <div class="p-drop" data-drop>
-                <button type="button" class="p-dropbtn" data-dropbtn aria-expanded="false" aria-label="Destination list">
-                  <span class="dot" data-sel-dot style="background:#4a9ef5"></span>
-                  <span data-sel-name>History 101</span>
-                  <span class="spread">▾</span>
-                </button>
-                <div class="p-options" data-options></div>
-              </div>
-              <p class="p-label" data-due-label>DUE</p>
-              <input class="p-input" data-due value="thu 8pm" placeholder="thu 8pm, tomorrow 9am…" aria-label="Due date">
-              <p class="p-hint" data-hint></p>
-              <p class="p-label">NOTES</p>
-              <input class="p-input" data-notes placeholder="Optional details" aria-label="Notes">
-              <div class="p-foot">
-                <span class="p-gear" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor"
-                       stroke-width="1.6" stroke-linecap="round">
-                    <circle cx="10" cy="10" r="2.6"/>
-                    <path d="M10 3.2 v2 M10 14.8 v2 M3.2 10 h2 M14.8 10 h2 M5.2 5.2 l1.4 1.4 M13.4 13.4 l1.4 1.4 M14.8 5.2 l-1.4 1.4 M6.6 13.4 l-1.4 1.4"/>
-                  </svg>
-                </span>
-                <button class="p-save" data-save>Save</button>
-              </div>
-              </div>
-
-              <div class="pg" data-page="upcoming">
-                <div class="pp-head"><span>UPCOMING</span><span>4</span></div>
-                <div class="pp-group"><span class="gdot" style="background:#34c759"></span>Chemistry</div>
-                <div class="r-row" style="--rc:#34c759">
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt">Lab writeup</div>
-                    <div class="rs">Today, 8:00 PM</div>
-                  </div>
-                </div>
-                <div class="r-row" style="--rc:#34c759">
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt">Problem set 12</div>
-                    <div class="rs">Friday, 8:00 AM</div>
-                  </div>
-                </div>
-                <div class="pp-group"><span class="gdot" style="background:#4a9ef5"></span>History 101</div>
-                <div class="r-row">
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt">Read chapters 4–6</div>
-                    <div class="rs">Thursday, 8:00 PM</div>
-                  </div>
-                </div>
-                <div class="r-row">
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt">Essay outline</div>
-                    <div class="rs">Monday, 8:00 AM</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pg" data-page="schedule">
-                <div class="pp-head"><span>DAY 4</span><span class="pp-chip">Thu, Aug 27</span></div>
-                <div class="s-row dim"><i class="s-bar"></i>Photography<span>8:00 – 9:15</span></div>
-                <div class="s-row dim"><i class="s-bar"></i>Office Hours<span>9:20 – 10:00</span></div>
-                <div class="s-row dim"><i class="s-bar"></i>Modern World<span>10:00 – 11:15</span></div>
-                <div class="s-row dim"><i class="s-bar"></i>Lunch<span>11:15 – 12:15</span></div>
-                <div class="s-row cur"><i class="s-bar"></i>Spanish<span>12:15 – 1:30</span></div>
-                <div class="s-row"><i class="s-bar"></i>Break<span>1:30 – 1:45</span></div>
-                <div class="s-row"><i class="s-bar"></i>Chemistry<span>1:45 – 3:00</span></div>
-              </div>
-
-              </div>
-
-              <div class="p-dots" id="pDots" aria-label="Pages">
-                <button class="on" aria-label="Capture"></button>
-                <button aria-label="Upcoming"></button>
-                <button aria-label="Schedule"></button>
-              </div>
+  <section class="features-wrap reveal">
+    <div class="features-head">
+      <h2>Feature packed, friction free.</h2>
+      <p>Small app, long reach.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcard">
+        <div class="fart" aria-hidden="true">
+          <div class="lockup">
+            <div class="lk-tile lk-docket">
+              <svg width="26" height="26" viewBox="0 0 20 20" fill="none" stroke="#fff"
+                   stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
+                <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
+              </svg>
+            </div>
+            <span class="x">×</span>
+            <div class="lk-tile lk-canvas">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="4" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="6.3" cy="6.3" r="1.5"/><circle cx="17.7" cy="6.3" r="1.5"/><circle cx="6.3" cy="17.7" r="1.5"/><circle cx="17.7" cy="17.7" r="1.5"/></svg>
             </div>
           </div>
-
-          <div class="fl dest-wrap">
-            <div class="dest" data-dest-kind="reminders">
-              <div class="titlebar">
-                <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
-                <span class="appname">Reminders</span>
-              </div>
-              <div class="r-head">
-                <b data-list-name>History 101</b>
-                <span data-count>2</span>
-              </div>
-              <div class="r-list">
-                <div class="r-row pending" data-item>
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt" data-out-title>Read chapters 4–6</div>
-                    <div class="rn" data-out-notes hidden></div>
-                    <div class="rs" data-out-sub>Thursday, 8:00 PM</div>
-                  </div>
-                </div>
-                <div class="r-row">
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt">Essay outline</div>
-                    <div class="rs">Tomorrow, 8:00 PM</div>
-                  </div>
-                </div>
-                <div class="r-row">
-                  <button type="button" class="ring" aria-label="Mark complete"></button>
-                  <div class="r-body">
-                    <div class="rt">Reading response #4</div>
-                    <div class="rs">Monday, 8:00 PM</div>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <h3>Connected to Canvas</h3>
+        <p>Assignments pull themselves in, due dates included. Submit on Canvas and Docket checks them off for you.</p>
+      </div>
+      <div class="fcard">
+        <div class="fart" aria-hidden="true">
+          <div class="noti">
+            <div class="noti-icon">
+              <span class="bar" style="background:#ff9f0a"></span>
+              <span class="bar" style="background:#4a9ef5"></span>
+              <span class="bar" style="background:#34c759"></span>
             </div>
-
-            <div class="dest" data-dest-kind="calendar" hidden>
-              <div class="titlebar">
-                <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
-                <span class="appname">Calendar</span>
-              </div>
-              <div class="c-head">
-                <div class="wd" data-cal-wd>Friday</div>
-                <div class="cd" data-cal-date>July 31</div>
-              </div>
-              <div class="cal-grid">
-                <div class="cal-slot" style="top:0"><i data-slot>8 AM</i></div>
-                <div class="cal-slot" style="top:50px"><i data-slot>9 AM</i></div>
-                <div class="cal-slot" style="top:100px"><i data-slot>10 AM</i></div>
-                <div class="cal-slot" style="top:150px"><i data-slot>11 AM</i></div>
-                <div class="cal-event pending" data-item>
-                  <b data-out-title>Unit 3 derivatives test</b>
-                  <span data-out-sub>9:00 – 10:00 AM</span>
-                </div>
+            <div>
+              <b>Reminders</b>
+              <span>Essay outline, due tomorrow</span>
+            </div>
+          </div>
+        </div>
+        <h3>Reminded the night before</h3>
+        <p>Every assignment nudges you the evening before it's due, straight from Apple Reminders on all your devices.</p>
+      </div>
+      <div class="fcard">
+        <div class="fart" aria-hidden="true">
+          <div class="cal-mini">
+            <div class="cm-top">FRIDAY</div>
+            <div class="cm-body">
+              <div class="cm-event">
+                <b>Unit 3 chem test</b>
+                <span>9:00 – 10:00 AM</span>
               </div>
             </div>
           </div>
         </div>
-
+        <h3>Tests go on the calendar</h3>
+        <p>Quizzes, tests, and meetings save as Calendar events with real start and end times, so your week shows its shape.</p>
       </div>
-
-      <button class="again" id="again">↺ &nbsp;Capture another</button>
-    </div>
-
-    <p class="stage-caption">
-      Try it. Click the type to switch, tap the dots for pages, then hit Save
-      <span class="sep">·</span>
-      In the real app it opens anywhere with <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>Space</kbd>
-    </p>
-  </section>
-
-  <div class="features-head">
-    <h2>Everything in its place.</h2>
-    <p>Capture once. Docket handles the filing.</p>
-  </div>
-
-  <section class="features">
-    <div class="fcard">
-      <div class="fart">
-        <div class="kbd-row" aria-hidden="true">
-          <span class="kbd-lg">⇧</span><span class="kbd-lg">⌘</span><span class="kbd-lg">Space</span>
-        </div>
-      </div>
-      <h3>Summon it anywhere</h3>
-      <p>One shortcut, over any app.</p>
-    </div>
-
-    <div class="fcard">
-      <div class="fart">
-        <div class="parse" aria-hidden="true">
-          <span class="chip-in">chem hw friday</span>
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 10 h11 M11 5.5 L15.5 10 L11 14.5"/>
-          </svg>
-          <span class="chip-out">Chemistry &middot; Fri 8:00 AM</span>
-        </div>
-      </div>
-      <h3>Say it in one line</h3>
-      <p>Class, date, and title, parsed as you type.</p>
-    </div>
-
-    <div class="fcard">
-      <div class="fart">
-        <div class="mini-list" aria-hidden="true">
-          <div class="mini-row done"><span class="mini-ring"></span><span class="txt">Essay outline</span></div>
-          <div class="mini-row"><span class="mini-ring"></span>Read chapters 4–6</div>
-          <div class="mini-row"><span class="mini-ring"></span>Problem set 12</div>
-        </div>
-      </div>
-      <h3>Swipe to see what's due</h3>
-      <p>Everything due, grouped by class. Check it off right there.</p>
-    </div>
-
-    <div class="fcard">
-      <div class="fart">
-        <div class="mini-list" aria-hidden="true">
-          <div class="mini-row" style="color:var(--ink)"><span class="mini-ring" style="border-color:var(--teal);background:var(--teal)"></span>Chemistry<span style="margin-left:auto;font-size:10px;color:var(--ink-3)">12:15 – 1:30</span></div>
-          <div class="mini-row"><span class="mini-ring"></span>Break<span style="margin-left:auto;font-size:10px;color:var(--ink-3)">1:30 – 1:45</span></div>
-          <div class="mini-row"><span class="mini-ring"></span>Spanish<span style="margin-left:auto;font-size:10px;color:var(--ink-3)">1:45 – 3:00</span></div>
-        </div>
-      </div>
-      <h3>Knows what period it is</h3>
-      <p>The HW rotation, bell times, and late starts, built in.</p>
-    </div>
-
-    <div class="fcard">
-      <div class="fart">
-        <div style="display:flex;align-items:center;justify-content:center;gap:16px" aria-hidden="true">
-          <span style="width:46px;height:46px;border-radius:12px;background:linear-gradient(180deg,#3fc2db,#1e93ab);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(30,147,171,.35)">
-            <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="#ffffff"
-                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-              <path d="M10 3.5 v5.5 M7.8 7 L10 9.3 L12.2 7"/>
-            </svg>
-          </span>
-          <span style="font-size:17px;font-weight:500;color:var(--ink-3)">&times;</span>
-          <span style="width:46px;height:46px;border-radius:12px;background:#ffffff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(36,31,26,.08)">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="#c43c2b"><circle cx="20.20" cy="12.00" r="2.35"/><circle cx="17.80" cy="17.80" r="2.35"/><circle cx="12.00" cy="20.20" r="2.35"/><circle cx="6.20" cy="17.80" r="2.35"/><circle cx="3.80" cy="12.00" r="2.35"/><circle cx="6.20" cy="6.20" r="2.35"/><circle cx="12.00" cy="3.80" r="2.35"/><circle cx="17.80" cy="6.20" r="2.35"/><circle cx="16.71" cy="13.95" r="1.15"/><circle cx="13.95" cy="16.71" r="1.15"/><circle cx="10.05" cy="16.71" r="1.15"/><circle cx="7.29" cy="13.95" r="1.15"/><circle cx="7.29" cy="10.05" r="1.15"/><circle cx="10.05" cy="7.29" r="1.15"/><circle cx="13.95" cy="7.29" r="1.15"/><circle cx="16.71" cy="10.05" r="1.15"/></svg>
-          </span>
-        </div>
-      </div>
-      <h3>Connected to Canvas</h3>
-      <p>Assignments show up on their own, due dates included.</p>
-    </div>
-
-    <div class="fcard">
-      <div class="fart">
-        <div class="phone" aria-hidden="true">
-          <div class="ok">
-            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor"
-                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 10.5 L8.5 15 L16 5.5"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <h3>Shows up on your iPhone</h3>
-      <p>Your reminders sync over iCloud. No phone app needed.</p>
     </div>
   </section>
 
-  <section class="closing">
-    <p>Underneath it's just Apple's Reminders and Calendar. Docket makes them fast.</p>
-    <a class="btn btn-dark" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
+  <section class="closing reveal">
+    <p class="lead">Underneath it's just Apple's Reminders and Calendar.</p>
+    <p class="sub">Docket makes them fast.</p>
+    <a class="btn-dark" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">
       <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor"
            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M3.5 10.5 v4 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2-2 v-4"/>
-        <path class="arr" d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
-        <path class="chk" d="M6.8 12.3 L9.2 14.5 L13.4 9.2"/>
+        <path d="M10 3 v6 M7.5 6.5 L10 9 L12.5 6.5"/>
       </svg>
       Download for Mac
     </a>
   </section>
+
 </div>
 
 <footer>
-  <p class="foot-meta">Made for students by Jordan Paya · macOS 14+</p>
-  <div class="wordmark" aria-hidden="true">Docket</div>
+  <p>Made for students by Jordan Paya · macOS 14+</p>
+  <p class="foot-links">
+    <a href="https://docket.jordanpaya.com/buy">Buy a license</a>
+    <span>·</span>
+    <a href="mailto:jordanhpaya22@gmail.com?subject=Docket%20feedback">Feedback</a>
+  </p>
 </footer>
 
 <script>
 (function () {
-  const stage = document.getElementById("stage");
-  const again = document.getElementById("again");
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const CLASSES = [
-    { n: "History 101", c: "#4a9ef5" },
-    { n: "Math 3B", c: "#ff9f0a" },
-    { n: "Bio 110", c: "#34c759" },
-    { n: "Spanish II", c: "#5e5ce6" },
-  ];
-  const CALENDARS = [
-    { n: "Tests", c: "#ff453a" },
-    { n: "Quizzes", c: "#ff9f0a" },
-    { n: "Meetings", c: "#4a9ef5" },
-  ];
-  const TYPES = {
-    assignment: { label: "ASSIGNMENT", picker: "CLASS", due: "DUE", ph: "What's due?", title: "Read chapters 4–6", when: "thu 8pm", dest: "reminders" },
-    quiz: { label: "QUIZ", picker: "CALENDAR", due: "WHEN", ph: "What's the quiz on?", title: "Chapter 5 vocab quiz", when: "wed 10am", dest: "calendar", cal: "Quizzes" },
-    test: { label: "TEST", picker: "CALENDAR", due: "WHEN", ph: "What's the test?", title: "Unit 3 derivatives test", when: "fri 9am", dest: "calendar", cal: "Tests" },
-    meeting: { label: "MEETING", picker: "CALENDAR", due: "WHEN", ph: "What's happening?", title: "Robotics club meeting", when: "tue 4pm", dest: "calendar", cal: "Meetings" },
-  };
-  const ORDER = ["assignment", "quiz", "test", "meeting"];
-
-  const scene = document.querySelector(".scene");
-  const q = (s) => scene.querySelector(s);
-  const panel = q(".panel");
-  const typeBtn = document.getElementById("typeBtn");
-  const typeName = document.getElementById("typeName");
-  const typeOpts = document.getElementById("typeOpts");
-  const title = q("[data-title]");
-  const due = q("[data-due]");
-  const notes = q("[data-notes]");
-  const hint = q("[data-hint]");
-  const saveBtn = q("[data-save]");
-  const pickerLabel = q("[data-picker-label]");
-  const dueLabel = q("[data-due-label]");
-  const drop = q("[data-drop]");
-  const dropBtn = q("[data-dropbtn]");
-  const selDot = q("[data-sel-dot]");
-  const selName = q("[data-sel-name]");
-  const options = q("[data-options]");
-  const destR = q('[data-dest-kind="reminders"]');
-  const destC = q('[data-dest-kind="calendar"]');
-
-  let type = "assignment";
-  let classSel = CLASSES[0];
-  let calSel = CALENDARS[0];
-  let saved = false;
-  let animating = false;
-  let hintOk = false;
-
-  const popEase = "cubic-bezier(0.34, 1.8, 0.5, 1)";
-  const pop = (el) => {
-    if (reduced) return;
-    el.animate(
-      [{ transform: "scale(0.88)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }],
-      { duration: 280, easing: popEase });
-  };
-
-  const currentSel = () => (type === "assignment" ? classSel : calSel);
-  const currentDest = () => (TYPES[type].dest === "reminders" ? destR : destC);
-  const currentItem = () => currentDest().querySelector("[data-item]");
-
-  /* --- Tiny natural-language date parser, mirroring the app's habit --- */
-  const DAYS = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
-  function parseDue(text) {
-    const t = text.trim().toLowerCase();
-    if (!t) return null;
-    let day = null;
-    for (const k in DAYS) {
-      if (new RegExp("\\b" + k + "[a-z]*\\b").test(t)) { day = DAYS[k]; break; }
+  // Reveal sections as they arrive
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
     }
-    let rel = null;
-    if (/\btomorrow\b/.test(t)) rel = 1;
-    else if (/\btoday\b/.test(t) || /\btonight\b/.test(t)) rel = 0;
-    const tm = t.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/);
-    if (day === null && rel === null && !tm) return null;
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-    const d = new Date();
-    d.setSeconds(0, 0);
-    let hour = 20, minute = 0; // day-only defaults to 8 PM, like homework
-    if (tm) {
-      hour = parseInt(tm[1], 10);
-      minute = tm[2] ? parseInt(tm[2], 10) : 0;
-      if (hour > 23 || minute > 59) return null;
-      if (tm[3] === "pm" && hour < 12) hour += 12;
-      if (tm[3] === "am" && hour === 12) hour = 0;
-      if (!tm[3] && hour >= 1 && hour <= 6) hour += 12; // bare "3" reads as 3 PM
-    }
-    if (rel !== null) {
-      d.setDate(d.getDate() + rel);
-    } else if (day !== null) {
-      let ahead = (day - d.getDay() + 7) % 7;
-      if (ahead === 0) ahead = 7;
-      d.setDate(d.getDate() + ahead);
-    }
-    d.setHours(hour, minute);
-    return d;
-  }
-
-  const fmtTime = (d) =>
-    new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(d);
-  const fmtDay = (d) =>
-    new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(d);
-  const fmtMD = (d) =>
-    new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(d);
-  const fmtHourLabel = (h) => {
-    const hh = ((h % 24) + 24) % 24;
-    const base = hh % 12 === 0 ? 12 : hh % 12;
-    return base + " " + (hh < 12 ? "AM" : "PM");
-  };
-
-  const okIcon = '<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2.5"/><line x1="3" y1="8.2" x2="17" y2="8.2"/></svg>';
-  const badIcon = '<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6.5 v4 M10 13.6 v.1"/></svg>';
-
-  function refresh() {
-    const when = parseDue(due.value);
-    if (!due.value.trim()) {
-      hint.innerHTML = "";
-      hint.classList.remove("bad");
-    } else if (when) {
-      hint.innerHTML = okIcon + " " + fmtDay(when) + " · " + fmtTime(when).replace(" ", " ");
-      hint.classList.remove("bad");
-      if (!hintOk) pop(hint);
-    } else {
-      hint.innerHTML = badIcon + " Couldn't read that date";
-      hint.classList.add("bad");
-    }
-    hintOk = !!when && !!due.value.trim();
-    if (!saved) saveBtn.disabled = !title.value.trim() || !when;
-    return when;
-  }
-
-  /* --- Class / calendar dropdown --- */
-  function closeDrop() {
-    drop.classList.remove("open");
-    dropBtn.setAttribute("aria-expanded", "false");
-  }
-
-  function applySel() {
-    const s = currentSel();
-    selDot.style.background = s.c;
-    selName.textContent = s.n;
-  }
-
-  function buildOptions() {
-    options.innerHTML = "";
-    const list = type === "assignment" ? CLASSES : CALENDARS;
-    list.forEach((opt) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "p-opt" + (currentSel() === opt ? " sel" : "");
-      const dot = document.createElement("span");
-      dot.className = "dot";
-      dot.style.background = opt.c;
-      const name = document.createElement("span");
-      name.textContent = opt.n;
-      const check = document.createElement("span");
-      check.className = "check";
-      check.textContent = "✓";
-      b.append(dot, name, check);
-      b.addEventListener("click", () => {
-        if (type === "assignment") classSel = opt; else calSel = opt;
-        applySel();
-        options.querySelectorAll(".p-opt").forEach((o) => o.classList.remove("sel"));
-        b.classList.add("sel");
-        closeDrop();
-      });
-      options.appendChild(b);
+  // Tabbed stage: click to switch; each clip ends by handing off to the next.
+  const stageVids = [...document.querySelectorAll("#vstage video")];
+  const tabs = [...document.querySelectorAll("#vtabs button")];
+  let cur = 1;
+  let stageVisible = true;
+  function show(i) {
+    cur = (i + stageVids.length) % stageVids.length;
+    stageVids.forEach((v, k) => {
+      v.classList.toggle("on", k === cur);
+      if (k === cur) {
+        v.currentTime = 0;
+        if (stageVisible) v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+    tabs.forEach((t, k) => {
+      t.classList.toggle("on", k === cur);
+      t.setAttribute("aria-selected", k === cur ? "true" : "false");
     });
   }
-
-  dropBtn.addEventListener("click", () => {
-    if (dropBtn.disabled) return;
-    const open = drop.classList.toggle("open");
-    dropBtn.setAttribute("aria-expanded", String(open));
-  });
-
-  /* --- Type picker: the caption row, like the real app --- */
-  function setTypeOpen(open) {
-    typeBtn.classList.toggle("open", open);
-    typeBtn.setAttribute("aria-expanded", String(open));
-    typeOpts.classList.toggle("open", open);
-  }
-
-  function buildTypeOpts() {
-    typeOpts.innerHTML = "";
-    ORDER.filter((t) => t !== type).forEach((t) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "p-type-opt";
-      b.textContent = TYPES[t].label;
-      b.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setType(t);
-      });
-      typeOpts.appendChild(b);
-    });
-  }
-
-  typeBtn.addEventListener("click", () => {
-    if (typeBtn.disabled) return;
-    setTypeOpen(!typeOpts.classList.contains("open"));
-  });
-
-  function setType(t) {
-    const prev = TYPES[type];
-    // Swap the sample text only if the user hasn't edited it.
-    if (title.value.trim() === prev.title) title.value = TYPES[t].title;
-    if (due.value.trim() === prev.when) due.value = TYPES[t].when;
-    type = t;
-    const cfg = TYPES[t];
-    typeName.textContent = cfg.label;
-    pop(typeBtn);
-    title.placeholder = cfg.ph;
-    pickerLabel.textContent = cfg.picker;
-    dueLabel.textContent = cfg.due;
-    // The calendar named after the type wins, like in the app.
-    if (t !== "assignment") {
-      calSel = CALENDARS.find((c) => c.n === cfg.cal) || CALENDARS[0];
+  tabs.forEach((t, k) => t.addEventListener("click", () => show(k)));
+  stageVids.forEach((v) => v.addEventListener("ended", () => show(cur + 1)));
+  const sio = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      stageVisible = e.isIntersecting;
+      const v = stageVids[cur];
+      if (stageVisible) v.play().catch(() => {});
+      else v.pause();
     }
-    applySel();
-    buildOptions();
-    buildTypeOpts();
-    setTypeOpen(false);
-    closeDrop();
-    refresh();
+  }, { threshold: 0.2 });
+  sio.observe(document.getElementById("vstage"));
+  stageVids[cur].play().catch(() => {});
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("video").forEach((v) => { v.pause(); v.autoplay = false; });
   }
-
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("[data-drop]")) closeDrop();
-    if (!e.target.closest(".p-type-row")) setTypeOpen(false);
-  });
-
-  /* --- Save: slide over, then the note flies in --- */
-  function fillDestination(when) {
-    const s = currentSel();
-    const isReminder = TYPES[type].dest === "reminders";
-    destR.hidden = !isReminder;
-    destC.hidden = isReminder;
-    const dest = currentDest();
-    dest.querySelector("[data-out-title]").textContent = title.value.trim();
-    if (isReminder) {
-      const listName = destR.querySelector("[data-list-name]");
-      listName.textContent = s.n;
-      listName.style.color = s.c;
-      destR.style.setProperty("--rc", s.c);
-      const note = notes.value.trim();
-      const outNotes = destR.querySelector("[data-out-notes]");
-      outNotes.hidden = !note;
-      outNotes.textContent = note;
-      destR.querySelector("[data-out-sub]").textContent = fmtDay(when) + ", " + fmtTime(when);
-      currentItem().style.setProperty("--h", note ? "63px" : "48px");
-    } else {
-      const end = new Date(when.getTime() + 60 * 60 * 1000);
-      destC.querySelector("[data-out-sub]").textContent = fmtTime(when) + " – " + fmtTime(end);
-      destC.querySelector("[data-cal-wd]").textContent = fmtDay(when);
-      destC.querySelector("[data-cal-date]").textContent = fmtMD(when);
-      destC.querySelectorAll("[data-slot]").forEach((el, i) => {
-        el.textContent = fmtHourLabel(when.getHours() - 1 + i);
-      });
-      const item = currentItem();
-      item.style.borderLeftColor = s.c;
-      item.style.background = `color-mix(in srgb, ${s.c} 15%, white)`;
-      item.querySelector("[data-out-title]").style.color = `color-mix(in srgb, ${s.c} 62%, black)`;
-      item.querySelector("[data-out-sub]").style.color = `color-mix(in srgb, ${s.c} 48%, black)`;
-    }
-  }
-
-  function setInputs(enabled) {
-    [title, due, notes, dropBtn, typeBtn].forEach((i) => { i.disabled = !enabled; });
-    if (!enabled) { closeDrop(); setTypeOpen(false); }
-  }
-
-  function flyNote(done) {
-    const chit = document.createElement("div");
-    chit.className = "chit";
-    const label = document.createElement("span");
-    label.textContent = title.value.trim();
-    const dot = document.createElement("span");
-    dot.className = "dot";
-    dot.style.background = currentSel().c;
-    chit.append(dot, label);
-    stage.appendChild(chit);
-
-    const sRect = stage.getBoundingClientRect();
-    const from = title.getBoundingClientRect();
-    const to = currentItem().getBoundingClientRect();
-    chit.style.left = (from.left - sRect.left) + "px";
-    chit.style.top = (from.top - sRect.top) + "px";
-    const dx = to.left - from.left;
-    const dy = to.top - from.top;
-
-    const flight = chit.animate([
-      { transform: "translate(0, 0) scale(1)", opacity: 1 },
-      { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 22}px) scale(0.99)`, opacity: 1, offset: 0.55 },
-      { transform: `translate(${dx}px, ${dy}px) scale(0.9)`, opacity: 0.2 },
-    ], { duration: 520, easing: "cubic-bezier(0.32, 0.72, 0, 1)", fill: "forwards" });
-    flight.onfinish = () => { chit.remove(); done(); };
-  }
-
-  function land() {
-    currentItem().classList.remove("pending");
-    const count = destR.querySelector("[data-count]");
-    if (TYPES[type].dest === "reminders") count.textContent = "3";
-    saveBtn.textContent = "Saved ✓";
-    saveBtn.classList.add("done");
-    again.classList.add("show");
-    animating = false;
-  }
-
-  function doSave() {
-    if (animating || saved) return;
-    const when = refresh();
-    if (!when || !title.value.trim()) return;
-    animating = true;
-    saved = true;
-    fillDestination(when);
-    currentItem().classList.add("pending");
-    setInputs(false);
-
-    panel.classList.add("pressed");
-    setTimeout(() => panel.classList.remove("pressed"), 180);
-
-    if (reduced) {
-      scene.classList.add("saved");
-      land();
-      return;
-    }
-    // 1 · popup slides left, the app slides in beside it
-    setTimeout(() => scene.classList.add("saved"), 170);
-    // 2 · the note lifts out and flies into the app
-    setTimeout(() => flyNote(land), 640);
-  }
-
-  again.addEventListener("click", () => {
-    setPage(0);
-    if (animating || !saved) return;
-    saved = false;
-    again.classList.remove("show");
-    scene.classList.remove("saved");
-    currentItem().classList.add("pending");
-    destR.querySelector("[data-count]").textContent = "2";
-    saveBtn.textContent = "Save";
-    saveBtn.classList.remove("done");
-    setInputs(true);
-    refresh();
-    setTimeout(() => title.focus({ preventScroll: true }), reduced ? 0 : 380);
-  });
-
-  [title, due, notes].forEach((input) => {
-    input.addEventListener("input", refresh);
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") doSave();
-    });
-  });
-  saveBtn.addEventListener("click", doSave);
-  // Pages cycle like the app: same tug physics, same fixed card.
-  const panelEl = document.querySelector(".panel");
-  const pgStack = document.getElementById("pgStack");
-  const pDots = document.getElementById("pDots");
-  const pageOrder = ["capture", "upcoming", "schedule"];
-  const pgEls = pageOrder.map((n) => panelEl.querySelector('.pg[data-page="' + n + '"]'));
-  let pageIdx = 0;
-
-  // The capture page sets the card's one true height; the others live in it.
-  function sizeStack() { pgStack.style.height = pgEls[0].offsetHeight + "px"; }
-  sizeStack();
-  window.addEventListener("load", sizeStack);
-  window.addEventListener("resize", sizeStack);
-
-  function setPage(i) {
-    pageIdx = (i + pageOrder.length) % pageOrder.length;
-    pgEls.forEach((p, k) => p.classList.toggle("on", k === pageIdx));
-    [...pDots.children].forEach((d, k) => d.classList.toggle("on", k === pageIdx));
-  }
-  [...pDots.children].forEach((d, k) => d.addEventListener("click", () => setPage(k)));
-
-
-  panelEl.querySelectorAll(".pg .ring").forEach((ring) => {
-    ring.addEventListener("click", () => ring.closest(".r-row").classList.toggle("done"));
-  });
-
-
-  destR.querySelector("[data-item]").classList.add("pending");
-  destC.querySelector("[data-item]").classList.add("pending");
-  // Reminders circles complete on click, like the real app.
-  destR.querySelectorAll(".r-row").forEach((row) => {
-    row.querySelector(".ring").addEventListener("click", () => {
-      row.classList.toggle("done");
-    });
-  });
-  buildOptions();
-  buildTypeOpts();
-  applySel();
-  refresh();
 })();
 </script>
-
 </body>
 </html>
