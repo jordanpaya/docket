@@ -557,7 +557,8 @@
   const videos = [...document.querySelectorAll("video[data-lazy]")];
   const ratios = new Map();
   function conduct() {
-    let best = null, bestRatio = 0.35;
+    // A clip earns playback only once it's properly on screen
+    let best = null, bestRatio = 0.6;
     for (const v of videos) {
       const r = ratios.get(v) || 0;
       if (r > bestRatio) { best = v; bestRatio = r; }
