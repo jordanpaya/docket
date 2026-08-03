@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "1.3",
   "url": "https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip",
-  "notes": "Docket now knows the HW schedule. A new Schedule page tracks the 6 day rotation, imports your schedule PDF, and catches late starts from hw.com. Plus swipeable pages with a default page setting, a mini calendar due picker, and smarter time parsing."
+  "notes": "Click any class on the schedule page for teacher and room details, watch a live countdown to your next period, and optionally see what's next right on your lock screen. Also fixes the Calendar permission prompt on macOS 26 and adds a helper that moves Docket out of Downloads so permissions stick."
 }
