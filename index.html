@@ -61,6 +61,11 @@
   }
   .brand-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
   .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-link {
+    font-size: 13px; font-weight: 600; color: var(--ink-2);
+    text-decoration: none; margin-left: 18px;
+  }
+  .nav-link:hover { color: var(--ink); }
   .nav-ghost {
     font-size: 13px; font-weight: 600; color: var(--ink-2);
     text-decoration: none; padding: 8px 14px; border-radius: 999px;
@@ -398,6 +403,7 @@
 <body>
 
 <nav>
+  <div style="display:flex; align-items:center;">
   <div class="brand">
     <div class="brand-mark" aria-hidden="true">
       <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="#fff"
@@ -408,8 +414,9 @@
     </div>
     <span class="brand-name">Docket</span>
   </div>
+  <a class="nav-link" href="/mcp/">MCP for Claude</a>
+  </div>
   <div class="nav-right">
-    <a class="nav-ghost" href="/mcp/">MCP for Claude</a>
     <a class="nav-cta" href="https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip">Download for Mac</a>
   </div>
 </nav>
