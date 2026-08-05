@@ -150,6 +150,21 @@
     margin: 10px 0 18px;
   }
   pre .c { color: #7d99a0; }
+  .copywrap { position: relative; }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    font-family: inherit;
+    font-size: 11.5px; font-weight: 600;
+    color: var(--dark-ink);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    padding: 4px 11px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { background: #2f6f7d; border-color: transparent; }
 
   .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
   .tool-card {
@@ -214,17 +229,21 @@
   </div>
 
   <h2>Set up</h2>
-  <p class="body">Docket 1.4 and later includes the server inside the app. For <strong>Claude Code</strong>, one command:</p>
-  <pre>claude mcp add docket -- /Applications/Docket.app/Contents/MacOS/docket-mcp</pre>
-  <p class="body">For <strong>Claude Desktop</strong>, add this to <code class="inline">claude_desktop_config.json</code>:</p>
-  <pre>{
-  "mcpServers": {
-    "docket": {
-      "command": "/Applications/Docket.app/Contents/MacOS/docket-mcp"
-    }
-  }
-}</pre>
-  <p class="body">The first tool call asks for Reminders access, the same permission Docket itself uses.</p>
+  <p class="body">Paste this into Claude, and it sets itself up. Works in Claude Code and Claude Desktop.</p>
+  <div class="copywrap">
+    <button class="copy-btn">Copy</button>
+    <pre>Set up the Docket MCP server. The binary is bundled inside the app at:
+/Applications/Docket.app/Contents/MacOS/docket-mcp
+
+If you can run terminal commands, register it with:
+claude mcp add docket -- /Applications/Docket.app/Contents/MacOS/docket-mcp
+
+If you can't run commands, walk me through adding it to
+~/Library/Application Support/Claude/claude_desktop_config.json as:
+{"mcpServers": {"docket": {"command": "/Applications/Docket.app/Contents/MacOS/docket-mcp"}}}
+then have me restart Claude. Afterwards, confirm the docket tools are available.</pre>
+  </div>
+  <p class="body">The first time a tool runs, macOS asks for Reminders access, the same permission Docket itself uses. That's it.</p>
 
   <h2>The tools</h2>
   <div class="tools">
@@ -256,6 +275,18 @@
   </footer>
 </div>
 
+<script>
+document.querySelectorAll(".copywrap").forEach((wrap) => {
+  const btn = wrap.querySelector(".copy-btn");
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(wrap.querySelector("pre").innerText).then(() => {
+      btn.textContent = "Copied!";
+      btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 1600);
+    });
+  });
+});
+</script>
 <script>
 (function () {
   const line = "That worked. I still need to write up the lab conclusions before Friday though.";
