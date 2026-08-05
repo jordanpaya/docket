@@ -229,19 +229,26 @@
   </div>
 
   <h2>Set up</h2>
-  <p class="body">Paste this into Claude, and it sets itself up. Works in Claude Code and Claude Desktop.</p>
+  <p class="body">Paste this into Claude. In Claude Code it installs itself; in the Claude app or on claude.ai it walks you through it, one step at a time.</p>
   <div class="copywrap">
     <button class="copy-btn">Copy</button>
-    <pre>Set up the Docket MCP server. The binary is bundled inside the app at:
-/Applications/Docket.app/Contents/MacOS/docket-mcp
+    <pre>Help me connect the Docket MCP server on my Mac. The server ships inside
+the Docket app at: /Applications/Docket.app/Contents/MacOS/docket-mcp
 
-If you can run terminal commands, register it with:
-claude mcp add docket -- /Applications/Docket.app/Contents/MacOS/docket-mcp
+If you can run terminal commands on this Mac, just run:
+claude mcp add docket -s user -- /Applications/Docket.app/Contents/MacOS/docket-mcp
+and confirm it worked.
 
-If you can't run commands, walk me through adding it to
-~/Library/Application Support/Claude/claude_desktop_config.json as:
-{"mcpServers": {"docket": {"command": "/Applications/Docket.app/Contents/MacOS/docket-mcp"}}}
-then have me restart Claude. Afterwards, confirm the docket tools are available.</pre>
+If you can't run commands on my Mac, coach me through it ONE short step
+at a time, waiting for me to reply between steps. Keep it beginner friendly:
+- If I use Claude Code: have me paste that same command into Terminal.
+- If I use the Claude desktop app: have me run
+  open -e ~/Library/Application\ Support/Claude/claude_desktop_config.json
+  in Terminal, then help me add {"docket": {"command":
+  "/Applications/Docket.app/Contents/MacOS/docket-mcp"}} inside
+  "mcpServers", merging with whatever is already there. Then I quit
+  Claude fully with Cmd+Q and reopen it.
+Finish by telling me how to check that the docket tools are connected.</pre>
   </div>
   <p class="body">The first time a tool runs, macOS asks for Reminders access, the same permission Docket itself uses. That's it.</p>
 
