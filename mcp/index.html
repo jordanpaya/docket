@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docket · MCP for Claude</title>
+<meta name="description" content="Docket ships an MCP server, so Claude can file assignments straight into your class lists while you work.">
+<meta property="og:title" content="Docket · MCP for Claude">
+<meta property="og:description" content="Tell Claude what you have to do, and it lands in your class lists. Docket ships a built-in MCP server.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://docket.jordanpaya.com/mcp/">
+<link rel="canonical" href="https://docket.jordanpaya.com/mcp/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231e93ab'/><path d='M25 52 v14 a8 8 0 0 0 8 8 h34 a8 8 0 0 0 8-8 V52 M50 24 v26 M38 40 L50 52 L62 40' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  :root {
+    --paper: #faf4e9;
+    --paper-2: #f4ecdd;
+    --ink: #241f1a;
+    --ink-2: #6f675c;
+    --ink-3: #a49a8c;
+    --teal: #1e93ab;
+    --teal-deep: #157286;
+    --card: #ffffff;
+    --line: #e7ddcc;
+    --dark: #1d1a16;
+    --dark-ink: #f7f1e6;
+    --pop: cubic-bezier(0.34, 1.45, 0.64, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: #bfe8f0; }
+  body {
+    zoom: 1.1;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 34px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+  .brand-mark {
+    width: 29px; height: 29px; border-radius: 8px;
+    background: linear-gradient(180deg, #3fc2db, #1e93ab);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 7px rgba(30, 147, 171, 0.35);
+  }
+  .brand-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-cta {
+    font-size: 13px; font-weight: 600; color: var(--dark-ink);
+    background: var(--dark); text-decoration: none;
+    padding: 8px 16px; border-radius: 999px;
+    transition: transform 0.2s var(--pop);
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 28px 90px; }
+
+  .hero { text-align: center; padding: 64px 0 14px; }
+  .kicker {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--teal-deep); text-transform: uppercase; margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(34px, 5vw, 46px);
+    font-weight: 800; letter-spacing: -0.03em; line-height: 1.08;
+    text-wrap: balance;
+    margin-bottom: 18px;
+  }
+  .sub {
+    font-size: 17px; line-height: 1.6; color: var(--ink-2);
+    max-width: 52ch; margin: 0 auto;
+    text-wrap: pretty;
+  }
+
+  .convo {
+    margin: 40px 0 8px;
+    background: var(--dark);
+    border-radius: 16px;
+    padding: 22px 24px;
+    color: var(--dark-ink);
+    font-size: 14px;
+    line-height: 1.55;
+    box-shadow: 0 14px 40px rgba(36, 31, 26, 0.18);
+  }
+  .convo .who {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; opacity: 0.45; margin: 14px 0 3px;
+  }
+  .convo .who:first-child { margin-top: 0; }
+  .convo .tool {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 9px;
+    padding: 8px 12px;
+    margin: 8px 0;
+    color: #9fd8e4;
+  }
+
+  h2 {
+    font-size: 21px; font-weight: 800; letter-spacing: -0.015em;
+    margin: 46px 0 12px;
+  }
+  p.body { font-size: 15px; line-height: 1.65; color: var(--ink-2); margin-bottom: 12px; }
+  code.inline {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1px 6px;
+  }
+  pre {
+    background: var(--dark);
+    color: #e8f4f6;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    border-radius: 12px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 10px 0 18px;
+  }
+  pre .c { color: #7d99a0; }
+
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 15px 17px;
+  }
+  .tool-card .name {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px; font-weight: 600; color: var(--teal-deep);
+    margin-bottom: 4px;
+  }
+  .tool-card .what { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+  .note {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-size: 13.5px; color: var(--ink-2); line-height: 1.55;
+    margin-top: 18px;
+  }
+
+  footer {
+    text-align: center; padding: 30px 0 40px;
+    font-size: 13px; color: var(--ink-3);
+  }
+  footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+  @media (max-width: 600px) {
+    .tools { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="/">
+    <span class="brand-mark">
+      <svg width="15" height="15" viewBox="0 0 100 100" fill="none"><path d="M25 52 v14 a8 8 0 0 0 8 8 h34 a8 8 0 0 0 8-8 V52 M50 24 v26 M38 40 L50 52 L62 40" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="brand-name">Docket</span>
+  </a>
+  <a class="nav-cta" href="/">Get Docket</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker">Docket × Model Context Protocol</div>
+    <h1>Claude can file your homework.</h1>
+    <p class="sub">Docket ships a built-in MCP server. Connect it once, and when Claude spots something you need to do, it lands in your class lists, with alerts, synced to your iPhone.</p>
+  </div>
+
+  <div class="convo">
+    <div class="who">You</div>
+    That worked. I still need to write up the lab conclusions before Friday though.
+    <div class="who">Claude</div>
+    <div class="tool">add_assignment(title: "Write up lab conclusions", class: "chem", due: "friday 8am")</div>
+    Filed it: "Write up lab conclusions" is in Honors Chemistry, due Friday 8:00 AM, with a reminder Thursday evening. Now, about that segfault...
+  </div>
+
+  <h2>Set up</h2>
+  <p class="body">Docket 1.4 and later includes the server inside the app. For <strong>Claude Code</strong>, one command:</p>
+  <pre>claude mcp add docket -- /Applications/Docket.app/Contents/MacOS/docket-mcp</pre>
+  <p class="body">For <strong>Claude Desktop</strong>, add this to <code class="inline">claude_desktop_config.json</code>:</p>
+  <pre>{
+  "mcpServers": {
+    "docket": {
+      "command": "/Applications/Docket.app/Contents/MacOS/docket-mcp"
+    }
+  }
+}</pre>
+  <p class="body">The first tool call asks for Reminders access, the same permission Docket itself uses.</p>
+
+  <h2>The tools</h2>
+  <div class="tools">
+    <div class="tool-card">
+      <div class="name">add_assignment</div>
+      <div class="what">Saves a task into the right class list. Natural dates work: "friday 8am", "tomorrow", "next tuesday". Adds Docket's evening-before alert.</div>
+    </div>
+    <div class="tool-card">
+      <div class="name">list_upcoming</div>
+      <div class="what">What's due, soonest first, overdue included. Ask Claude "what do I have this week?"</div>
+    </div>
+    <div class="tool-card">
+      <div class="name">complete_assignment</div>
+      <div class="what">Checks something off by name, everywhere: Docket, Reminders, your phone.</div>
+    </div>
+    <div class="tool-card">
+      <div class="name">list_classes</div>
+      <div class="what">Your classes, so Claude files things where they belong. "chem" matches "Honors Chemistry".</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <span>🔒</span>
+    <span>No server, no account, no data leaves your Mac. The MCP process writes directly into Apple Reminders on your machine, the same place Docket keeps everything. Works with any MCP client, not just Claude.</span>
+  </div>
+
+  <footer>
+    <a href="/">← Back to Docket</a>
+  </footer>
+</div>
+
+</body>
+</html>
