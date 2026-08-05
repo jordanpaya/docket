@@ -85,11 +85,35 @@
     line-height: 1.55;
     box-shadow: 0 14px 40px rgba(36, 31, 26, 0.18);
   }
-  .convo .who {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; opacity: 0.45; margin: 14px 0 3px;
+  .convo { display: flex; flex-direction: column; gap: 12px; }
+  .msg {
+    max-width: 82%;
+    border-radius: 15px;
+    padding: 10px 14px;
+    line-height: 1.5;
   }
-  .convo .who:first-child { margin-top: 0; }
+  .msg.user {
+    align-self: flex-end;
+    background: #2f6f7d;
+    border-bottom-right-radius: 5px;
+    min-height: 1.5em;
+  }
+  .msg.ai {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-bottom-left-radius: 5px;
+  }
+  .msg.ai .tool { margin: 0 0 8px; }
+  .caret {
+    display: inline-block; width: 2px; height: 1em;
+    background: rgba(255,255,255,0.8);
+    margin-left: 1px; vertical-align: -0.15em;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .msg.hidden-msg { opacity: 0; transform: translateY(8px); }
+  .msg { transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.45, 0.64, 1); }
   .convo .tool {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 12px;
@@ -181,12 +205,12 @@
     <p class="sub">Docket ships a built-in MCP server. Connect it once, and when Claude spots something you need to do, it lands in your class lists, with alerts, synced to your iPhone.</p>
   </div>
 
-  <div class="convo">
-    <div class="who">You</div>
-    That worked. I still need to write up the lab conclusions before Friday though.
-    <div class="who">Claude</div>
-    <div class="tool">add_assignment(title: "Write up lab conclusions", class: "chem", due: "friday 8am")</div>
-    Filed it: "Write up lab conclusions" is in Honors Chemistry, due Friday 8:00 AM, with a reminder Thursday evening. Now, about that segfault...
+  <div class="convo" id="chat">
+    <div class="msg user" id="m-user"><span id="typed"></span><span class="caret" id="caret"></span></div>
+    <div class="msg ai" id="m-ai">
+      <div class="tool">add_assignment(title: "Write up lab conclusions", class: "chem", due: "friday 8am")</div>
+      <div id="ai-text">Filed it: "Write up lab conclusions" is in Honors Chemistry, due Friday 8:00 AM, with a reminder Thursday evening. Now, about that segfault...</div>
+    </div>
   </div>
 
   <h2>Set up</h2>
@@ -232,5 +256,47 @@
   </footer>
 </div>
 
+<script>
+(function () {
+  const line = "That worked. I still need to write up the lab conclusions before Friday though.";
+  const typed = document.getElementById("typed");
+  const caret = document.getElementById("caret");
+  const userMsg = document.getElementById("m-user");
+  const aiMsg = document.getElementById("m-ai");
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    typed.textContent = line;
+    caret.remove();
+    return;
+  }
+
+  function run() {
+    typed.textContent = "";
+    caret.style.display = "inline-block";
+    userMsg.classList.add("hidden-msg");
+    aiMsg.classList.add("hidden-msg");
+    setTimeout(() => {
+      userMsg.classList.remove("hidden-msg");
+      let i = 0;
+      const timer = setInterval(() => {
+        typed.textContent = line.slice(0, ++i);
+        if (i >= line.length) {
+          clearInterval(timer);
+          setTimeout(() => {
+            caret.style.display = "none";
+            aiMsg.classList.remove("hidden-msg");
+            setTimeout(run, 6000);
+          }, 700);
+        }
+      }, 26);
+    }, 500);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) { io.disconnect(); run(); }
+  }, { threshold: 0.4 });
+  io.observe(document.getElementById("chat"));
+})();
+</script>
 </body>
 </html>
