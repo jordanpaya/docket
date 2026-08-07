@@ -1,5 +1,5 @@
 {
-  "version": "1.3",
+  "version": "1.4",
   "url": "https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip",
-  "notes": "Click any class on the schedule page for teacher and room details, watch a live countdown to your next period, and optionally see what's next right on your lock screen. Also fixes the Calendar permission prompt on macOS 26 and adds a helper that moves Docket out of Downloads so permissions stick."
+  "notes": "Class notifications before each period, a morning summary of what's due, lock screen upgrades, and a built-in MCP server so Claude can file assignments for you. Plus a rebuilt onboarding that sets up your classes from your schedule PDF."
 }
