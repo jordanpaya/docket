@@ -1,5 +1,5 @@
 {
-  "version": "1.4",
+  "version": "1.4.1",
   "url": "https://github.com/jordanpaya/docket/releases/latest/download/Docket.zip",
-  "notes": "Class notifications before each period, a morning summary of what's due, lock screen upgrades, and a built-in MCP server so Claude can file assignments for you. Plus a rebuilt onboarding that sets up your classes from your schedule PDF."
+  "notes": "Fixes a crash that could take Docket down when the screen locked or the display changed. Docket now also relaunches itself if it ever crashes. Plus a new setting to file assignments without a due date."
 }
